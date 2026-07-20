@@ -405,9 +405,6 @@
         <div class="nav-logo">codewithpaparao</div>
         <ul class="nav-links">
             <li><a href="#">Home</a></li>
-            <li><a href="#about-me">About Me</a></li>
-            <li><a href="#courses">Courses</a></li>
-            <li><a href="#contact">Contact</a></li>
             <li>
                 <button id="theme-toggle" class="btn btn-outline" style="padding: 0.35rem; font-size: 1rem; border: none; background: transparent;"></button>
             </li>
@@ -479,122 +476,6 @@
         </div>
     </header>
 
-    <!-- About Me Section -->
-    <section id="about-me" class="section-container" style="border-top: 1px solid var(--border-color);">
-        <div class="about-grid">
-            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&h=800" alt="Instructor Profile" class="about-avatar">
-            
-            <div class="about-text">
-                <span class="badge badge-beginner" style="margin-bottom: 0.75rem;">Platform Founder</span>
-                <h2 style="font-family: var(--font-heading); font-size: 2.25rem; margin-bottom: 1.5rem;">Hi, I'm Clara Vance</h2>
-                <p>
-                    I am a Senior Software Architect and curriculum designer with over a decade of experience building enterprise microservices and training developers worldwide.
-                </p>
-                <p>
-                    codewithpaparao was founded with a single mission: to cut through the noise and deliver high-fidelity, concept-first education. Our syllabus focuses on building robust systems from scratch, teaching design patterns, MVC architectures, database enforcements, and structural logic.
-                </p>
-                <p>
-                    Whether you are an aspiring student or a technical engineer refining your system architecture chops, our curriculum is engineered to help you master real-world production setups.
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Courses Preview Section -->
-    <section id="courses" class="section-container" style="border-top: 1px solid var(--border-color); background-color: var(--bg-secondary);">
-        <div class="section-header">
-            <h2>Featured Curriculums</h2>
-            <p>Browse our core software tracks designed to elevate your developer career.</p>
-        </div>
-
-        <div class="grid-cols-3" style="margin-bottom: 2rem;">
-            <!-- Python Course Card -->
-            <div class="card" style="background: var(--bg-primary); display: flex; flex-direction: column; justify-content: space-between;">
-                <div>
-                    <div style="height: 140px; background-color: var(--bg-tertiary); border-radius: var(--radius-md); overflow: hidden; margin-bottom: 1rem;">
-                        <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=600&h=300" alt="Python" style="width:100%; height:100%; object-fit:cover;">
-                    </div>
-                    <span class="badge badge-beginner" style="margin-bottom: 0.5rem;">Beginner</span>
-                    <h3 style="margin-bottom: 0.5rem;">Intro to Python Core</h3>
-                    <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1rem;">
-                        Master Python scripting, control statements, basic modules, and foundational object-oriented logic.
-                    </p>
-                </div>
-                <a href="{{ url_for('auth.login') }}" class="btn btn-outline" style="width: 100%;">View Track</a>
-            </div>
-
-            <!-- Web Dev Card -->
-            <div class="card" style="background: var(--bg-primary); display: flex; flex-direction: column; justify-content: space-between;">
-                <div>
-                    <div style="height: 140px; background-color: var(--bg-tertiary); border-radius: var(--radius-md); overflow: hidden; margin-bottom: 1rem;">
-                        <img src="https://images.unsplash.com/photo-1547082299-de196ea013d6?auto=format&fit=crop&w=600&h=300" alt="Web Dev" style="width:100%; height:100%; object-fit:cover;">
-                    </div>
-                    <span class="badge badge-intermediate" style="margin-bottom: 0.5rem;">Intermediate</span>
-                    <h3 style="margin-bottom: 0.5rem;">Full Stack MVC Layouts</h3>
-                    <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1rem;">
-                        Build interactive web applications using modular Python Flask, SQL databases, and custom CSS styling.
-                    </p>
-                </div>
-                <a href="{{ url_for('auth.login') }}" class="btn btn-outline" style="width: 100%;">View Track</a>
-            </div>
-
-            <!-- Database Design Card -->
-            <div class="card" style="background: var(--bg-primary); display: flex; flex-direction: column; justify-content: space-between;">
-                <div>
-                    <div style="height: 140px; background-color: var(--bg-tertiary); border-radius: var(--radius-md); overflow: hidden; margin-bottom: 1rem;">
-                        <img src="https://images.unsplash.com/photo-1544383835-bda2bc66a55d?auto=format&fit=crop&w=600&h=300" alt="Database" style="width:100%; height:100%; object-fit:cover;">
-                    </div>
-                    <span class="badge badge-advanced" style="margin-bottom: 0.5rem;">Advanced</span>
-                    <h3 style="margin-bottom: 0.5rem;">Database Schema Mastery</h3>
-                    <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1rem;">
-                        Understand Relational PostgreSQL structures, primary keys, indices, triggers, and Row-Level Security.
-                    </p>
-                </div>
-                <a href="{{ url_for('auth.login') }}" class="btn btn-outline" style="width: 100%;">View Track</a>
-            </div>
-        </div>
-
-        <div style="text-align: center; margin-top: 3rem;">
-            <a href="{{ url_for('course.list_courses') }}" class="btn btn-primary" style="padding: 0.75rem 1.5rem;">Browse Complete Catalog</a>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="section-container" style="border-top: 1px solid var(--border-color);">
-        <div class="section-header">
-            <h2>Get in Touch</h2>
-            <p>Have questions about curriculum paths or custom team licenses? Reach out.</p>
-        </div>
-
-        <div class="contact-card">
-            <div>
-                <h3>Platform Office</h3>
-                <p style="color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
-                    codewithpaparao LLC<br>
-                    100 Pine Street, Suite 400<br>
-                    San Francisco, CA 94111
-                </p>
-                <div style="margin-top: 1.5rem;">
-                    <a href="mailto:support@codewithpaparao.com" style="font-weight: 500;">✉ support@codewithpaparao.com</a>
-                </div>
-            </div>
-            
-            <form action="" method="POST" onsubmit="event.preventDefault(); alert('Message sent successfully! (Demo Form)'); this.reset();" style="display:flex; flex-direction:column; gap:1rem;">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                
-                <div class="form-group" style="margin-bottom: 0;">
-                    <input type="text" placeholder="Your Name" class="form-control" required>
-                </div>
-                <div class="form-group" style="margin-bottom: 0;">
-                    <input type="email" placeholder="Your Email" class="form-control" required>
-                </div>
-                <div class="form-group" style="margin-bottom: 0;">
-                    <textarea placeholder="Your Message" class="form-control" rows="4" style="resize:vertical;" required></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary" style="align-self: flex-start; padding: 0.625rem 1.5rem;">Send Message</button>
-            </form>
-        </div>
-    </section>
 
     <!-- Footer -->
     <footer class="footer">
