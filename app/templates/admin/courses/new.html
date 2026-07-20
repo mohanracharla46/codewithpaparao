@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Create Course{% endblock %}
+{% block header_title %}Curriculum Manager{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 0 auto;">
+    <div style="margin-bottom: 1.5rem;">
+        <a href="{{ url_for('dashboard.index') }}" style="font-size: 0.875rem;">← Back to Dashboard</a>
+    </div>
+
+    <h1>Create New Course</h1>
+    <p style="color: var(--text-secondary); margin-bottom: 2rem;">Draft course content, select difficulty, and publish to students.</p>
+
+    <div class="card" style="padding: 2rem; background: var(--bg-secondary);">
+        <form action="{{ url_for('admin.new_course') }}" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            
+            <div class="form-group">
+                <label for="title" class="form-label">Course Title</label>
+                <input type="text" id="title" name="title" class="form-control" placeholder="e.g. Advanced Python Patterns" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description" class="form-label">Description / Overview</label>
+                <textarea id="description" name="description" class="form-control" rows="5" placeholder="Enter course goals, syllabus, requirements..." style="resize: vertical;"></textarea>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                    <label for="difficulty" class="form-label">Difficulty Level</label>
+                    <select id="difficulty" name="difficulty" class="form-control" style="appearance: auto;">
+                        <option value="beginner">Beginner</option>
+                        <option value="intermediate">Intermediate</option>
+                        <option value="advanced">Advanced</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="thumbnail" class="form-label">Course Banner / Thumbnail</label>
+                    <input type="file" id="thumbnail" name="thumbnail" accept="image/*" class="form-control" style="padding: 0.35rem 0.75rem;">
+                </div>
+            </div>
+
+            <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem; margin-bottom: 1.5rem;">
+                <input type="checkbox" id="is_published" name="is_published" style="width: auto; accent-color: var(--accent-color);">
+                <label for="is_published" class="form-label" style="margin-bottom: 0; cursor: pointer;">Publish immediately (visible to all students)</label>
+            </div>
+
+            <div style="display: flex; gap: 1rem;">
+                <button type="submit" class="btn btn-primary" style="padding: 0.625rem 1.5rem;">Create Course</button>
+                <a href="{{ url_for('dashboard.index') }}" class="btn btn-secondary" style="padding: 0.625rem 1.5rem;">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

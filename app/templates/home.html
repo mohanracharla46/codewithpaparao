@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to codewithpaparao</title>
+    
+    <!-- Link Core Variables -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/variables.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <!-- Online Icon Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+    
+    <style>
+        /* Landing Page Custom Styles */
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* Nav Bar */
+        .landing-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: var(--header-height);
+            padding: 0 4rem;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: all var(--transition-normal);
+        }
+        
+        [data-theme="dark"] .landing-nav {
+            background: rgba(11, 15, 25, 0.8);
+        }
+
+        .nav-logo {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            letter-spacing: -0.03em;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.925rem;
+            transition: color var(--transition-fast);
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        /* Hero Section with Grid Layout & Glow */
+        .hero-section {
+            position: relative;
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            align-items: center;
+            padding: 4rem 4rem;
+            max-width: 1280px;
+            margin: 0 auto;
+            gap: 4rem;
+            min-height: calc(100vh - var(--header-height));
+            background-image: 
+                radial-gradient(var(--border-color) 1px, transparent 1px);
+            background-size: 24px 24px;
+            background-color: var(--bg-primary);
+        }
+
+        .hero-section::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 80%;
+            background: radial-gradient(circle, rgba(13, 148, 136, 0.12) 0%, transparent 70%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: left;
+        }
+
+        .pill-badge {
+            display: inline-flex;
+            align-items: center;
+            background-color: #e0e7ff;
+            color: #4f46e5;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.03em;
+            box-shadow: 0 2px 4px rgba(79, 70, 229, 0.05);
+            border: 1px solid rgba(79, 70, 229, 0.1);
+        }
+        
+        [data-theme="dark"] .pill-badge {
+            background-color: #1e1b4b;
+            color: #a5b4fc;
+            border-color: rgba(165, 180, 252, 0.1);
+        }
+
+        .hero-title {
+            font-family: var(--font-heading);
+            font-size: 4.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            line-height: 1.05;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.04em;
+        }
+
+        .hero-title span {
+            color: #0d9488; /* Teal */
+        }
+        
+        [data-theme="dark"] .hero-title span {
+            color: #14b8a6;
+        }
+
+        .hero-subtitle {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-subtitle span {
+            color: #14b8a6; /* Teal */
+        }
+
+        .hero-desc {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            max-width: 580px;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-hero {
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+            color: white !important;
+            padding: 0.85rem 2rem;
+            font-size: 1.05rem;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            box-shadow: 0 10px 15px -3px rgba(13, 148, 136, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all var(--transition-fast);
+        }
+
+        .btn-hero:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 20px -3px rgba(13, 148, 136, 0.4);
+        }
+
+        /* Right Graphic & Floating Badges */
+        .hero-graphics-container {
+            position: relative;
+            width: 100%;
+            height: 480px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+        }
+
+        .developer-wrapper {
+            width: 320px;
+            height: 380px;
+            overflow: hidden;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            background: radial-gradient(circle, rgba(13, 148, 136, 0.15) 0%, transparent 70%);
+            position: relative;
+        }
+
+        .developer-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 15px 30px rgba(0,0,0,0.1));
+        }
+
+        .floating-badge {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            padding: 0.6rem 1.2rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            box-shadow: var(--shadow-md);
+            animation: float 6s ease-in-out infinite;
+            z-index: 3;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="dark"] .floating-badge {
+            background: rgba(17, 24, 39, 0.85);
+        }
+
+        .floating-badge:hover {
+            transform: scale(1.08) translateY(-4px);
+            border-color: var(--accent-color);
+        }
+
+        .badge-icon {
+            font-size: 1.25rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+        }
+
+        .floating-badge:hover .badge-icon {
+            transform: scale(1.15) rotate(5deg);
+        }
+
+        /* Positions & Specific Hover Glows */
+        .badge-dsa { top: -4%; left: 36%; animation-delay: 0s; }
+        .badge-dsa:hover { border-color: #6366f1; box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.35); }
+
+        .badge-c { top: 8%; left: 2%; animation-delay: 0.8s; }
+        .badge-c:hover { border-color: #00599C; box-shadow: 0 10px 25px -5px rgba(0, 89, 156, 0.35); }
+
+        .badge-python { top: 12%; right: 2%; animation-delay: 1.6s; }
+        .badge-python:hover { border-color: #3776AB; box-shadow: 0 10px 25px -5px rgba(55, 118, 171, 0.35); }
+
+        .badge-cpp { top: 32%; left: -6%; animation-delay: 2.4s; }
+        .badge-cpp:hover { border-color: #00599C; box-shadow: 0 10px 25px -5px rgba(0, 89, 156, 0.35); }
+
+        .badge-java { top: 36%; right: -6%; animation-delay: 3.2s; }
+        .badge-java:hover { border-color: #ea2d2e; box-shadow: 0 10px 25px -5px rgba(234, 45, 46, 0.35); }
+
+        .badge-html { top: 58%; left: -4%; animation-delay: 4s; }
+        .badge-html:hover { border-color: #e34c26; box-shadow: 0 10px 25px -5px rgba(227, 76, 38, 0.35); }
+
+        .badge-js { top: 60%; right: -4%; animation-delay: 4.8s; }
+        .badge-js:hover { border-color: #f7df1e; box-shadow: 0 10px 25px -5px rgba(247, 223, 30, 0.35); }
+
+        .badge-css { bottom: 12%; left: 6%; animation-delay: 5.6s; }
+        .badge-css:hover { border-color: #264de4; box-shadow: 0 10px 25px -5px rgba(38, 77, 228, 0.35); }
+
+        .badge-sql { bottom: 10%; right: 6%; animation-delay: 6.4s; }
+        .badge-sql:hover { border-color: #0ea5e9; box-shadow: 0 10px 25px -5px rgba(14, 165, 233, 0.35); }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        /* Section Styling */
+        .section-container {
+            padding: 6rem 4rem;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-family: var(--font-heading);
+            font-size: 2.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* About Me Section */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-avatar {
+            width: 100%;
+            height: 380px;
+            border-radius: var(--radius-lg);
+            object-fit: cover;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .about-text p {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Contact Section */
+        .contact-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 3rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Footer */
+        .footer {
+            border-top: 1px solid var(--border-color);
+            padding: 2.5rem 4rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            background: var(--bg-secondary);
+        }
+
+        @media (max-width: 992px) {
+            .landing-nav {
+                padding: 0 2rem;
+            }
+            .hero-section {
+                grid-template-columns: 1fr;
+                padding: 4rem 2rem;
+                text-align: center;
+                gap: 3rem;
+            }
+            .hero-content h1 {
+                font-size: 2.75rem;
+            }
+            .hero-content p {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .hero-cta {
+                justify-content: center;
+            }
+            .hero-image-container {
+                height: 320px;
+            }
+            .section-container {
+                padding: 4rem 2rem;
+            }
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .about-avatar {
+                height: 280px;
+            }
+            .contact-card {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Landing Navigation -->
+    <nav class="landing-nav">
+        <div class="nav-logo">codewithpaparao</div>
+        <ul class="nav-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#about-me">About Me</a></li>
+            <li><a href="#courses">Courses</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li>
+                <button id="theme-toggle" class="btn btn-outline" style="padding: 0.35rem; font-size: 1rem; border: none; background: transparent;"></button>
+            </li>
+            <li>
+                {% if session.get('user_id') %}
+                    <a href="{{ url_for('dashboard.index') }}" class="btn btn-primary">Dashboard</a>
+                {% else %}
+                    <a href="{{ url_for('auth.login') }}" class="btn btn-primary">Login</a>
+                {% endif %}
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Hero Header Panel -->
+    <header class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">Master In-Demand Tech Skills <br>with <span>Practical Learning.|</span></h1>
+            
+            <p class="hero-desc">
+                Join live and recorded courses, practice with quizzes, access downloadable notes, and earn verified certificates. Learn at your own pace with a modern learning experience designed for students and professionals.
+            </p>
+            
+            <div class="hero-cta">
+                <a href="#courses" class="btn btn-hero">Start Learning for Free &rarr;</a>
+            </div>
+        </div>
+        
+        <div class="hero-graphics-container">
+            <div class="developer-wrapper">
+                <img src="{{ url_for('static', filename='assets/smiling_developer.png') }}" alt="smiling developer" class="developer-img">
+            </div>
+            <!-- Floating Badges -->
+            <div class="floating-badge badge-dsa">
+                <i class="badge-icon fas fa-code" style="color: #6366f1; min-width: 20px;"></i>
+                <span>DSA</span>
+            </div>
+            <div class="floating-badge badge-c">
+                <i class="badge-icon devicon-c-plain colored" style="min-width: 20px;"></i>
+                <span>C</span>
+            </div>
+            <div class="floating-badge badge-python">
+                <i class="badge-icon devicon-python-plain colored" style="min-width: 20px;"></i>
+                <span>Python</span>
+            </div>
+            <div class="floating-badge badge-cpp">
+                <i class="badge-icon devicon-cplusplus-plain colored" style="min-width: 20px;"></i>
+                <span>C++</span>
+            </div>
+            <div class="floating-badge badge-java">
+                <i class="badge-icon devicon-java-plain colored" style="min-width: 20px;"></i>
+                <span>Java</span>
+            </div>
+            <div class="floating-badge badge-html">
+                <i class="badge-icon devicon-html5-plain colored" style="min-width: 20px;"></i>
+                <span>HTML</span>
+            </div>
+            <div class="floating-badge badge-js">
+                <i class="badge-icon devicon-javascript-plain colored" style="min-width: 20px;"></i>
+                <span>JS</span>
+            </div>
+            <div class="floating-badge badge-css">
+                <i class="badge-icon devicon-css3-plain colored" style="min-width: 20px;"></i>
+                <span>CSS</span>
+            </div>
+            <div class="floating-badge badge-sql">
+                <i class="badge-icon fas fa-database" style="color: #0ea5e9; min-width: 20px;"></i>
+                <span>SQL</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- About Me Section -->
+    <section id="about-me" class="section-container" style="border-top: 1px solid var(--border-color);">
+        <div class="about-grid">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&h=800" alt="Instructor Profile" class="about-avatar">
+            
+            <div class="about-text">
+                <span class="badge badge-beginner" style="margin-bottom: 0.75rem;">Platform Founder</span>
+                <h2 style="font-family: var(--font-heading); font-size: 2.25rem; margin-bottom: 1.5rem;">Hi, I'm Clara Vance</h2>
+                <p>
+                    I am a Senior Software Architect and curriculum designer with over a decade of experience building enterprise microservices and training developers worldwide.
+                </p>
+                <p>
+                    codewithpaparao was founded with a single mission: to cut through the noise and deliver high-fidelity, concept-first education. Our syllabus focuses on building robust systems from scratch, teaching design patterns, MVC architectures, database enforcements, and structural logic.
+                </p>
+                <p>
+                    Whether you are an aspiring student or a technical engineer refining your system architecture chops, our curriculum is engineered to help you master real-world production setups.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Courses Preview Section -->
+    <section id="courses" class="section-container" style="border-top: 1px solid var(--border-color); background-color: var(--bg-secondary);">
+        <div class="section-header">
+            <h2>Featured Curriculums</h2>
+            <p>Browse our core software tracks designed to elevate your developer career.</p>
+        </div>
+
+        <div class="grid-cols-3" style="margin-bottom: 2rem;">
+            <!-- Python Course Card -->
+            <div class="card" style="background: var(--bg-primary); display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                    <div style="height: 140px; background-color: var(--bg-tertiary); border-radius: var(--radius-md); overflow: hidden; margin-bottom: 1rem;">
+                        <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=600&h=300" alt="Python" style="width:100%; height:100%; object-fit:cover;">
+                    </div>
+                    <span class="badge badge-beginner" style="margin-bottom: 0.5rem;">Beginner</span>
+                    <h3 style="margin-bottom: 0.5rem;">Intro to Python Core</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1rem;">
+                        Master Python scripting, control statements, basic modules, and foundational object-oriented logic.
+                    </p>
+                </div>
+                <a href="{{ url_for('auth.login') }}" class="btn btn-outline" style="width: 100%;">View Track</a>
+            </div>
+
+            <!-- Web Dev Card -->
+            <div class="card" style="background: var(--bg-primary); display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                    <div style="height: 140px; background-color: var(--bg-tertiary); border-radius: var(--radius-md); overflow: hidden; margin-bottom: 1rem;">
+                        <img src="https://images.unsplash.com/photo-1547082299-de196ea013d6?auto=format&fit=crop&w=600&h=300" alt="Web Dev" style="width:100%; height:100%; object-fit:cover;">
+                    </div>
+                    <span class="badge badge-intermediate" style="margin-bottom: 0.5rem;">Intermediate</span>
+                    <h3 style="margin-bottom: 0.5rem;">Full Stack MVC Layouts</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1rem;">
+                        Build interactive web applications using modular Python Flask, SQL databases, and custom CSS styling.
+                    </p>
+                </div>
+                <a href="{{ url_for('auth.login') }}" class="btn btn-outline" style="width: 100%;">View Track</a>
+            </div>
+
+            <!-- Database Design Card -->
+            <div class="card" style="background: var(--bg-primary); display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                    <div style="height: 140px; background-color: var(--bg-tertiary); border-radius: var(--radius-md); overflow: hidden; margin-bottom: 1rem;">
+                        <img src="https://images.unsplash.com/photo-1544383835-bda2bc66a55d?auto=format&fit=crop&w=600&h=300" alt="Database" style="width:100%; height:100%; object-fit:cover;">
+                    </div>
+                    <span class="badge badge-advanced" style="margin-bottom: 0.5rem;">Advanced</span>
+                    <h3 style="margin-bottom: 0.5rem;">Database Schema Mastery</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1rem;">
+                        Understand Relational PostgreSQL structures, primary keys, indices, triggers, and Row-Level Security.
+                    </p>
+                </div>
+                <a href="{{ url_for('auth.login') }}" class="btn btn-outline" style="width: 100%;">View Track</a>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 3rem;">
+            <a href="{{ url_for('course.list_courses') }}" class="btn btn-primary" style="padding: 0.75rem 1.5rem;">Browse Complete Catalog</a>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section-container" style="border-top: 1px solid var(--border-color);">
+        <div class="section-header">
+            <h2>Get in Touch</h2>
+            <p>Have questions about curriculum paths or custom team licenses? Reach out.</p>
+        </div>
+
+        <div class="contact-card">
+            <div>
+                <h3>Platform Office</h3>
+                <p style="color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+                    codewithpaparao LLC<br>
+                    100 Pine Street, Suite 400<br>
+                    San Francisco, CA 94111
+                </p>
+                <div style="margin-top: 1.5rem;">
+                    <a href="mailto:support@codewithpaparao.com" style="font-weight: 500;">✉ support@codewithpaparao.com</a>
+                </div>
+            </div>
+            
+            <form action="" method="POST" onsubmit="event.preventDefault(); alert('Message sent successfully! (Demo Form)'); this.reset();" style="display:flex; flex-direction:column; gap:1rem;">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                
+                <div class="form-group" style="margin-bottom: 0;">
+                    <input type="text" placeholder="Your Name" class="form-control" required>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <input type="email" placeholder="Your Email" class="form-control" required>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <textarea placeholder="Your Message" class="form-control" rows="4" style="resize:vertical;" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="align-self: flex-start; padding: 0.625rem 1.5rem;">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2026 codewithpaparao LLC. All rights reserved. Built with Flask, Supabase, and Vanilla CSS.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

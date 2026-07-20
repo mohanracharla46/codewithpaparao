@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Students{% endblock %}
+{% block header_title %}Students Management{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <div>
+        <h1>Students</h1>
+        <p style="color: var(--text-secondary);">View and monitor students enrolled in the system.</p>
+    </div>
+</div>
+
+<div class="card" style="padding: 2rem; background-color: var(--bg-secondary); border-radius: var(--radius-lg);">
+    <h2 style="margin-bottom: 1.5rem;">Registered Students</h2>
+    
+    {% if students %}
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Avatar</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Joined Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                        <tr>
+                            <td style="width: 60px;">
+                                <img src="{{ student.avatar_url or 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=80&h=80' }}" alt="" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border-color);">
+                            </td>
+                            <td>
+                                <strong>{{ student.full_name }}</strong>
+                            </td>
+                            <td>
+                                {{ student.email }}
+                            </td>
+                            <td>
+                                <span class="badge" style="background-color: #d1fae5; color: #065f46;">{{ student.status | capitalize }}</span>
+                            </td>
+                            <td>
+                                {{ student.created_at.strftime('%Y-%m-%d') }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 3rem 0;">
+            <p style="color: var(--text-secondary);">No students registered in the system yet.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

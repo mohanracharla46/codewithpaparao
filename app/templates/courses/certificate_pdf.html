@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate {{ cert.certificate_code }}</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap');
+        
+        body {
+            background-color: #f3f4f6;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .certificate-container {
+            width: 800px;
+            height: 560px;
+            padding: 40px;
+            background-color: #ffffff;
+            border: 15px solid #1e293b;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            position: relative;
+            box-sizing: border-box;
+            background-image: radial-gradient(circle at 100% 150%, #f1f5f9 24%, #ffffff 25%, #ffffff 28%, #f1f5f9 29%, #f1f5f9 36%, #ffffff 36%, #ffffff 40%, #f1f5f9 41%);
+        }
+
+        .certificate-inner {
+            border: 2px solid #94a3b8;
+            height: 100%;
+            padding: 30px;
+            box-sizing: border-box;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cert-header {
+            font-family: 'Cinzel', serif;
+            font-size: 2.25rem;
+            color: #1e293b;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-top: 10px;
+        }
+
+        .cert-sub {
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 5px;
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        .cert-to {
+            font-size: 0.875rem;
+            color: #64748b;
+            font-style: italic;
+            margin: 15px 0;
+        }
+
+        .cert-name {
+            font-family: 'Cinzel', serif;
+            font-size: 2.5rem;
+            color: #4f46e5;
+            font-weight: 600;
+            border-bottom: 2px solid #cbd5e1;
+            padding-bottom: 5px;
+            min-width: 350px;
+            margin: 10px 0;
+        }
+
+        .cert-body {
+            font-size: 0.95rem;
+            color: #334155;
+            max-width: 500px;
+            line-height: 1.6;
+            margin: 15px 0;
+        }
+
+        .cert-course {
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .cert-footer {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: 20px;
+        }
+
+        .cert-sig {
+            width: 150px;
+            text-align: center;
+        }
+
+        .sig-line {
+            border-top: 1px solid #94a3b8;
+            margin-top: 10px;
+            padding-top: 5px;
+            font-size: 0.75rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .cert-badge {
+            width: 80px;
+            height: 80px;
+            background: #1e293b;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffd700;
+            font-size: 2rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            border: 4px double #ffd700;
+        }
+
+        .cert-code {
+            font-family: monospace;
+            font-size: 0.75rem;
+            color: #94a3b8;
+            position: absolute;
+            bottom: 25px;
+        }
+    </style>
+</head>
+<body>
+    <div class="certificate-container">
+        <div class="certificate-inner">
+            <div class="cert-sub">Certificate of Completion</div>
+            <div class="cert-header">codewithpaparao</div>
+            <div class="cert-to">This is proudly presented to</div>
+            <div class="cert-name">{{ cert.student.full_name }}</div>
+            <div class="cert-body">
+                for successfully completing the advanced curriculum and demonstrating mastery in
+                <div class="cert-course">{{ cert.course.title }}</div>
+            </div>
+            
+            <div class="cert-footer">
+                <div class="cert-sig">
+                    <div style="font-family: 'Cinzel', serif; font-style: italic; color: #4b5563;">codewithpaparao Board</div>
+                    <div class="sig-line">Director of Academic Affairs</div>
+                </div>
+                <div class="cert-badge">🏅</div>
+                <div class="cert-sig">
+                    <div style="font-family: monospace; font-size:0.875rem; color:#4f46e5;">{{ cert.issued_at.strftime('%Y-%m-%d') }}</div>
+                    <div class="sig-line">Date of Issuance</div>
+                </div>
+            </div>
+            
+            <div class="cert-code">Verification Code: {{ cert.certificate_code }}</div>
+        </div>
+    </div>
+    
+    <script>
+        // Auto trigger print dialog if requested as download
+        if (window.location.search.includes('print=true')) {
+            window.print();
+        }
+    </script>
+</body>
+</html>

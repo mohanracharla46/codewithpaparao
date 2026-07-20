@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Certificates{% endblock %}
+{% block header_title %}Certificates Registry{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <div>
+        <h1>Certificates</h1>
+        <p style="color: var(--text-secondary);">Registry of verified student course completions and certificates.</p>
+    </div>
+</div>
+
+<div class="card" style="padding: 2rem; background-color: var(--bg-secondary); border-radius: var(--radius-lg);">
+    <h2 style="margin-bottom: 1.5rem;">Issued Certificates</h2>
+    
+    {% if certificates %}
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Certificate Code</th>
+                        <th>Student</th>
+                        <th>Course</th>
+                        <th>Issue Date</th>
+                        <th style="text-align: right;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cert in certificates %}
+                        <tr>
+                            <td>
+                                <code>{{ cert.certificate_code }}</code>
+                            </td>
+                            <td>
+                                <strong>{{ cert.student.full_name }}</strong>
+                                <div style="font-size: 0.75rem; color: var(--text-secondary);">{{ cert.student.email }}</div>
+                            </td>
+                            <td>
+                                <strong>{{ cert.course.title }}</strong>
+                            </td>
+                            <td>
+                                {{ cert.issued_at.strftime('%Y-%m-%d %H:%M') }}
+                            </td>
+                            <td style="text-align: right;">
+                                <a href="{{ cert.pdf_url }}" target="_blank" class="btn btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">📄 View Certificate</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 3rem 0;">
+            <p style="color: var(--text-secondary);">No student certificates issued yet.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

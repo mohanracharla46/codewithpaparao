@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Instructor Analytics{% endblock %}
+{% block header_title %}Analytics Workspace{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 2rem;">
+    <h1>Curriculum Analytics</h1>
+    <p style="color: var(--text-secondary);">Evaluate learning metrics, course completion status, and active student actions.</p>
+</div>
+
+<!-- Stats Bar -->
+<div class="stats-bar">
+    <div class="stat-card">
+        <span class="stat-lbl">Total Courses</span>
+        <span class="stat-val">{{ stats.total_courses }}</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-lbl">Published Courses</span>
+        <span class="stat-val">{{ stats.published_courses }}</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-lbl">Active Enrolled Students</span>
+        <span class="stat-val">👥 {{ stats.total_students }}</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-lbl">Quiz Pass Success Rate</span>
+        <span class="stat-val">📈 {{ stats.quiz_pass_rate }}%</span>
+    </div>
+</div>
+
+<!-- Audit Trails -->
+<div class="card" style="padding: 2rem; background-color: var(--bg-secondary);">
+    <h2 style="margin-bottom: 1.5rem;">Recent Student Interactions</h2>
+    
+    {% if recent_activities %}
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Action</th>
+                        <th>IP Address</th>
+                        <th>Date & Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log in recent_activities %}
+                        <tr>
+                            <td>
+                                <strong>{{ log.user.email if log.user else 'Anonymous' }}</strong>
+                            </td>
+                            <td>
+                                <code style="padding: 0.25rem 0.5rem; background: var(--bg-tertiary); border-radius: 4px; font-size: 0.85em;">{{ log.action }}</code>
+                            </td>
+                            <td>
+                                {{ log.ip_address or 'Local' }}
+                            </td>
+                            <td>
+                                {{ log.created_at.strftime('%Y-%m-%d %H:%M:%S') }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p style="text-align: center; color: var(--text-muted); padding: 2rem 0;">No active student logs found.</p>
+    {% endif %}
+</div>
+{% endblock %}

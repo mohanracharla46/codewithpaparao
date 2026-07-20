@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% block title %}{{ lesson.title }} - {{ course.title }}{% endblock %}
+{% block header_title %}{{ course.title }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Custom split layout overrides for reader */
+    .main-content {
+        max-width: 100% !important;
+        padding: 0 !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="course-reader">
+    <!-- Syllabus Sidebar -->
+    <aside class="reader-sidebar">
+        <div style="margin-bottom: 1.5rem; padding: 0 0.5rem;">
+            <a href="{{ url_for('course.detail', course_id=course.id) }}" style="font-size: 0.875rem;">← Back to Syllabus</a>
+        </div>
+        
+        {% for mod in sidebar_modules %}
+            <div class="lesson-section-title">{{ mod.title }}</div>
+            <ul class="lesson-list">
+                {% for les in mod.lessons %}
+                    <li class="lesson-item {% if les.id == lesson.id %}active{% endif %}">
+                        <a href="{{ url_for('course.lesson_view', lesson_id=les.id) }}">
+                            <span>{% if les.content_type == 'video' %}🎥{% elif les.content_type == 'pdf' %}📄{% else %}📝{% endif %}</span>
+                            <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 180px;">{{ les.title }}</span>
+                        </a>
+                    </li>
+                {% endfor %}
+                
+                {% if mod.quizzes %}
+                    {% for q in mod.quizzes %}
+                        <li style="list-style:none; padding: 0.25rem 0.5rem 0.5rem 0.5rem;">
+                            <a href="{{ url_for('student.take_quiz', quiz_id=q.id) }}" class="btn btn-outline" style="font-size:0.75rem; width:100%; display:block; text-align:center; padding: 0.25rem 0.5rem;">
+                                📝 Quiz: {{ q.title[:15] }}...
+                            </a>
+                        </li>
+                    {% endfor %}
+                {% endif %}
+            </ul>
+        {% endfor %}
+    </aside>
+
+    <!-- Main Lesson Reader -->
+    <article class="reader-content">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+            <div>
+                <h1 style="font-family: var(--font-heading); font-size: 2rem; line-height: 1.2;">{{ lesson.title }}</h1>
+                <span class="badge badge-beginner" style="margin-top: 0.5rem; text-transform: capitalize;">{{ lesson.content_type }} Lesson</span>
+            </div>
+            
+            {% if session.get('user_role') == 'student' %}
+                <div style="display: flex; gap: 0.75rem;">
+                    <!-- Bookmark Toggle -->
+                    <button class="btn btn-outline {% if is_bookmarked %}active{% endif %}" onclick="LMS.toggleBookmark('{{ lesson.id }}', this)">
+                        {% if is_bookmarked %}⭐️ Bookmarked{% else %}☆ Bookmark{% endif %}
+                    </button>
+                    
+                    <!-- Progress Complete Toggle -->
+                    {% if is_completed %}
+                        <button class="btn btn-secondary" disabled>✓ Completed</button>
+                    {% else %}
+                        <button class="btn btn-primary" onclick="LMS.completeLesson('{{ lesson.id }}', this)">Mark as Complete</button>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid var(--border-color); margin-bottom: 2rem;">
+
+        <!-- Dynamic Content Area -->
+        <div style="margin-bottom: 3rem;">
+            {% if lesson.content_type == 'video' %}
+                {% if lesson.video_url %}
+                    <div class="video-wrapper">
+                        <!-- If local uploaded mock video or Youtube / Vimeo -->
+                        {% if lesson.video_url.startswith('http') and ('youtube.com' in lesson.video_url or 'youtu.be' in lesson.video_url) %}
+                            <iframe src="{{ lesson.video_url.replace('watch?v=', 'embed/') }}" allowfullscreen></iframe>
+                        {% else %}
+                            <video src="{{ lesson.video_url }}" controls style="border-radius: var(--radius-lg);"></video>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <!-- Beautiful Mock Video Player if none is supplied -->
+                    <div class="video-wrapper" style="background: #111; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#fff; text-align:center; padding: 3rem;">
+                        <div style="position: absolute; top:50%; left:50%; transform:translate(-50%, -50%);">
+                            <span style="font-size: 3rem; display:block; margin-bottom:1rem;">🎬</span>
+                            <h3>codewithpaparao Video Stream (Mock Mode)</h3>
+                            <p style="color: #888; font-size: 0.875rem; margin-top: 0.5rem; max-width:300px; margin-left:auto; margin-right:auto;">
+                                The instructor has enabled premium lecture delivery. Start streaming by hitting play.
+                            </p>
+                            <button class="btn btn-primary" style="margin-top: 1.5rem;" onclick="alert('Mock video playback started. (Demonstration)')">▶ Watch Lecture</button>
+                        </div>
+                    </div>
+                {% endif %}
+            
+            {% elif lesson.content_type == 'pdf' %}
+                {% if lesson.pdf_url %}
+                    <iframe class="pdf-viewer" src="{{ lesson.pdf_url }}"></iframe>
+                {% else %}
+                    <!-- Beautiful Mock PDF Reader -->
+                    <div class="card" style="text-align: center; padding: 4rem 2rem; background: var(--bg-secondary); margin-bottom: 1.5rem;">
+                        <span style="font-size: 3rem; display:block; margin-bottom:1rem;">📄</span>
+                        <h3>Reading Assignment Notes</h3>
+                        <p style="color: var(--text-secondary); max-width: 400px; margin: 0.5rem auto 1.5rem auto;">
+                            A PDF note attachment was successfully linked. Download the document to review offline.
+                        </p>
+                        <a href="#" class="btn btn-primary" onclick="alert('Mock PDF file downloaded successfully (Demo).')">⬇ Download Lecture Notes</a>
+                    </div>
+                {% endif %}
+
+            {% else %}
+                <!-- Standard text notes -->
+                <div style="line-height: 1.7; color: var(--text-secondary); font-size: 1.05rem;">
+                    {{ lesson.text_content | safe }}
+                </div>
+            {% endif %}
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid var(--border-color); margin-bottom: 2rem;">
+
+        <!-- Lesson Navigation footer links -->
+        <nav style="display: flex; justify-content: space-between; align-items: center;">
+            {% if prev_lesson %}
+                <a href="{{ url_for('course.lesson_view', lesson_id=prev_lesson.id) }}" class="btn btn-outline">
+                    ← Previous Lesson: {{ prev_lesson.title[:20] }}...
+                </a>
+            {% else %}
+                <div></div>
+            {% endif %}
+
+            {% if next_lesson %}
+                <a href="{{ url_for('course.lesson_view', lesson_id=next_lesson.id) }}" class="btn btn-primary">
+                    Next Lesson: {{ next_lesson.title[:20] }}... →
+                </a>
+            {% elif quiz %}
+                <a href="{{ url_for('student.take_quiz', quiz_id=quiz.id) }}" class="btn btn-primary" style="background: var(--success-color);">
+                    Complete and Start Quiz 📝
+                </a>
+            {% else %}
+                <a href="{{ url_for('course.detail', course_id=course.id) }}" class="btn btn-primary">
+                    Syllabus Outline Completed 🎓
+                </a>
+            {% endif %}
+        </nav>
+    </article>
+</div>
+{% endblock %}

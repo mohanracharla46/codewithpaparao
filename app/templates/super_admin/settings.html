@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}System Settings{% endblock %}
+{% block header_title %}System Settings{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 0 auto;">
+    <div style="margin-bottom: 1.5rem;">
+        <a href="{{ url_for('dashboard.index') }}" style="font-size: 0.875rem;">← Back to Dashboard</a>
+    </div>
+
+    <h1>Site Configuration</h1>
+    <p style="color: var(--text-secondary); margin-bottom: 2rem;">Adjust platform parameters, support email mappings, and manage system backups.</p>
+
+    <!-- Settings Form -->
+    <div class="card" style="padding: 2rem; background: var(--bg-secondary); margin-bottom: 2rem;">
+        <h2>Global Settings</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.875rem;">Configure general details for this instance.</p>
+        
+        <form action="{{ url_for('super_admin.settings') }}" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            
+            <div class="form-group">
+                <label for="site_name" class="form-label">Platform Name</label>
+                <input type="text" id="site_name" name="site_name" class="form-control" value="{{ site_info.site_name }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="tagline" class="form-label">Site Tagline</label>
+                <input type="text" id="tagline" name="tagline" class="form-control" value="{{ site_info.tagline }}">
+            </div>
+
+            <div class="form-group">
+                <label for="contact_email" class="form-label">Administrative Contact Email</label>
+                <input type="email" id="contact_email" name="contact_email" class="form-control" value="{{ site_info.contact_email }}" required>
+            </div>
+
+            <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem; margin-bottom: 1.5rem;">
+                <input type="checkbox" id="registration_open" name="registration_open" {% if site_info.registration_open %}checked{% endif %} style="width: auto; accent-color: var(--accent-color);">
+                <label for="registration_open" class="form-label" style="margin-bottom: 0; cursor: pointer;">Enable open student registration signup</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width:100%; padding:0.625rem;">Save Configurations</button>
+        </form>
+    </div>
+
+    <!-- Data Management / Backup -->
+    <div class="card" style="padding: 2rem; background: var(--bg-secondary);">
+        <h2>Database & Backup Operations</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.875rem;">Export instance details, active users, and system actions in JSON format.</p>
+        
+        <div style="display: flex; gap: 1rem; align-items: center;">
+            <a href="{{ url_for('super_admin.database_backup') }}" class="btn btn-primary">💾 Generate JSON Backup</a>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">Contains snapshots of profiles, settings, and logs.</span>
+        </div>
+    </div>
+</div>
+{% endblock %}

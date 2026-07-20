@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Users{% endblock %}
+{% block header_title %}User Management{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 2rem;">
+    <h1>User Management</h1>
+    <p style="color: var(--text-secondary);">Promote users to admin roles, suspend/activate accounts, and verify email listings.</p>
+</div>
+
+<!-- Search & Filters -->
+<div class="card" style="padding: 1rem; margin-bottom: 2rem; background: var(--bg-secondary);">
+    <form action="{{ url_for('super_admin.list_users') }}" method="GET" style="display: grid; grid-template-columns: 1fr auto auto; gap: 1rem; align-items: end;">
+        <div class="form-group" style="margin-bottom: 0;">
+            <label for="search" class="form-label">Search Users</label>
+            <input type="text" id="search" name="search" class="form-control" placeholder="Search by name or email..." value="{{ search }}">
+        </div>
+        
+        <div class="form-group" style="margin-bottom: 0;">
+            <label for="role" class="form-label">Role Filter</label>
+            <select id="role" name="role" class="form-control" style="width: 160px; appearance: auto;">
+                <option value="">All Roles</option>
+                <option value="student" {% if role_filter == 'student' %}selected{% endif %}>Student</option>
+                <option value="admin" {% if role_filter == 'admin' %}selected{% endif %}>Admin</option>
+                <option value="super_admin" {% if role_filter == 'super_admin' %}selected{% endif %}>Super Admin</option>
+            </select>
+        </div>
+        
+        <div style="display: flex; gap: 0.5rem;">
+            <button type="submit" class="btn btn-primary">Apply Filters</button>
+            <a href="{{ url_for('super_admin.list_users') }}" class="btn btn-secondary">Clear</a>
+        </div>
+    </form>
+</div>
+
+<!-- Users Table -->
+<div class="card" style="padding: 1.5rem; background: var(--bg-secondary);">
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>User Details</th>
+                    <th>Email Address</th>
+                    <th>Role Group</th>
+                    <th>Status Badge</th>
+                    <th style="text-align: right;">Administrative Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>
+                            <strong>{{ user.full_name }}</strong>
+                            <div style="font-size: 0.75rem; color: var(--text-muted);">Joined: {{ user.created_at.strftime('%Y-%m-%d') }}</div>
+                        </td>
+                        <td>
+                            <code>{{ user.email }}</code>
+                        </td>
+                        <td>
+                            <form action="{{ url_for('super_admin.change_role', user_id=user.id) }}" method="POST" style="display: inline-flex; align-items: center; gap: 0.5rem;">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <select name="role" class="form-control" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; width: auto; appearance: auto;" onchange="this.form.submit()">
+                                    <option value="student" {% if user.role == 'student' %}selected{% endif %}>Student</option>
+                                    <option value="admin" {% if user.role == 'admin' %}selected{% endif %}>Admin</option>
+                                    <option value="super_admin" {% if user.role == 'super_admin' %}selected{% endif %}>Super Admin</option>
+                                </select>
+                            </form>
+                        </td>
+                        <td>
+                            {% if user.status == 'active' %}
+                                <span class="badge badge-beginner">Active</span>
+                            {% else %}
+                                <span class="badge badge-advanced">Suspended</span>
+                            {% endif %}
+                        </td>
+                        <td style="text-align: right;">
+                            <form action="{{ url_for('super_admin.toggle_status', user_id=user.id) }}" method="POST" style="display:inline;">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                {% if user.status == 'active' %}
+                                    <button type="submit" class="btn btn-danger" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">🚫 Suspend</button>
+                                {% else %}
+                                    <button type="submit" class="btn btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; background: var(--success-color); color: #fff;">✓ Activate</button>
+                                {% endif %}
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

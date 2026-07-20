@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}Super Admin Dashboard{% endblock %}
+{% block header_title %}Platform Administrator Console{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <div>
+        <h1>System Administration</h1>
+        <p style="color: var(--text-secondary);">Oversee users, system config, database settings, and audit trails.</p>
+    </div>
+    <div style="display: flex; gap: 1rem;">
+        <a href="{{ url_for('super_admin.list_users') }}" class="btn btn-outline">👥 Manage Users</a>
+        <a href="{{ url_for('super_admin.settings') }}" class="btn btn-outline">⚙️ Site Config</a>
+        <a href="{{ url_for('super_admin.database_backup') }}" class="btn btn-primary">💾 Database Backup</a>
+    </div>
+</div>
+
+<!-- Stats Bar -->
+<div class="stats-bar">
+    <div class="stat-card">
+        <span class="stat-lbl">Administrators</span>
+        <span class="stat-val">{{ stats.total_admins }}</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-lbl">Active Students</span>
+        <span class="stat-val">{{ stats.total_students }}</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-lbl">Active Courses</span>
+        <span class="stat-val">{{ stats.total_courses }}</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-lbl">Total Logs Count</span>
+        <span class="stat-val">{{ stats.total_logs }}</span>
+    </div>
+</div>
+
+<!-- Recent activity logs -->
+<div class="card" style="padding: 2rem; background-color: var(--bg-secondary); margin-bottom: 2rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <h2>Recent Audit History</h2>
+        <a href="{{ url_for('super_admin.list_logs') }}" class="btn btn-outline" style="font-size: 0.75rem;">View Full Log History</a>
+    </div>
+    
+    {% if stats.recent_logs %}
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Action Perform</th>
+                        <th>IP Address</th>
+                        <th>Timestamp</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log in stats.recent_logs %}
+                        <tr>
+                            <td>
+                                <strong>{{ log.user.email if log.user else 'System / Unknown' }}</strong>
+                                {% if log.user %}
+                                    <div style="font-size: 0.65rem; color: var(--text-muted);">Role: {{ log.user.role }}</div>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <code style="padding: 0.25rem 0.5rem; background: var(--bg-tertiary); border-radius: 4px; font-size: 0.85em;">{{ log.action }}</code>
+                            </td>
+                            <td>
+                                {{ log.ip_address or 'Local' }}
+                            </td>
+                            <td>
+                                {{ log.created_at.strftime('%Y-%m-%d %H:%M:%S') }}
+                            </td>
+                            <td>
+                                <small style="color: var(--text-secondary); max-width: 250px; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="{{ log.details | tojson }}">
+                                    {{ log.details | tojson }}
+                                </small>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p style="text-align: center; color: var(--text-muted); padding: 2rem 0;">No system logs recorded yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

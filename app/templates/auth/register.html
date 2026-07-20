@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Register{% endblock %}
+{% block header_title %}Create Account{% endblock %}
+
+{% block content %}
+<div style="display: flex; align-items: center; justify-content: center; min-height: calc(100vh - var(--header-height) - 100px); margin: 2rem 0;">
+    <div class="card" style="width: 100%; max-width: 480px; padding: 2rem;">
+        <h2 style="text-align: center; margin-bottom: 0.5rem; font-family: var(--font-heading);">Create an account</h2>
+        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.875rem;">
+            Join us and start learning today
+        </p>
+
+        <form action="{{ url_for('auth.register') }}" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                    <label for="first_name" class="form-label">First name</label>
+                    <input type="text" id="first_name" name="first_name" class="form-control" placeholder="John" required>
+                </div>
+                <div class="form-group">
+                    <label for="last_name" class="form-label">Last name</label>
+                    <input type="text" id="last_name" name="last_name" class="form-control" placeholder="Doe">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email" class="form-label">Email address</label>
+                <input type="email" id="email" name="email" class="form-control" placeholder="name@domain.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="role" class="form-label">Account Role</label>
+                <select id="role" name="role" class="form-control" style="appearance: auto;">
+                    <option value="student">Student</option>
+                    <option value="admin">Instructor / Admin</option>
+                    <option value="super_admin">Platform Super Admin</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="password" name="password" class="form-control" placeholder="••••••••" required>
+            </div>
+
+            <div class="form-group">
+                <label for="confirm_password" class="form-label">Confirm Password</label>
+                <input type="password" id="confirm_password" name="confirm_password" class="form-control" placeholder="••••••••" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem; padding: 0.75rem;">
+                Register
+            </button>
+        </form>
+
+        <div style="text-align: center; margin-top: 1.5rem; font-size: 0.875rem; color: var(--text-secondary);">
+            Already have an account? <a href="{{ url_for('auth.login') }}">Sign in instead</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

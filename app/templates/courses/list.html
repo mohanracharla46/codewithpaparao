@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Course Catalog{% endblock %}
+{% block header_title %}Browse Courses{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 2rem;">
+    <h1>Explore Courses</h1>
+    <p style="color: var(--text-secondary);">Find the perfect track to learn and advance your skills.</p>
+</div>
+
+<!-- Search & Filter Bar -->
+<div class="card" style="padding: 1rem; margin-bottom: 2rem;">
+    <form action="{{ url_for('course.list_courses') }}" method="GET" style="display: grid; grid-template-columns: 1fr auto auto; gap: 1rem; align-items: end;">
+        <div class="form-group" style="margin-bottom: 0;">
+            <label for="search" class="form-label">Search Courses</label>
+            <input type="text" id="search" name="search" class="form-control" placeholder="Search by course title or keyword..." value="{{ search }}">
+        </div>
+        
+        <div class="form-group" style="margin-bottom: 0;">
+            <label for="difficulty" class="form-label">Difficulty</label>
+            <select id="difficulty" name="difficulty" class="form-control" style="width: 160px; appearance: auto;">
+                <option value="">All Levels</option>
+                <option value="beginner" {% if difficulty == 'beginner' %}selected{% endif %}>Beginner</option>
+                <option value="intermediate" {% if difficulty == 'intermediate' %}selected{% endif %}>Intermediate</option>
+                <option value="advanced" {% if difficulty == 'advanced' %}selected{% endif %}>Advanced</option>
+            </select>
+        </div>
+        
+        <div style="display: flex; gap: 0.5rem;">
+            <button type="submit" class="btn btn-primary" style="padding: 0.625rem 1.25rem;">Apply Filters</button>
+            <a href="{{ url_for('course.list_courses') }}" class="btn btn-secondary" style="padding: 0.625rem 1.25rem;">Clear</a>
+        </div>
+    </form>
+</div>
+
+<!-- Courses Grid -->
+{% if courses %}
+    <div class="grid-cols-3">
+        {% for course in courses %}
+            <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                    <div style="height: 160px; background-color: var(--bg-tertiary); border-radius: var(--radius-md); overflow: hidden; margin-bottom: 1rem; border: 1px solid var(--border-color);">
+                        <img src="{{ course.thumbnail_url or 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&h=300' }}" alt="{{ course.title }}" style="width:100%; height:100%; object-fit:cover;">
+                    </div>
+                    <span class="badge badge-{{ course.difficulty }}" style="margin-bottom: 0.5rem;">{{ course.difficulty }}</span>
+                    <h3 style="margin-bottom: 0.5rem; line-height: 1.2;">{{ course.title }}</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1.5rem; line-height: 1.4;">
+                        {{ course.description[:120] }}{% if course.description|length > 120 %}...{% endif %}
+                    </p>
+                </div>
+                
+                <a href="{{ url_for('course.detail', course_id=course.id) }}" class="btn btn-primary" style="width: 100%;">
+                    View Course Syllabus
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="card" style="text-align: center; padding: 4rem 1.5rem;">
+        <p style="color: var(--text-secondary); margin-bottom: 0;">No courses found matching your criteria.</p>
+    </div>
+{% endif %}
+{% endblock %}

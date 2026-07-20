@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Quiz: {{ quiz.title }}{% endblock %}
+{% block header_title %}Module Assessment{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 1.5rem;">
+    <a href="{{ url_for('course.detail', course_id=course.id) }}" style="font-size: 0.875rem;">← Back to Syllabus</a>
+</div>
+
+<div style="max-width: 720px; margin: 0 auto;">
+    <div style="margin-bottom: 2rem;">
+        <span style="font-size: 0.875rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">
+            {{ course.title }}
+        </span>
+        <h1 style="font-size: 2rem; font-family: var(--font-heading); margin-top: 0.25rem;">
+            Assessment: {{ quiz.title }}
+        </h1>
+        <p style="color: var(--text-secondary); margin-top: 0.5rem;">
+            Answer the following questions carefully. You must score at least <strong>{{ quiz.passing_score }}%</strong> to pass this assessment and unlock the module certificate.
+        </p>
+    </div>
+
+    <!-- Quiz Submit Form -->
+    <form id="quiz-submit-form" data-quiz-id="{{ quiz.id }}" style="display: flex; flex-direction: column; gap: 1.5rem;">
+        {% if quiz.questions %}
+            {% for q in quiz.questions %}
+                <div class="card quiz-question-block" data-question-id="{{ q.id }}" style="padding: 1.5rem; background: var(--bg-secondary);">
+                    <h3 style="font-size: 1.125rem; margin-bottom: 1rem; line-height: 1.4;">
+                        Question {{ loop.index }}: {{ q.question_text }}
+                    </h3>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                        {% for option in q.options %}
+                            <label style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-primary); cursor: pointer; transition: all var(--transition-fast);">
+                                <input type="radio" name="question_{{ q.id }}" value="{{ loop.index0 }}" style="accent-color: var(--accent-color);">
+                                <span>{{ option }}</span>
+                            </label>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+            
+            <div style="margin-top: 1rem;">
+                <button type="button" id="quiz-submit-btn" class="btn btn-primary" style="width: 100%; padding: 0.75rem;">
+                    Submit Assessment
+                </button>
+            </div>
+        {% else %}
+            <div class="card" style="text-align: center; padding: 3rem;">
+                <p style="color: var(--text-muted); font-style: italic;">No questions have been added to this assessment yet. Please check back later.</p>
+            </div>
+        {% endif %}
+    </form>
+
+    <!-- Quiz Results Output (Hidden initially, shown via quiz.js) -->
+    <div id="quiz-results" style="display: none;"></div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/quiz.js') }}"></script>
+{% endblock %}

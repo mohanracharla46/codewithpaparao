@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>{% block title %}{% endblock %} | {{ site_name }}</title>
+    
+    <!-- Styling -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/variables.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layouts.css') }}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <div class="app-container">
+        {% if session.get('user_id') %}
+            <!-- Left Sidebar Navigation -->
+            <aside class="sidebar">
+                <div class="sidebar-brand">
+                    <span>{{ site_name }}</span>
+                </div>
+                <nav class="sidebar-menu">
+                    <li class="sidebar-item {% if request.blueprint == 'dashboard' %}active{% endif %}">
+                        <a href="{{ url_for('dashboard.index') }}">🏠 Dashboard</a>
+                    </li>
+                    
+                    {% if session.get('user_role') == 'student' %}
+                        <li class="sidebar-item {% if request.blueprint == 'course' and request.endpoint != 'course.list_courses' %}active{% endif %}">
+                            <a href="{{ url_for('dashboard.index') }}">📚 My Courses</a>
+                        </li>
+                        <li class="sidebar-item {% if request.endpoint == 'course.list_courses' %}active{% endif %}">
+                            <a href="{{ url_for('course.list_courses') }}">🔍 Explore Catalog</a>
+                        </li>
+                        <li class="sidebar-item {% if request.endpoint == 'student.bookmarks' %}active{% endif %}">
+                            <a href="{{ url_for('student.bookmarks') }}">⭐ Bookmarks</a>
+                        </li>
+                        <li class="sidebar-item {% if request.endpoint == 'student.notifications' %}active{% endif %}">
+                            <a href="{{ url_for('student.notifications') }}">🔔 Notifications</a>
+                        </li>
+                        <li class="sidebar-item {% if request.endpoint == 'student.profile' %}active{% endif %}">
+                            <a href="{{ url_for('student.profile') }}">👤 Profile</a>
+                        </li>
+                    {% endif %}
+                    
+                    {% if session.get('user_role') in ['admin', 'super_admin'] %}
+                        <li class="sidebar-item {% if request.endpoint == 'admin.courses' %}active{% endif %}">
+                            <a href="{{ url_for('admin.courses') }}">📚 Courses</a>
+                        </li>
+                        <li class="sidebar-item {% if request.endpoint == 'admin.students' %}active{% endif %}">
+                            <a href="{{ url_for('admin.students') }}">👥 Students</a>
+                        </li>
+                        <li class="sidebar-item {% if request.endpoint == 'admin.analytics' %}active{% endif %}">
+                            <a href="{{ url_for('admin.analytics') }}">📈 Analytics</a>
+                        </li>
+                        <li class="sidebar-item {% if request.endpoint == 'admin.quizzes' %}active{% endif %}">
+                            <a href="{{ url_for('admin.quizzes') }}">🧠 Quizzes</a>
+                        </li>
+                        <li class="sidebar-item {% if request.endpoint == 'admin.reports' %}active{% endif %}">
+                            <a href="{{ url_for('admin.reports') }}">📊 Reports</a>
+                        </li>
+                        <li class="sidebar-item {% if request.endpoint == 'admin.certificates' %}active{% endif %}">
+                            <a href="{{ url_for('admin.certificates') }}">🎓 Certificates</a>
+                        </li>
+                    {% endif %}
+                    
+                    {% if session.get('user_role') == 'super_admin' %}
+                        <li class="sidebar-item-header" style="padding: 0.75rem; font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); font-weight:600;">System Admin</li>
+                        <li class="sidebar-item {% if request.endpoint == 'super_admin.list_users' %}active{% endif %}">
+                            <a href="{{ url_for('super_admin.list_users') }}">👥 Manage Users</a>
+                        </li>
+                        <li class="sidebar-item {% if request.endpoint == 'super_admin.settings' %}active{% endif %}">
+                            <a href="{{ url_for('super_admin.settings') }}">⚙️ Settings</a>
+                        </li>
+                        <li class="sidebar-item {% if request.endpoint == 'super_admin.list_logs' %}active{% endif %}">
+                            <a href="{{ url_for('super_admin.list_logs') }}">📋 Audit Logs</a>
+                        </li>
+                    {% endif %}
+                </nav>
+                <div class="sidebar-footer">
+                    <a href="{{ url_for('auth.logout') }}" style="color: var(--danger-color); display: flex; align-items: center; gap: 0.5rem;">🚪 Logout</a>
+                </div>
+            </aside>
+        {% endif %}
+
+        <!-- Main Workspace -->
+        <div class="main-wrapper" style="{% if not session.get('user_id') %}margin-left: 0;{% endif %}">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-title">
+                    <h3>{% block header_title %}{{ site_name }}{% endblock %}</h3>
+                </div>
+                <div class="header-actions">
+                    <!-- Light/Dark toggle button -->
+                    <button id="theme-toggle" class="btn btn-outline" style="padding: 0.35rem 0.65rem; font-size: 1rem; border: none; background: transparent;"></button>
+                    
+                    {% if current_profile %}
+                        <div class="user-badge">
+                            <img src="{{ current_profile.avatar_url or 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=80&h=80' }}" class="user-avatar" alt="Avatar">
+                            <span>{{ current_profile.full_name }}</span>
+                            <span class="badge" style="font-size:0.65rem; background: var(--accent-light); color: var(--accent-color);">{{ current_profile.role }}</span>
+                        </div>
+                    {% endif %}
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <main class="main-content">
+                <!-- Flash messages -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        <div class="flashes">
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category if category != 'error' else 'danger' }}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+
+                {% block content %}{% endblock %}
+            </main>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
