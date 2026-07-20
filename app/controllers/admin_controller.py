@@ -166,6 +166,7 @@ def new_lesson(module_id):
         text_content = request.form.get('text_content', '').strip()
         
         video_file = request.files.get('video_file')
+        youtube_url = request.form.get('youtube_url', '').strip()
         pdf_file = request.files.get('pdf_file')
         
         if not title:
@@ -176,8 +177,17 @@ def new_lesson(module_id):
         pdf_url = None
         
         try:
-            if content_type == 'video' and video_file and video_file.filename != '':
-                video_url = SupabaseService.upload_file(video_file, 'lessons', folder_name='videos')
+            if content_type == 'video':
+                if video_file and video_file.filename != '':
+                    video_url = SupabaseService.upload_file(video_file, 'lessons', folder_name='videos')
+                elif youtube_url:
+                    import re
+                    pattern = r'(?:https?://)?(?:www\.)?(?:youtube\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})'
+                    match = re.search(pattern, youtube_url)
+                    if match:
+                        video_url = f"https://www.youtube.com/embed/{match.group(1)}"
+                    else:
+                        video_url = youtube_url
             elif content_type == 'pdf' and pdf_file and pdf_file.filename != '':
                 pdf_url = SupabaseService.upload_file(pdf_file, 'lessons', folder_name='pdfs')
         except Exception as e:
