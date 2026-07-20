@@ -86,10 +86,11 @@
                     {% if lesson.video_url.startswith('http') and ('youtube.com' in lesson.video_url or 'youtu.be' in lesson.video_url) %}
                         <div class="video-wrapper" style="overflow: hidden; position: relative;">
                             {% set clean_url = lesson.video_url.replace('watch?v=', 'embed/') %}
+                            {% set host_origin = request.host_url.rstrip('/') %}
                             {% if '?' in clean_url %}
-                                {% set embed_url = clean_url + '&enablejsapi=1&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3' %}
+                                {% set embed_url = clean_url + '&enablejsapi=1&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&origin=' + host_origin %}
                             {% else %}
-                                {% set embed_url = clean_url + '?enablejsapi=1&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3' %}
+                                {% set embed_url = clean_url + '?enablejsapi=1&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&origin=' + host_origin %}
                             {% endif %}
                             
                             <!-- The Youtube Iframe -->
@@ -205,13 +206,27 @@
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
     var player;
-    function onYouTubeIframeAPIReady() {
-        player = new YT.Player('yt-player', {
-            events: {
-                'onReady': onPlayerReady,
-                'onStateChange': onPlayerStateChange
-            }
-        });
+    
+    // Fallback: If YouTube API is already loaded, init player immediately
+    function initPlayer() {
+        if (window.YT && window.YT.Player && document.getElementById('yt-player')) {
+            player = new YT.Player('yt-player', {
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+    }
+
+    // This function will be called by YouTube API when loaded
+    window.onYouTubeIframeAPIReady = function() {
+        initPlayer();
+    };
+
+    // Race-condition fallback check
+    if (window.YT && window.YT.Player) {
+        initPlayer();
     }
 
     function onPlayerReady(event) {
@@ -290,7 +305,7 @@
         const playBtn = document.getElementById('custom-play-btn');
         const centerIcon = document.getElementById('center-play-icon');
         
-        if (event.data === YT.PlayerState.PLAYING) {
+        if (event.data === 1) { // playing
             if (playBtn) playBtn.innerText = '⏸️';
             if (centerIcon) centerIcon.style.display = 'none';
         } else {
@@ -305,11 +320,14 @@
     function togglePlay() {
         if (player && player.getPlayerState) {
             const state = player.getPlayerState();
-            if (state === YT.PlayerState.PLAYING) {
+            if (state === 1) { // playing
                 player.pauseVideo();
             } else {
                 player.playVideo();
             }
+        } else {
+            // If player is not initialized yet but global script loaded, try loading it
+            initPlayer();
         }
     }
 
