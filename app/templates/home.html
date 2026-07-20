@@ -400,30 +400,131 @@
         /* Premium Course Cards */
         .course-card-premium {
             background: var(--bg-primary);
-            border-radius: var(--radius-lg);
+            border-radius: 20px;
             border: 1px solid var(--border-color);
+            position: relative;
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.02);
         }
+        
+        [data-theme="dark"] .course-card-premium {
+            background: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
         .course-card-premium:hover {
-            transform: translateY(-6px);
-            box-shadow: var(--shadow-lg);
-            border-color: var(--accent-color);
+            transform: translateY(-8px);
+            border-color: var(--card-theme);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05), 0 0 25px var(--card-theme-bg);
         }
-        .course-card-header {
-            height: 150px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
+
+        .course-card-top-accent {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--card-theme);
+            opacity: 0.8;
+            transition: height 0.3s ease;
         }
-        .course-card-body {
-            padding: 1.75rem;
+        
+        .course-card-premium:hover .course-card-top-accent {
+            height: 8px;
+        }
+
+        .course-card-inner {
+            padding: 2.25rem;
             display: flex;
             flex-direction: column;
             flex-grow: 1;
+            z-index: 2;
+        }
+
+        .course-logo-wrapper {
+            width: 65px;
+            height: 65px;
+            border-radius: 16px;
+            background: var(--card-theme-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .course-card-premium:hover .course-logo-wrapper {
+            transform: scale(1.1) rotate(5deg);
+            background: var(--card-theme);
+        }
+        
+        .course-logo-wrapper i {
+            font-size: 2.25rem;
+            transition: color 0.3s ease;
+        }
+        
+        .course-card-premium:hover .course-logo-wrapper i {
+            color: #fff !important;
+        }
+
+        .course-card-title {
+            font-size: 1.35rem;
+            font-family: var(--font-heading);
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            transition: color 0.3s ease;
+            margin-top: 0;
+        }
+        
+        .course-card-premium:hover .course-card-title {
+            color: var(--card-theme);
+        }
+
+        .course-card-text {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Premium Button */
+        .course-btn-premium {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            width: 100%;
+            padding: 0.85rem 1.5rem;
+            background: var(--card-theme-bg);
+            color: var(--card-theme);
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border: 1px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .course-card-premium:hover .course-btn-premium {
+            background: var(--card-theme);
+            color: #fff;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .course-btn-premium i {
+            transition: transform 0.3s ease;
+        }
+        
+        .course-btn-premium:hover i,
+        .course-card-premium:hover .course-btn-premium i {
+            transform: translateX(4px);
         }
     </style>
 </head>
@@ -517,97 +618,142 @@
         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto;">
             
             <!-- C Course -->
-            <div class="card course-card-premium">
-                <div class="course-card-header" style="background: linear-gradient(135deg, #0284c7, #0369a1);">
-                    <i class="devicon-c-plain" style="font-size: 4rem; color: #fff;"></i>
-                </div>
-                <div class="course-card-body">
-                    <span class="badge" style="background-color: #e0f2fe; color: #0369a1; font-weight: 600; margin-bottom: 0.75rem; align-self: flex-start;">Beginner</span>
-                    <h3 style="font-size: 1.25rem; font-family: var(--font-heading); font-weight: 700; margin-bottom: 0.75rem;">C Programming Language</h3>
-                    <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.5rem;">
+            <div class="card course-card-premium" style="--card-theme: #0284c7; --card-theme-bg: rgba(2, 132, 199, 0.08); --card-theme-light: #e0f2fe;">
+                <div class="course-card-top-accent"></div>
+                <div class="course-card-inner">
+                    <div class="course-logo-wrapper">
+                        <i class="devicon-c-plain colored"></i>
+                    </div>
+                    <span class="badge" style="background-color: var(--card-theme-light); color: var(--card-theme); font-weight: 700; margin-bottom: 1rem; align-self: flex-start; letter-spacing: 0.05em; font-size: 0.7rem; text-transform: uppercase;">Beginner</span>
+                    <h3 class="course-card-title">C Programming</h3>
+                    <p class="course-card-text">
                         Learn memory management, pointers, file handling, and structured coding patterns from the roots up.
                     </p>
-                    {% if session.get('user_id') %}
-                        <a href="{{ url_for('dashboard.index') }}" class="btn btn-primary" style="width: 100%; text-align: center; justify-content: center; font-weight: 600; margin-top: auto;">Start Learning</a>
-                    {% else %}
-                        <a href="{{ url_for('auth.login') }}" class="btn btn-primary" style="width: 100%; text-align: center; justify-content: center; font-weight: 600; margin-top: auto;">Start Learning</a>
-                    {% endif %}
+                    <div style="margin-top: auto; padding-top: 1.5rem;">
+                        {% if session.get('user_id') %}
+                            <a href="{{ url_for('dashboard.index') }}" class="course-btn-premium">
+                                <span>Start Learning</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        {% else %}
+                            <a href="{{ url_for('auth.login') }}" class="course-btn-premium">
+                                <span>Start Learning</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
 
             <!-- C++ Course -->
-            <div class="card course-card-premium">
-                <div class="course-card-header" style="background: linear-gradient(135deg, #6366f1, #4f46e5);">
-                    <i class="devicon-cplusplus-plain" style="font-size: 4rem; color: #fff;"></i>
-                </div>
-                <div class="course-card-body">
-                    <span class="badge" style="background-color: #e0e7ff; color: #4f46e5; font-weight: 600; margin-bottom: 0.75rem; align-self: flex-start;">Intermediate</span>
-                    <h3 style="font-size: 1.25rem; font-family: var(--font-heading); font-weight: 700; margin-bottom: 0.75rem;">C++ Development</h3>
-                    <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.5rem;">
+            <div class="card course-card-premium" style="--card-theme: #6366f1; --card-theme-bg: rgba(99, 102, 241, 0.08); --card-theme-light: #e0e7ff;">
+                <div class="course-card-top-accent"></div>
+                <div class="course-card-inner">
+                    <div class="course-logo-wrapper">
+                        <i class="devicon-cplusplus-plain colored"></i>
+                    </div>
+                    <span class="badge" style="background-color: var(--card-theme-light); color: var(--card-theme); font-weight: 700; margin-bottom: 1rem; align-self: flex-start; letter-spacing: 0.05em; font-size: 0.7rem; text-transform: uppercase;">Intermediate</span>
+                    <h3 class="course-card-title">C++ Development</h3>
+                    <p class="course-card-text">
                         Master Object-Oriented programming, templates, STL containers, and high-performance system logic.
                     </p>
-                    {% if session.get('user_id') %}
-                        <a href="{{ url_for('dashboard.index') }}" class="btn btn-primary" style="width: 100%; text-align: center; justify-content: center; font-weight: 600; margin-top: auto;">Start Learning</a>
-                    {% else %}
-                        <a href="{{ url_for('auth.login') }}" class="btn btn-primary" style="width: 100%; text-align: center; justify-content: center; font-weight: 600; margin-top: auto;">Start Learning</a>
-                    {% endif %}
+                    <div style="margin-top: auto; padding-top: 1.5rem;">
+                        {% if session.get('user_id') %}
+                            <a href="{{ url_for('dashboard.index') }}" class="course-btn-premium">
+                                <span>Start Learning</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        {% else %}
+                            <a href="{{ url_for('auth.login') }}" class="course-btn-premium">
+                                <span>Start Learning</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
 
             <!-- Java Course -->
-            <div class="card course-card-premium">
-                <div class="course-card-header" style="background: linear-gradient(135deg, #ea580c, #c2410c);">
-                    <i class="devicon-java-plain" style="font-size: 4rem; color: #fff;"></i>
-                </div>
-                <div class="course-card-body">
-                    <span class="badge" style="background-color: #ffedd5; color: #c2410c; font-weight: 600; margin-bottom: 0.75rem; align-self: flex-start;">Intermediate</span>
-                    <h3 style="font-size: 1.25rem; font-family: var(--font-heading); font-weight: 700; margin-bottom: 0.75rem;">Java Core Programming</h3>
-                    <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.5rem;">
+            <div class="card course-card-premium" style="--card-theme: #ea580c; --card-theme-bg: rgba(234, 88, 12, 0.08); --card-theme-light: #ffedd5;">
+                <div class="course-card-top-accent"></div>
+                <div class="course-card-inner">
+                    <div class="course-logo-wrapper">
+                        <i class="devicon-java-plain colored"></i>
+                    </div>
+                    <span class="badge" style="background-color: var(--card-theme-light); color: var(--card-theme); font-weight: 700; margin-bottom: 1rem; align-self: flex-start; letter-spacing: 0.05em; font-size: 0.7rem; text-transform: uppercase;">Intermediate</span>
+                    <h3 class="course-card-title">Java Core</h3>
+                    <p class="course-card-text">
                         Build multi-threaded backend applications, interfaces, exception frameworks, and Java Virtual Machine concepts.
                     </p>
-                    {% if session.get('user_id') %}
-                        <a href="{{ url_for('dashboard.index') }}" class="btn btn-primary" style="width: 100%; text-align: center; justify-content: center; font-weight: 600; margin-top: auto;">Start Learning</a>
-                    {% else %}
-                        <a href="{{ url_for('auth.login') }}" class="btn btn-primary" style="width: 100%; text-align: center; justify-content: center; font-weight: 600; margin-top: auto;">Start Learning</a>
-                    {% endif %}
+                    <div style="margin-top: auto; padding-top: 1.5rem;">
+                        {% if session.get('user_id') %}
+                            <a href="{{ url_for('dashboard.index') }}" class="course-btn-premium">
+                                <span>Start Learning</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        {% else %}
+                            <a href="{{ url_for('auth.login') }}" class="course-btn-premium">
+                                <span>Start Learning</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
 
             <!-- Python Course -->
-            <div class="card course-card-premium">
-                <div class="course-card-header" style="background: linear-gradient(135deg, #eab308, #ca8a04);">
-                    <i class="devicon-python-plain" style="font-size: 4rem; color: #fff;"></i>
-                </div>
-                <div class="course-card-body">
-                    <span class="badge" style="background-color: #fef9c3; color: #854d0e; font-weight: 600; margin-bottom: 0.75rem; align-self: flex-start;">Beginner</span>
-                    <h3 style="font-size: 1.25rem; font-family: var(--font-heading); font-weight: 700; margin-bottom: 0.75rem;">Python Programming</h3>
-                    <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.5rem;">
+            <div class="card course-card-premium" style="--card-theme: #ca8a04; --card-theme-bg: rgba(202, 138, 4, 0.08); --card-theme-light: #fef9c3;">
+                <div class="course-card-top-accent"></div>
+                <div class="course-card-inner">
+                    <div class="course-logo-wrapper">
+                        <i class="devicon-python-plain colored"></i>
+                    </div>
+                    <span class="badge" style="background-color: var(--card-theme-light); color: var(--card-theme); font-weight: 700; margin-bottom: 1rem; align-self: flex-start; letter-spacing: 0.05em; font-size: 0.7rem; text-transform: uppercase;">Beginner</span>
+                    <h3 class="course-card-title">Python Core</h3>
+                    <p class="course-card-text">
                         Learn scripting, control flows, data manipulation libraries, and Django/Flask full stack integration.
                     </p>
-                    {% if session.get('user_id') %}
-                        <a href="{{ url_for('dashboard.index') }}" class="btn btn-primary" style="width: 100%; text-align: center; justify-content: center; font-weight: 600; margin-top: auto;">Start Learning</a>
-                    {% else %}
-                        <a href="{{ url_for('auth.login') }}" class="btn btn-primary" style="width: 100%; text-align: center; justify-content: center; font-weight: 600; margin-top: auto;">Start Learning</a>
-                    {% endif %}
+                    <div style="margin-top: auto; padding-top: 1.5rem;">
+                        {% if session.get('user_id') %}
+                            <a href="{{ url_for('dashboard.index') }}" class="course-btn-premium">
+                                <span>Start Learning</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        {% else %}
+                            <a href="{{ url_for('auth.login') }}" class="course-btn-premium">
+                                <span>Start Learning</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
 
             <!-- DSA Course -->
-            <div class="card course-card-premium">
-                <div class="course-card-header" style="background: linear-gradient(135deg, #10b981, #047857);">
-                    <i class="fas fa-project-diagram" style="font-size: 4rem; color: #fff;"></i>
-                </div>
-                <div class="course-card-body">
-                    <span class="badge" style="background-color: #d1fae5; color: #047857; font-weight: 600; margin-bottom: 0.75rem; align-self: flex-start;">Advanced</span>
-                    <h3 style="font-size: 1.25rem; font-family: var(--font-heading); font-weight: 700; margin-bottom: 0.75rem;">Data Structures & Algorithms</h3>
-                    <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.5rem;">
+            <div class="card course-card-premium" style="--card-theme: #10b981; --card-theme-bg: rgba(16, 185, 129, 0.08); --card-theme-light: #d1fae5;">
+                <div class="course-card-top-accent"></div>
+                <div class="course-card-inner">
+                    <div class="course-logo-wrapper">
+                        <i class="fas fa-project-diagram" style="color: var(--card-theme);"></i>
+                    </div>
+                    <span class="badge" style="background-color: var(--card-theme-light); color: var(--card-theme); font-weight: 700; margin-bottom: 1rem; align-self: flex-start; letter-spacing: 0.05em; font-size: 0.7rem; text-transform: uppercase;">Advanced</span>
+                    <h3 class="course-card-title">DSA Masterclass</h3>
+                    <p class="course-card-text">
                         Optimize runtime complexity with trees, graphs, sorting algorithms, dynamic programming, and logic.
                     </p>
-                    {% if session.get('user_id') %}
-                        <a href="{{ url_for('dashboard.index') }}" class="btn btn-primary" style="width: 100%; text-align: center; justify-content: center; font-weight: 600; margin-top: auto;">Start Learning</a>
-                    {% else %}
-                        <a href="{{ url_for('auth.login') }}" class="btn btn-primary" style="width: 100%; text-align: center; justify-content: center; font-weight: 600; margin-top: auto;">Start Learning</a>
-                    {% endif %}
+                    <div style="margin-top: auto; padding-top: 1.5rem;">
+                        {% if session.get('user_id') %}
+                            <a href="{{ url_for('dashboard.index') }}" class="course-btn-premium">
+                                <span>Start Learning</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        {% else %}
+                            <a href="{{ url_for('auth.login') }}" class="course-btn-premium">
+                                <span>Start Learning</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
 
