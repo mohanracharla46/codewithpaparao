@@ -10,6 +10,12 @@
         max-width: 100% !important;
         padding: 0 !important;
     }
+    .video-wrapper:hover .custom-player-controls {
+        opacity: 1 !important;
+    }
+    .video-wrapper:hover #center-play-icon {
+        background: rgba(0,0,0,0.85) !important;
+    }
 </style>
 {% endblock %}
 
@@ -78,14 +84,45 @@
             {% if lesson.content_type == 'video' %}
                 {% if lesson.video_url %}
                     {% if lesson.video_url.startswith('http') and ('youtube.com' in lesson.video_url or 'youtu.be' in lesson.video_url) %}
-                        <div class="video-wrapper" style="overflow: hidden;">
+                        <div class="video-wrapper" style="overflow: hidden; position: relative;">
                             {% set clean_url = lesson.video_url.replace('watch?v=', 'embed/') %}
                             {% if '?' in clean_url %}
-                                {% set embed_url = clean_url + '&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&controls=1' %}
+                                {% set embed_url = clean_url + '&enablejsapi=1&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3' %}
                             {% else %}
-                                {% set embed_url = clean_url + '?modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&controls=1' %}
+                                {% set embed_url = clean_url + '?enablejsapi=1&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3' %}
                             {% endif %}
-                            <iframe class="youtube-cropped-iframe" src="{{ embed_url }}" allowfullscreen></iframe>
+                            
+                            <!-- The Youtube Iframe -->
+                            <iframe id="yt-player" class="youtube-cropped-iframe" src="{{ embed_url }}" allowfullscreen></iframe>
+                            
+                            <!-- Transparent Click-Intercepting Overlay -->
+                            <div id="player-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; cursor: pointer; display: flex; flex-direction: column; justify-content: flex-end;">
+                                
+                                <!-- Center Play Trigger (shows briefly or on hover/pause) -->
+                                <div id="center-play-icon" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.7); width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.75rem; transition: all 0.3s; opacity: 0.9; pointer-events: none;">
+                                    ▶
+                                </div>
+                                
+                                <!-- Custom Control Bar -->
+                                <div class="custom-player-controls" style="background: linear-gradient(transparent, rgba(0,0,0,0.85)); padding: 1.5rem 1rem 0.75rem 1rem; display: flex; align-items: center; gap: 1rem; z-index: 12; width: 100%; pointer-events: auto; opacity: 0; transition: opacity 0.3s;">
+                                    <button id="custom-play-btn" style="background: none; border: none; color: #fff; font-size: 1.25rem; cursor: pointer; padding: 0;">▶</button>
+                                    
+                                    <span id="custom-time-current" style="color: #fff; font-size: 0.8rem; font-weight: 500;">0:00</span>
+                                    
+                                    <!-- Custom Scrub / Progress Bar -->
+                                    <div id="custom-progress-container" style="flex-grow: 1; height: 6px; background: rgba(255,255,255,0.25); border-radius: 3px; position: relative; cursor: pointer;">
+                                        <div id="custom-progress" style="width: 0%; height: 100%; background: var(--accent-color); border-radius: 3px;"></div>
+                                    </div>
+                                    
+                                    <span id="custom-time-duration" style="color: #fff; font-size: 0.8rem; font-weight: 500;">0:00</span>
+                                    
+                                    <!-- Volume Mute -->
+                                    <button id="custom-mute-btn" style="background: none; border: none; color: #fff; font-size: 1.1rem; cursor: pointer; padding: 0;">🔊</button>
+                                    
+                                    <!-- Fullscreen -->
+                                    <button id="custom-fullscreen-btn" style="background: none; border: none; color: #fff; font-size: 1.1rem; cursor: pointer; padding: 0;">⛶</button>
+                                </div>
+                            </div>
                         </div>
                     {% else %}
                         <div class="video-wrapper">
@@ -157,4 +194,147 @@
         </nav>
     </article>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Load YouTube API asynchronously
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    var player;
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('yt-player', {
+            events: {
+                'onReady': onPlayerReady,
+                'onStateChange': onPlayerStateChange
+            }
+        });
+    }
+
+    function onPlayerReady(event) {
+        updateProgressBar();
+        setInterval(updateProgressBar, 500);
+        
+        // Wire up custom controls
+        const overlay = document.getElementById('player-overlay');
+        const playBtn = document.getElementById('custom-play-btn');
+        const muteBtn = document.getElementById('custom-mute-btn');
+        const progressContainer = document.getElementById('custom-progress-container');
+        const fullscreenBtn = document.getElementById('custom-fullscreen-btn');
+        const centerIcon = document.getElementById('center-play-icon');
+
+        if (overlay) {
+            overlay.addEventListener('click', function(e) {
+                if (e.target.id === 'player-overlay' || e.target.id === 'center-play-icon') {
+                    togglePlay();
+                }
+            });
+        }
+
+        if (playBtn) {
+            playBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                togglePlay();
+            });
+        }
+
+        if (muteBtn) {
+            muteBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (player) {
+                    if (player.isMuted()) {
+                        player.unMute();
+                        muteBtn.innerText = '🔊';
+                    } else {
+                        player.mute();
+                        muteBtn.innerText = '🔇';
+                    }
+                }
+            });
+        }
+
+        if (progressContainer) {
+            progressContainer.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (player && player.getDuration) {
+                    const rect = progressContainer.getBoundingClientRect();
+                    const clickX = e.clientX - rect.left;
+                    const width = rect.width;
+                    const pct = clickX / width;
+                    const seekTime = pct * player.getDuration();
+                    player.seekTo(seekTime, true);
+                    updateProgressBar();
+                }
+            });
+        }
+
+        if (fullscreenBtn) {
+            fullscreenBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const container = fullscreenBtn.closest('.video-wrapper');
+                if (!document.fullscreenElement) {
+                    container.requestFullscreen().catch(err => {
+                        console.error(err);
+                    });
+                } else {
+                    document.exitFullscreen();
+                }
+            });
+        }
+    }
+
+    function onPlayerStateChange(event) {
+        const playBtn = document.getElementById('custom-play-btn');
+        const centerIcon = document.getElementById('center-play-icon');
+        
+        if (event.data === YT.PlayerState.PLAYING) {
+            if (playBtn) playBtn.innerText = '⏸️';
+            if (centerIcon) centerIcon.style.display = 'none';
+        } else {
+            if (playBtn) playBtn.innerText = '▶';
+            if (centerIcon) {
+                centerIcon.innerText = '▶';
+                centerIcon.style.display = 'flex';
+            }
+        }
+    }
+
+    function togglePlay() {
+        if (player && player.getPlayerState) {
+            const state = player.getPlayerState();
+            if (state === YT.PlayerState.PLAYING) {
+                player.pauseVideo();
+            } else {
+                player.playVideo();
+            }
+        }
+    }
+
+    function updateProgressBar() {
+        if (player && player.getCurrentTime && player.getDuration) {
+            const currentTime = player.getCurrentTime();
+            const duration = player.getDuration();
+            if (duration > 0) {
+                const pct = (currentTime / duration) * 100;
+                const prog = document.getElementById('custom-progress');
+                if (prog) prog.style.width = pct + '%';
+                
+                const curTimeSpan = document.getElementById('custom-time-current');
+                const durTimeSpan = document.getElementById('custom-time-duration');
+                if (curTimeSpan) curTimeSpan.innerText = formatTime(currentTime);
+                if (durTimeSpan) durTimeSpan.innerText = formatTime(duration);
+            }
+        }
+    }
+
+    // Helper formatting helper
+    function formatTime(seconds) {
+        const m = Math.floor(seconds / 60);
+        const s = Math.floor(seconds % 60);
+        return m + ':' + (s < 10 ? '0' : '') + s;
+    }
+</script>
 {% endblock %}
