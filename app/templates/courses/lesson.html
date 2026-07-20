@@ -77,14 +77,21 @@
         <div style="margin-bottom: 3rem;">
             {% if lesson.content_type == 'video' %}
                 {% if lesson.video_url %}
-                    <div class="video-wrapper">
-                        <!-- If local uploaded mock video or Youtube / Vimeo -->
-                        {% if lesson.video_url.startswith('http') and ('youtube.com' in lesson.video_url or 'youtu.be' in lesson.video_url) %}
-                            <iframe src="{{ lesson.video_url.replace('watch?v=', 'embed/') }}" allowfullscreen></iframe>
-                        {% else %}
+                    {% if lesson.video_url.startswith('http') and ('youtube.com' in lesson.video_url or 'youtu.be' in lesson.video_url) %}
+                        <div class="video-wrapper" style="overflow: hidden;">
+                            {% set clean_url = lesson.video_url.replace('watch?v=', 'embed/') %}
+                            {% if '?' in clean_url %}
+                                {% set embed_url = clean_url + '&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&controls=1' %}
+                            {% else %}
+                                {% set embed_url = clean_url + '?modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&controls=1' %}
+                            {% endif %}
+                            <iframe class="youtube-cropped-iframe" src="{{ embed_url }}" allowfullscreen></iframe>
+                        </div>
+                    {% else %}
+                        <div class="video-wrapper">
                             <video src="{{ lesson.video_url }}" controls style="border-radius: var(--radius-lg);"></video>
-                        {% endif %}
-                    </div>
+                        </div>
+                    {% endif %}
                 {% else %}
                     <!-- Beautiful Mock Video Player if none is supplied -->
                     <div class="video-wrapper" style="background: #111; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#fff; text-align:center; padding: 3rem;">

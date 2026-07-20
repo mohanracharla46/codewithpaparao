@@ -255,6 +255,16 @@
     border: 0;
 }
 
+.youtube-cropped-iframe {
+    position: absolute;
+    top: -12%;
+    left: -2%;
+    width: 104%;
+    height: 124%;
+    border: 0;
+    pointer-events: auto;
+}
+
 .pdf-viewer {
     width: 100%;
     height: 600px;
