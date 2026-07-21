@@ -1,3 +1,4 @@
+{% set hide_sidebar = True %}
 {% extends "base.html" %}
 
 {% block title %}{{ lesson.title }} - {{ course.title }}{% endblock %}
@@ -16,42 +17,55 @@
     .video-wrapper:hover #center-play-icon {
         background: rgba(0,0,0,0.85) !important;
     }
+    
+    .course-reader {
+        display: grid;
+        grid-template-columns: 1fr 350px;
+        height: calc(100vh - var(--header-height));
+        overflow: hidden;
+    }
+    .reader-content {
+        overflow-y: auto;
+        padding: 2rem 2.5rem;
+    }
+    .reader-sidebar {
+        background-color: var(--bg-secondary);
+        border-left: 1px solid var(--border-color);
+        border-right: none;
+        overflow-y: auto;
+        padding: 1.5rem 1.25rem;
+    }
+    .playlist-sidebar-item:hover {
+        background-color: var(--bg-tertiary) !important;
+    }
+    .playlist-sidebar-item:hover .playlist-sidebar-title {
+        color: var(--accent-color) !important;
+    }
+    .active-lesson {
+        background-color: var(--accent-light) !important;
+        border-left: 3px solid var(--accent-color) !important;
+    }
+    .active-lesson .playlist-sidebar-title {
+        color: var(--accent-color) !important;
+    }
+    
+    @media (max-width: 992px) {
+        .course-reader {
+            grid-template-columns: 1fr !important;
+            height: auto !important;
+            overflow: visible !important;
+        }
+        .reader-sidebar {
+            border-left: 0 !important;
+            border-top: 1px solid var(--border-color) !important;
+            max-height: none !important;
+        }
+    }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="course-reader">
-    <!-- Syllabus Sidebar -->
-    <aside class="reader-sidebar">
-        <div style="margin-bottom: 1.5rem; padding: 0 0.5rem;">
-            <a href="{{ url_for('course.detail', course_id=course.id) }}" style="font-size: 0.875rem;">← Back to Syllabus</a>
-        </div>
-        
-        {% for mod in sidebar_modules %}
-            <div class="lesson-section-title">{{ mod.title }}</div>
-            <ul class="lesson-list">
-                {% for les in mod.lessons %}
-                    <li class="lesson-item {% if les.id == lesson.id %}active{% endif %}">
-                        <a href="{{ url_for('course.lesson_view', lesson_id=les.id) }}">
-                            <span>{% if les.content_type == 'video' %}🎥{% elif les.content_type == 'pdf' %}📄{% else %}📝{% endif %}</span>
-                            <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 180px;">{{ les.title }}</span>
-                        </a>
-                    </li>
-                {% endfor %}
-                
-                {% if mod.quizzes %}
-                    {% for q in mod.quizzes %}
-                        <li style="list-style:none; padding: 0.25rem 0.5rem 0.5rem 0.5rem;">
-                            <a href="{{ url_for('student.take_quiz', quiz_id=q.id) }}" class="btn btn-outline" style="font-size:0.75rem; width:100%; display:block; text-align:center; padding: 0.25rem 0.5rem;">
-                                📝 Quiz: {{ q.title[:15] }}...
-                            </a>
-                        </li>
-                    {% endfor %}
-                {% endif %}
-            </ul>
-        {% endfor %}
-    </aside>
-
     <!-- Main Lesson Reader -->
     <article class="reader-content">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
@@ -64,12 +78,12 @@
                 <div style="display: flex; gap: 0.75rem;">
                     <!-- Bookmark Toggle -->
                     <button class="btn btn-outline {% if is_bookmarked %}active{% endif %}" onclick="LMS.toggleBookmark('{{ lesson.id }}', this)">
-                        {% if is_bookmarked %}⭐️ Bookmarked{% else %}☆ Bookmark{% endif %}
+                        {% if is_bookmarked %}<i class="fa-solid fa-star" style="color: var(--warning-color);"></i> Bookmarked{% else %}<i class="fa-regular fa-star"></i> Bookmark{% endif %}
                     </button>
                     
                     <!-- Progress Complete Toggle -->
                     {% if is_completed %}
-                        <button class="btn btn-secondary" disabled>✓ Completed</button>
+                        <button class="btn btn-secondary" disabled><i class="fa-solid fa-circle-check" style="color: var(--success-color);"></i> Completed</button>
                     {% else %}
                         <button class="btn btn-primary" onclick="LMS.completeLesson('{{ lesson.id }}', this)">Mark as Complete</button>
                     {% endif %}
@@ -138,16 +152,32 @@
             
             {% elif lesson.content_type == 'pdf' %}
                 {% if lesson.pdf_url %}
-                    <iframe class="pdf-viewer" src="{{ lesson.pdf_url }}"></iframe>
+                    <!-- Secure PDF Canvas Container -->
+                    <div id="secure-pdf-container" style="position: relative; width: 100%; height: 600px; overflow-y: auto; background: #333; border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.5rem 1rem; box-shadow: var(--shadow-sm); user-select: none; -webkit-user-select: none; transition: filter var(--transition-normal);" oncontextmenu="return false;">
+                        
+                        <!-- Watermark Overlay to prevent screenshots/photos -->
+                        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 10; overflow: hidden; opacity: 0.05;">
+                            <div style="position: absolute; top: 20%; left: 10%; transform: rotate(-30deg); font-size: 2rem; font-weight: 800; color: #fff; white-space: nowrap;">SECURE PDF READER - {{ session.get('user_name', 'Student') }}</div>
+                            <div style="position: absolute; top: 50%; left: 30%; transform: rotate(-30deg); font-size: 2rem; font-weight: 800; color: #fff; white-space: nowrap;">SECURE PDF READER - {{ session.get('user_name', 'Student') }}</div>
+                            <div style="position: absolute; top: 80%; left: 20%; transform: rotate(-30deg); font-size: 2rem; font-weight: 800; color: #fff; white-space: nowrap;">SECURE PDF READER - {{ session.get('user_name', 'Student') }}</div>
+                        </div>
+
+                        <!-- PDF Page canvases will be appended here -->
+                        <div id="pdf-canvas-wrapper" style="display: flex; flex-direction: column; gap: 1.5rem; align-items: center;"></div>
+                        
+                        <!-- Loading Indicator -->
+                        <div id="pdf-loading" style="color: #fff; text-align: center; padding: 2rem; font-weight: 600;">
+                            <i class="fa-solid fa-spinner fa-spin" style="margin-right: 0.5rem;"></i> Loading secure PDF viewer...
+                        </div>
+                    </div>
                 {% else %}
                     <!-- Beautiful Mock PDF Reader -->
                     <div class="card" style="text-align: center; padding: 4rem 2rem; background: var(--bg-secondary); margin-bottom: 1.5rem;">
                         <span style="font-size: 3rem; display:block; margin-bottom:1rem;">📄</span>
                         <h3>Reading Assignment Notes</h3>
                         <p style="color: var(--text-secondary); max-width: 400px; margin: 0.5rem auto 1.5rem auto;">
-                            A PDF note attachment was successfully linked. Download the document to review offline.
+                            A PDF note attachment was successfully linked. Preview is not available.
                         </p>
-                        <a href="#" class="btn btn-primary" onclick="alert('Mock PDF file downloaded successfully (Demo).')">⬇ Download Lecture Notes</a>
                     </div>
                 {% endif %}
 
@@ -162,7 +192,7 @@
         <hr style="border: 0; border-top: 1px solid var(--border-color); margin-bottom: 2rem;">
 
         <!-- Lesson Navigation footer links -->
-        <nav style="display: flex; justify-content: space-between; align-items: center;">
+        <nav style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
             {% if prev_lesson %}
                 <a href="{{ url_for('course.lesson_view', lesson_id=prev_lesson.id) }}" class="btn btn-outline">
                     ← Previous Lesson: {{ prev_lesson.title[:20] }}...
@@ -177,15 +207,85 @@
                 </a>
             {% elif quiz %}
                 <a href="{{ url_for('student.take_quiz', quiz_id=quiz.id) }}" class="btn btn-primary" style="background: var(--success-color);">
-                    Complete and Start Quiz 📝
+                    Complete and Start Quiz <i class="fa-solid fa-file-signature"></i>
                 </a>
             {% else %}
                 <a href="{{ url_for('course.detail', course_id=course.id) }}" class="btn btn-primary">
-                    Syllabus Outline Completed 🎓
+                    Syllabus Outline Completed <i class="fa-solid fa-graduation-cap"></i>
                 </a>
             {% endif %}
         </nav>
     </article>
+
+    <!-- Syllabus Sidebar (YouTube Playlist style) -->
+    <aside class="reader-sidebar">
+        <div style="margin-bottom: 1.5rem; padding: 0 0.25rem;">
+            <a href="{{ url_for('course.detail', course_id=course.id) }}" class="btn btn-outline" style="font-size: 0.8rem; padding: 0.35rem 0.75rem; width: 100%; text-align: center; border: 1px solid var(--border-color); color: var(--text-secondary); text-decoration: none; border-radius: var(--radius-sm); display: block;">
+                ← Back to Syllabus
+            </a>
+        </div>
+        
+        <div style="display: flex; flex-direction: column; gap: 1rem;">
+            {% for mod in sidebar_modules %}
+                <div style="background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: var(--radius-md); overflow: hidden;">
+                    <!-- Module title -->
+                    <div style="background: var(--bg-tertiary); padding: 0.65rem 0.85rem; border-bottom: 1px solid var(--border-color); font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em;">
+                        {{ mod.title }}
+                    </div>
+                    
+                    <!-- Lessons -->
+                    {% if mod.lessons %}
+                        <div style="display: flex; flex-direction: column;">
+                            {% for les in mod.lessons %}
+                                {% set is_active = (les.id == lesson.id) %}
+                                <a href="{{ url_for('course.lesson_view', lesson_id=les.id) }}" class="playlist-sidebar-item {% if is_active %}active-lesson{% endif %}" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.75rem; text-decoration: none; border-bottom: 1px solid var(--border-color); transition: all 0.2s ease; {% if not loop.last %}border-bottom: 1px solid var(--border-color);{% else %}border-bottom: none;{% endif %}">
+                                    
+                                    <!-- Small Thumbnail -->
+                                    <div class="playlist-sidebar-thumb" style="position: relative; width: 68px; height: 40px; border-radius: 4px; overflow: hidden; background: #000; flex-shrink: 0; border: 1px solid var(--border-color);">
+                                        <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=100&h=60" alt="Thumbnail" style="width: 100%; height: 100%; object-fit: cover; opacity: {% if is_active %}0.9{% else %}0.7{% endif %};">
+                                        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.2); color: #fff; font-size: 0.65rem;">
+                                            {% if is_active %}<i class="fa-solid fa-volume-high"></i>{% elif les.content_type == 'video' %}<i class="fa-solid fa-play"></i>{% elif les.content_type == 'pdf' %}<i class="fa-solid fa-file-pdf"></i>{% else %}<i class="fa-solid fa-file-lines"></i>{% endif %}
+                                        </div>
+                                        {% if session.get('user_role') == 'student' and les.id in completed_lesson_ids %}
+                                            <div style="position: absolute; bottom: 2px; right: 2px; background: var(--success-color); color: #fff; font-size: 0.5rem; font-weight: bold; width: 10px; height: 10px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 2px rgba(0,0,0,0.3);"><i class="fa-solid fa-check" style="font-size: 0.5rem;"></i></div>
+                                        {% endif %}
+                                    </div>
+                                    
+                                    <!-- Lesson title -->
+                                    <div style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column;">
+                                        <span class="playlist-sidebar-title" style="font-size: 0.775rem; font-weight: {% if is_active %}700{% else %}500{% endif %}; color: {% if is_active %}var(--accent-color){% else %}var(--text-primary){% endif %}; line-height: 1.3; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                            {{ les.title }}
+                                        </span>
+                                        <span style="font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; margin-top: 0.1rem;">
+                                            {{ les.content_type }}
+                                        </span>
+                                    </div>
+                                </a>
+                             {% endfor %}
+                         </div>
+                     {% endif %}
+                     
+                     <!-- Quizzes -->
+                     {% if mod.quizzes %}
+                         <div style="border-top: 1px solid var(--border-color); background-color: var(--bg-tertiary); padding: 0.5rem 0.75rem;">
+                             {% for q in mod.quizzes %}
+                                 <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;">
+                                     <span style="font-size: 0.725rem; font-weight: 600; color: var(--text-primary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 150px;">
+                                         <i class="fa-solid fa-file-signature" style="font-size: 0.725rem; color: var(--accent-color);"></i> Quiz: {{ q.title }}
+                                     </span>
+                                    {% if session.get('user_role') == 'student' %}
+                                        <a href="{{ url_for('student.take_quiz', quiz_id=q.id) }}" class="btn btn-outline" style="padding: 0.15rem 0.4rem; font-size: 0.65rem; border-radius: 4px; background: var(--bg-secondary); border: 1px solid var(--border-color);">
+                                            Start
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </aside>
 </div>
 {% endblock %}
 
@@ -366,5 +466,127 @@
         const s = Math.floor(seconds % 60);
         return m + ':' + (s < 10 ? '0' : '') + s;
     }
+
+    // Secure PDF Reader Render & Protection
+    {% if lesson.content_type == 'pdf' and lesson.pdf_url %}
+    (function() {
+        const url = '{{ lesson.pdf_url }}';
+        
+        // Dynamically load pdf.js script
+        const pdfJsScript = document.createElement('script');
+        pdfJsScript.src = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js";
+        document.head.appendChild(pdfJsScript);
+        
+        pdfJsScript.onload = function() {
+            // Setup worker
+            pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js";
+            
+            const loadingTask = pdfjsLib.getDocument(url);
+            loadingTask.promise.then(function(pdf) {
+                const wrapper = document.getElementById('pdf-canvas-wrapper');
+                const loadingIndicator = document.getElementById('pdf-loading');
+                if (loadingIndicator) loadingIndicator.style.display = 'none';
+                
+                // Render each page on canvas
+                for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                    pdf.getPage(pageNum).then(function(page) {
+                        const scale = 1.5;
+                        const viewport = page.getViewport({ scale: scale });
+                        
+                        const canvas = document.createElement('canvas');
+                        canvas.style.maxWidth = '100%';
+                        canvas.style.height = 'auto';
+                        canvas.style.borderRadius = '8px';
+                        canvas.style.border = '1px solid #444';
+                        canvas.style.boxShadow = '0 4px 10px rgba(0,0,0,0.3)';
+                        canvas.style.pointerEvents = 'none'; // prevents right-click drag save
+                        
+                        const context = canvas.getContext('2d');
+                        canvas.height = viewport.height;
+                        canvas.width = viewport.width;
+                        
+                        wrapper.appendChild(canvas);
+                        
+                        const renderContext = {
+                            canvasContext: context,
+                            viewport: viewport
+                        };
+                        page.render(renderContext);
+                    });
+                }
+            }, function(reason) {
+                console.error("PDF.js loading failed:", reason);
+                const loadingIndicator = document.getElementById('pdf-loading');
+                if (loadingIndicator) {
+                    loadingIndicator.innerHTML = `<span style="color: var(--danger-color);">⚠️ Failed to load secure PDF. Please contact support.</span>`;
+                }
+            });
+        };
+        
+        // Prevent keyboard shortcuts
+        window.addEventListener('keydown', function(e) {
+            // Disable PrintScreen key warnings
+            if (e.key === 'PrintScreen') {
+                e.preventDefault();
+                showScreenshotWarning();
+            }
+            // Disable print
+            if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+                e.preventDefault();
+                alert('Printing is disabled for secure documents.');
+            }
+            // Disable save-as
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                e.preventDefault();
+                alert('Saving is disabled for secure documents.');
+            }
+            // Disable copy
+            if ((e.ctrlKey || e.metaKey) && e.key === 'c') {
+                e.preventDefault();
+                alert('Text selection and copying is disabled.');
+            }
+        });
+        
+        // Blur secure container when window loses focus
+        const pdfContainer = document.getElementById('secure-pdf-container');
+        window.addEventListener('blur', function() {
+            if (pdfContainer) {
+                pdfContainer.style.filter = 'blur(15px) grayscale(1)';
+            }
+        });
+        window.addEventListener('focus', function() {
+            if (pdfContainer) {
+                pdfContainer.style.filter = 'none';
+            }
+        });
+        
+        function showScreenshotWarning() {
+            if (pdfContainer) {
+                pdfContainer.style.filter = 'blur(20px) grayscale(1)';
+            }
+            const warning = document.createElement('div');
+            warning.style.cssText = `
+                position: fixed;
+                top: 0; left: 0; width: 100%; height: 100%;
+                background: rgba(0,0,0,0.9);
+                color: #fff;
+                display: flex; flex-direction: column; align-items: center; justify-content: center;
+                z-index: 9999;
+                font-family: var(--font-heading);
+            `;
+            warning.innerHTML = `
+                <div class="card" style="text-align: center; max-width: 400px; background: #222; color: #fff; border: 1px solid #444;">
+                    <span style="font-size: 3rem;">🚫</span>
+                    <h2 style="color: #fff; margin-top: 1rem;">Screenshot Attempt Blocked</h2>
+                    <p style="color: #aaa; margin: 1rem 0; font-size: 0.9rem;">
+                        Copying, printing, and capturing screenshots is restricted on secure lesson materials.
+                    </p>
+                    <button class="btn btn-primary" onclick="this.closest('div').parentNode.remove();" style="width: 100%;">I Understand</button>
+                </div>
+            `;
+            document.body.appendChild(warning);
+        }
+    })();
+    {% endif %}
 </script>
 {% endblock %}

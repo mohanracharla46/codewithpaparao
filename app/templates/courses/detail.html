@@ -1,37 +1,68 @@
+{% set hide_sidebar = True %}
 {% extends "base.html" %}
 
 {% block title %}{{ course.title }}{% endblock %}
 {% block header_title %}Course Syllabus{% endblock %}
 
 {% block content %}
-<div style="margin-bottom: 1.5rem;">
-    <a href="{{ url_for('course.list_courses') }}" style="font-size: 0.875rem;">← Back to Course Catalog</a>
-</div>
+<div class="course-detail-container" style="max-width: 900px; margin: 0 auto; padding: 2rem 1rem;">
+    
+    <div style="margin-bottom: 2rem;">
+        <a href="{{ url_for('course.list_courses') }}" class="btn btn-outline" style="font-size: 0.85rem; padding: 0.4rem 0.85rem; border-radius: var(--radius-md); text-decoration: none; border: 1px solid var(--border-color); color: var(--text-secondary); display: inline-flex; align-items: center; gap: 0.35rem;">
+            <span>← Back to Course Catalog</span>
+        </a>
+    </div>
 
-<div class="grid-cols-3" style="align-items: start; gap: 2rem;">
     <!-- Course details panel -->
-    <div style="grid-column: span 2; display: flex; flex-direction: column; gap: 1.5rem;">
-        <div style="height: 280px; background-color: var(--bg-tertiary); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-color);">
-            <img src="{{ course.thumbnail_url or 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&h=600' }}" alt="{{ course.title }}" style="width:100%; height:100%; object-fit:cover;">
+    <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 3.5rem;">
+        <div style="position: relative; min-height: 240px; background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); display: flex; align-items: center; padding: 2.5rem; margin-top: 0.5rem;">
+            <!-- Glowing ambient background lights -->
+            <div style="position: absolute; top: -50px; right: -50px; width: 250px; height: 250px; background: radial-gradient(circle, rgba(13, 148, 136, 0.12) 0%, transparent 70%); pointer-events: none; z-index: 1;"></div>
+            
+            <div style="position: relative; z-index: 2; display: flex; align-items: center; gap: 2rem; width: 100%; flex-wrap: wrap;">
+                <!-- Glowing Glass logo bubble -->
+                <div style="width: 100px; height: 100px; border-radius: 20px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-md); flex-shrink: 0;">
+                    {% if 'python' in course.title|lower %}
+                        <i class="devicon-python-plain colored" style="font-size: 3.5rem;"></i>
+                    {% elif 'cpp' in course.title|lower or 'c++' in course.title|lower %}
+                        <i class="devicon-cplusplus-plain colored" style="font-size: 3.5rem;"></i>
+                    {% elif 'java' in course.title|lower %}
+                        <i class="devicon-java-plain colored" style="font-size: 3.5rem;"></i>
+                    {% elif 'dsa' in course.title|lower or 'data structure' in course.title|lower %}
+                        <i class="fas fa-project-diagram" style="font-size: 3rem; color: #10b981;"></i>
+                    {% else %}
+                        <i class="devicon-c-plain colored" style="font-size: 3.5rem;"></i>
+                    {% endif %}
+                </div>
+                
+                <div style="flex: 1; min-width: 250px;">
+                    <span class="badge badge-{{ course.difficulty }}" style="margin-bottom: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.7rem;">{{ course.difficulty }}</span>
+                    <h1 style="font-size: 2.25rem; font-family: var(--font-heading); margin-bottom: 0.5rem; line-height: 1.2; font-weight: 800; color: var(--text-primary);">{{ course.title }}</h1>
+                    <p style="color: var(--text-secondary); font-size: 0.95rem; margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fa-solid fa-graduation-cap" style="color: var(--accent-color);"></i>
+                        <span>Complete Syllabus Track</span>
+                        <span style="color: var(--text-muted);">&bull;</span>
+                        <span style="color: var(--text-muted);">{{ total_lessons }} lessons</span>
+                    </p>
+                </div>
+            </div>
         </div>
         
-        <div>
-            <span class="badge badge-{{ course.difficulty }}" style="margin-bottom: 0.75rem;">{{ course.difficulty }}</span>
-            <h1 style="font-size: 2.25rem; font-family: var(--font-heading); margin-bottom: 1rem; line-height:1.15;">{{ course.title }}</h1>
-            
-            <p style="color: var(--text-secondary); line-height: 1.6; white-space: pre-line;">
+        <div class="card" style="padding: 1.75rem; border: 1px solid var(--border-color); background: var(--bg-secondary); border-radius: var(--radius-lg);">
+            <h3 style="font-family: var(--font-heading); font-size: 1.15rem; margin-bottom: 0.75rem; color: var(--text-primary);">About This Course</h3>
+            <p style="color: var(--text-secondary); line-height: 1.7; font-size: 1rem; margin: 0; white-space: pre-line;">
                 {{ course.description }}
             </p>
         </div>
 
         {% if session.get('user_role') == 'student' %}
             <!-- Progress Tracker -->
-            <div class="card" style="padding: 1.5rem; background-color: var(--bg-secondary);">
-                <h3>My Learning Progress</h3>
+            <div class="card" style="padding: 1.5rem; background-color: var(--bg-secondary); border-radius: 16px; border: 1px solid var(--border-color);">
+                <h3 style="font-family: var(--font-heading); font-size: 1.25rem; margin-bottom: 1rem;">My Learning Progress</h3>
                 
-                <div style="margin: 1rem 0;">
+                <div style="margin: 1.25rem 0;">
                     <div style="display: flex; justify-content: space-between; font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
-                        <span id="course-progress-text">{{ progress_pct }}% completed</span>
+                        <span id="course-progress-text" style="font-weight: 600; color: var(--accent-color);">{{ progress_pct }}% completed</span>
                         <span>{{ completed_lesson_ids|length }} of {{ total_lessons }} lessons</span>
                     </div>
                     <div style="width: 100%; height: 8px; background: var(--border-color); border-radius: 4px; overflow: hidden;">
@@ -40,58 +71,85 @@
                 </div>
 
                 {% if certificate %}
-                    <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 1.5rem; padding: 1rem; background: var(--accent-light); border-radius: var(--radius-md); border: 1px solid var(--accent-color);">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 1.5rem; padding: 1.25rem; background: var(--accent-light); border-radius: var(--radius-md); border: 1px solid var(--accent-color); flex-wrap: wrap; gap: 1rem;">
                         <div>
-                            <strong style="color: var(--accent-color); display:block; font-size:1.05rem;">Certificate Issued! 🎓</strong>
-                            <small style="color: var(--text-secondary);">Code: {{ certificate.certificate_code }}</small>
+                            <strong style="color: var(--accent-color); display:block; font-size:1.1rem; margin-bottom: 0.25rem;">Certificate Issued! 🎓</strong>
+                            <small style="color: var(--text-secondary); font-size: 0.8rem;">Validation Code: {{ certificate.certificate_code }}</small>
                         </div>
-                        <a href="{{ url_for('course.download_certificate', cert_code=certificate.certificate_code) }}" class="btn btn-primary">Download PDF</a>
+                        <a href="{{ url_for('course.download_certificate', cert_code=certificate.certificate_code) }}" class="btn btn-primary" style="padding: 0.5rem 1.25rem; font-size: 0.875rem; border-radius: var(--radius-sm);">Download Certificate</a>
                     </div>
                 {% endif %}
             </div>
         {% endif %}
     </div>
 
-    <!-- Syllabus outline list -->
+    <!-- Syllabus outline list (One by one, stacked below details) -->
     <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-        <h2>Syllabus Outline</h2>
+        <h2 style="font-family: var(--font-heading); font-size: 1.65rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+            <span>Syllabus Playlist</span>
+            <span style="font-size: 0.85rem; font-weight: normal; color: var(--text-secondary); background: var(--bg-tertiary); padding: 0.15rem 0.5rem; border-radius: 9999px;">{{ total_lessons }} topics</span>
+        </h2>
         
         {% if course.modules %}
             <div style="display: flex; flex-direction: column; gap: 1.25rem;">
                 {% for module in course.modules %}
-                    <div class="card" style="padding: 1.25rem; background: var(--bg-secondary);">
-                        <h4 style="margin-bottom: 0.75rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; color: var(--text-primary);">
-                            {{ loop.index }}. {{ module.title }}
-                        </h4>
+                    <div class="card playlist-module-card" style="padding: 0; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-sm);">
+                        <!-- Module Header -->
+                        <div style="padding: 1rem 1.5rem; background: var(--bg-tertiary); border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-weight: 700; font-size: 0.9rem; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-sans);">
+                                Section {{ loop.index }}: {{ module.title }}
+                            </span>
+                            <span style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 500;">
+                                {{ module.lessons|length }} topics
+                            </span>
+                        </div>
                         
                         <!-- Lessons under module -->
                         {% if module.lessons %}
-                            <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem;">
+                            <div style="display: flex; flex-direction: column;">
                                 {% for lesson in module.lessons %}
-                                    <li style="display: flex; align-items: center; justify-content: space-between; font-size: 0.875rem;">
-                                        <a href="{{ url_for('course.lesson_view', lesson_id=lesson.id) }}" style="color: var(--text-secondary); display: inline-flex; align-items: center; gap: 0.5rem;">
-                                            {% if lesson.content_type == 'video' %}🎥{% elif lesson.content_type == 'pdf' %}📄{% else %}📝{% endif %}
-                                            <span>{{ lesson.title }}</span>
-                                        </a>
+                                    <a href="{{ url_for('course.lesson_view', lesson_id=lesson.id) }}" class="playlist-lesson-item" style="display: flex; align-items: center; gap: 1rem; padding: 1rem 1.5rem; text-decoration: none; border-top: 1px solid var(--border-color); transition: all 0.2s ease;">
+                                        <!-- Mock Video Thumbnail -->
+                                        <div class="playlist-thumb-container" style="position: relative; width: 90px; height: 54px; border-radius: 6px; overflow: hidden; background: #000; flex-shrink: 0; border: 1px solid var(--border-color);">
+                                            <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=120&h=68" alt="Thumbnail" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.75; transition: opacity 0.2s ease;">
+                                            <div class="playlist-thumb-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); opacity: 0.9; color: #fff; font-size: 0.8rem; transition: background 0.2s ease;">
+                                                {% if lesson.content_type == 'video' %}<i class="fa-solid fa-play"></i>{% elif lesson.content_type == 'pdf' %}<i class="fa-solid fa-file-pdf"></i>{% else %}<i class="fa-solid fa-file-lines"></i>{% endif %}
+                                            </div>
+                                            {% if session.get('user_role') == 'student' and lesson.id in completed_lesson_ids %}
+                                                <div style="position: absolute; bottom: 3px; right: 3px; background: var(--success-color); color: #fff; font-size: 0.6rem; font-weight: bold; width: 14px; height: 14px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 3px rgba(0,0,0,0.3);" title="Completed"><i class="fa-solid fa-check" style="font-size: 0.6rem;"></i></div>
+                                            {% endif %}
+                                        </div>
                                         
-                                        {% if session.get('user_role') == 'student' and lesson.id in completed_lesson_ids %}
-                                            <span style="color: var(--success-color); font-weight: bold;" title="Lesson Completed">✓</span>
-                                        {% endif %}
-                                    </li>
+                                        <!-- Lesson Title & Metadata -->
+                                        <div style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.2rem;">
+                                            <span class="playlist-lesson-title" style="font-size: 0.95rem; font-weight: 600; color: var(--text-primary); line-height: 1.35;">
+                                                {{ lesson.title }}
+                                            </span>
+                                            <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.02em;">
+                                                {{ lesson.content_type }}
+                                            </span>
+                                        </div>
+                                    </a>
                                 {% endfor %}
-                            </ul>
+                            </div>
                         {% else %}
-                            <p style="font-size: 0.75rem; color: var(--text-muted); font-style: italic;">No lessons in this module yet.</p>
+                            <div style="padding: 1.5rem; font-size: 0.85rem; color: var(--text-muted); font-style: italic; text-align: center; border-top: 1px solid var(--border-color);">
+                                No lessons in this module yet.
+                            </div>
                         {% endif %}
-
+ 
                         <!-- Quizzes attached to module -->
                         {% if module.quizzes %}
-                            <div style="margin-top: 1rem; border-top: 1px dashed var(--border-color); padding-top: 0.75rem;">
+                            <div style="border-top: 1px solid var(--border-color); background-color: var(--bg-tertiary); padding: 1rem 1.5rem;">
                                 {% for quiz in module.quizzes %}
-                                    <div style="display: flex; align-items: center; justify-content: space-between;">
-                                        <span style="font-size: 0.875rem; font-weight: 500;">📝 Module Quiz: {{ quiz.title }}</span>
+                                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
+                                        <span style="font-size: 0.875rem; font-weight: 600; color: var(--text-primary); display: inline-flex; align-items: center; gap: 0.5rem;">
+                                            <i class="fa-solid fa-file-signature" style="color: var(--accent-color);"></i> Quiz: {{ quiz.title }}
+                                        </span>
                                         {% if session.get('user_role') == 'student' %}
-                                            <a href="{{ url_for('student.take_quiz', quiz_id=quiz.id) }}" class="btn btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">Take Quiz</a>
+                                            <a href="{{ url_for('student.take_quiz', quiz_id=quiz.id) }}" class="btn btn-outline" style="padding: 0.35rem 0.75rem; font-size: 0.8rem; border-radius: var(--radius-sm); font-weight: 700; border: 1px solid var(--border-color); background: var(--bg-secondary);">
+                                                Start Quiz
+                                            </a>
                                         {% endif %}
                                     </div>
                                 {% endfor %}
@@ -101,8 +159,20 @@
                 {% endfor %}
             </div>
         {% else %}
-            <p style="color: var(--text-muted); font-style: italic;">No content created for this course syllabus yet.</p>
+            <p style="color: var(--text-muted); font-style: italic; font-size: 0.875rem; text-align: center;">No content created for this course syllabus yet.</p>
         {% endif %}
     </div>
 </div>
+
+<style>
+    .playlist-lesson-item:hover {
+        background-color: var(--bg-tertiary) !important;
+    }
+    .playlist-lesson-item:hover .playlist-thumb-container img {
+        opacity: 0.95 !important;
+    }
+    .playlist-lesson-item:hover .playlist-lesson-title {
+        color: var(--accent-color) !important;
+    }
+</style>
 {% endblock %}

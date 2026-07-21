@@ -30,9 +30,9 @@
     </div>
 </div>
 
-<div class="grid-cols-3" style="align-items: start; margin-bottom: 2rem;">
+<div style="margin-bottom: 2rem;">
     <!-- Course Progress Section -->
-    <div style="grid-column: span 2; display: flex; flex-direction: column; gap: 1.5rem;">
+    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
         <h2>My Courses</h2>
         
         {% if courses_with_progress %}
@@ -73,60 +73,6 @@
                 <a href="{{ url_for('course.list_courses') }}" class="btn btn-primary">Browse Course Catalog</a>
             </div>
         {% endif %}
-    </div>
-
-    <!-- Side widgets panel (Bookmarks, Notifications) -->
-    <div style="display: flex; flex-direction: column; gap: 2rem;">
-        <!-- Bookmarks Widget -->
-        <div>
-            <h3 style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
-                Bookmarks
-                <a href="{{ url_for('student.bookmarks') }}" style="font-size: 0.75rem;">View all</a>
-            </h3>
-            <div class="card" style="padding: 1rem;">
-                {% if bookmarks %}
-                    <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.75rem;">
-                        {% for b in bookmarks[:5] %}
-                            <li style="border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
-                                <a href="{{ url_for('course.lesson_view', lesson_id=b.lesson.id) }}" style="font-size: 0.875rem; color: var(--text-primary); font-weight:500;">
-                                    {{ b.lesson.title }}
-                                </a>
-                                <div style="font-size: 0.75rem; color: var(--text-muted);">
-                                    {{ b.lesson.module.course.title }}
-                                </div>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% else %}
-                    <p style="color: var(--text-muted); font-size: 0.875rem; text-align: center;">No bookmarked lessons.</p>
-                {% endif %}
-            </div>
-        </div>
-
-        <!-- Notifications Widget -->
-        <div>
-            <h3 style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
-                Recent Notifications
-                <a href="{{ url_for('student.notifications') }}" style="font-size: 0.75rem;">View all</a>
-            </h3>
-            <div class="card" style="padding: 1rem;">
-                {% if notifications %}
-                    <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.75rem;">
-                        {% for n in notifications %}
-                            <li style="font-size: 0.875rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
-                                <div style="font-weight: 600; color: var(--text-primary);">{{ n.title }}</div>
-                                <div style="color: var(--text-secondary); margin-top: 0.125rem;">{{ n.message }}</div>
-                                <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">
-                                    {{ n.created_at.strftime('%b %d, %H:%M') }}
-                                </div>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% else %}
-                    <p style="color: var(--text-muted); font-size: 0.875rem; text-align: center;">No new alerts.</p>
-                {% endif %}
-            </div>
-        </div>
     </div>
 </div>
 {% endblock %}

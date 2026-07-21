@@ -126,5 +126,179 @@ class LMSTestCase(unittest.TestCase):
         self.assertIn(b'codewithpaparao', res.data)
         self.assertIn(b'Master In-Demand', res.data)
 
+    # Test 8: Public About Me page rendering
+    def test_about_page_rendering(self):
+        res = self.client.get('/about')
+        self.assertEqual(res.status_code, 200)
+        self.assertIn(b'Meet your instructor', res.data)
+        self.assertIn(b'Papa Rao', res.data)
+
+    # Test 9: Public Courses Catalog page rendering
+    def test_public_courses_catalog_rendering(self):
+        res = self.client.get('/courses/')
+        self.assertEqual(res.status_code, 200)
+        self.assertIn(b'Explore Our Programming Tracks', res.data)
+
+    # Test 10: Public Language details page rendering
+    def test_language_detail_pages_public(self):
+        for lang, expected_title in [('c', b'C Programming'), 
+                                     ('python', b'Python Core'), 
+                                     ('java', b'Java Core'), 
+                                     ('cpp', b'C++ Development'), 
+                                     ('dsa', b'DSA Masterclass')]:
+            res = self.client.get(f'/courses/lang/{lang}')
+            self.assertEqual(res.status_code, 200)
+            self.assertIn(expected_title, res.data)
+
+    # Test 11: Authenticated access to language detail seeds the course dynamically
+    def test_language_detail_page_autoseed_logged_in(self):
+        # Verify no C Programming course in database initially
+        course = Course.query.filter_by(title='C Programming').first()
+        self.assertIsNone(course)
+        
+        # Log in the student
+        with self.client.session_transaction() as sess:
+            sess['user_id'] = self.student_profile.id
+            sess['user_role'] = self.student_profile.role
+            sess['user_name'] = self.student_profile.full_name
+            
+        # Access the C language landing page which triggers database seeding
+        res = self.client.get('/courses/lang/c')
+        self.assertEqual(res.status_code, 200)
+        
+        # Verify C Programming course now exists in database
+        course = Course.query.filter_by(title='C Programming').first()
+        self.assertIsNotNone(course)
+        self.assertEqual(course.difficulty, 'beginner')
+        
+        # Verify modules and lessons were created
+        self.assertTrue(len(course.modules) > 0)
+        self.assertTrue(len(course.modules[0].lessons) > 0)
+        
+        # Verify page renders the syllabus link for logged in student
+        self.assertIn(course.id.encode(), res.data)
+
+    # Test 12: Verify that public and course reader pages do NOT display the dashboard sidebar when logged in
+    def test_pages_hide_sidebar_logged_in(self):
+        # Create a course and a lesson in db to check detail and lesson pages
+        course = Course(
+            title="Syllabus Test Course",
+            description="Detail test",
+            difficulty="beginner",
+            is_published=True,
+            created_by=self.admin_profile.id
+        )
+        db.session.add(course)
+        db.session.commit()
+        
+        module = Module(course_id=course.id, title="Module 1", sort_order=1)
+        db.session.add(module)
+        db.session.commit()
+        
+        lesson = Lesson(module_id=module.id, title="Lesson 1", content_type="text", text_content="Lesson content", sort_order=1)
+        db.session.add(lesson)
+        db.session.commit()
+
+        with self.client.session_transaction() as sess:
+            sess['user_id'] = self.student_profile.id
+            sess['user_role'] = self.student_profile.role
+            sess['user_name'] = self.student_profile.full_name
+            
+        urls = [
+            '/about', 
+            '/courses/', 
+            '/courses/lang/c',
+            f'/courses/{course.id}',
+            f'/courses/lessons/{lesson.id}'
+        ]
+        for url in urls:
+            res = self.client.get(url)
+            self.assertEqual(res.status_code, 200)
+            self.assertNotIn(b'<aside class="sidebar">', res.data)
+
+    # Test 13: Verify that language pages display multiple matching courses created by admins
+    def test_language_detail_page_shows_multiple_courses(self):
+        # Create two custom Python courses under the admin profile
+        course1 = Course(
+            title="Intro to Python Coding",
+            description="First Python course.",
+            difficulty="beginner",
+            is_published=True,
+            created_by=self.admin_profile.id
+        )
+        course2 = Course(
+            title="Python Advanced Patterns",
+            description="Second Python course.",
+            difficulty="advanced",
+            is_published=True,
+            created_by=self.admin_profile.id
+        )
+        db.session.add_all([course1, course2])
+        db.session.commit()
+        
+        # Access the Python page as guest
+        res = self.client.get('/courses/lang/python')
+        self.assertEqual(res.status_code, 200)
+        
+        # Verify both courses appear in the rendered HTML
+        self.assertIn(b"Intro to Python Coding", res.data)
+        self.assertIn(b"Python Advanced Patterns", res.data)
+        self.assertIn(course1.id.encode(), res.data)
+        self.assertIn(course2.id.encode(), res.data)
+
+    # Test 14: Verify that admin can edit a lesson
+    def test_admin_can_edit_lesson(self):
+        # Create a course, a module, and a lesson
+        course = Course(
+            title="Intro to Rust",
+            description="Learn Rust.",
+            difficulty="intermediate",
+            is_published=True,
+            created_by=self.admin_profile.id
+        )
+        db.session.add(course)
+        db.session.commit()
+        
+        module = Module(course_id=course.id, title="Basics", sort_order=1)
+        db.session.add(module)
+        db.session.commit()
+        
+        lesson = Lesson(
+            module_id=module.id,
+            title="Ownership",
+            content_type="text",
+            text_content="Original notes",
+            sort_order=1
+        )
+        db.session.add(lesson)
+        db.session.commit()
+        
+        # Log in as admin
+        with self.client.session_transaction() as sess:
+            sess['user_id'] = self.admin_profile.id
+            sess['user_role'] = self.admin_profile.role
+            
+        # GET edit page
+        res = self.client.get(f'/admin/lessons/{lesson.id}/edit')
+        self.assertEqual(res.status_code, 200)
+        self.assertIn(b"Ownership", res.data)
+        
+        # POST edit page
+        res = self.client.post(f'/admin/lessons/{lesson.id}/edit', data={
+            'title': 'Rust Ownership Rules',
+            'content_type': 'text',
+            'sort_order': '5',
+            'text_content': 'Updated ownership notes'
+        })
+        # Check redirect back to course manager
+        self.assertEqual(res.status_code, 302)
+        self.assertIn(f'/courses/manage/{course.id}', res.location)
+        
+        # Verify db updated
+        updated_lesson = Lesson.query.get(lesson.id)
+        self.assertEqual(updated_lesson.title, 'Rust Ownership Rules')
+        self.assertEqual(updated_lesson.sort_order, 5)
+        self.assertEqual(updated_lesson.text_content, 'Updated ownership notes')
+
 if __name__ == '__main__':
     unittest.main()

@@ -10,90 +10,99 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/variables.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/layouts.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
     {% block extra_css %}{% endblock %}
 </head>
 <body>
     <div class="app-container">
-        {% if session.get('user_id') %}
+        {% if session.get('user_id') and not hide_sidebar %}
             <!-- Left Sidebar Navigation -->
             <aside class="sidebar">
-                <div class="sidebar-brand">
+                <div class="sidebar-brand" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
                     <span>{{ site_name }}</span>
+                    <button id="sidebar-close" class="btn btn-outline mobile-only-toggle" style="padding: 0.25rem 0.5rem; border: none; font-size: 1.15rem; background: transparent; color: var(--text-muted);" aria-label="Close Navigation">
+                        ✕
+                    </button>
                 </div>
                 <nav class="sidebar-menu">
                     <li class="sidebar-item {% if request.blueprint == 'dashboard' %}active{% endif %}">
-                        <a href="{{ url_for('dashboard.index') }}">🏠 Dashboard</a>
+                        <a href="{{ url_for('dashboard.index') }}"><i class="fa-solid fa-house" style="min-width: 20px;"></i> Dashboard</a>
                     </li>
                     
                     {% if session.get('user_role') == 'student' %}
                         <li class="sidebar-item {% if request.blueprint == 'course' and request.endpoint != 'course.list_courses' %}active{% endif %}">
-                            <a href="{{ url_for('dashboard.index') }}">📚 My Courses</a>
+                            <a href="{{ url_for('dashboard.index') }}"><i class="fa-solid fa-book" style="min-width: 20px;"></i> My Courses</a>
                         </li>
                         <li class="sidebar-item {% if request.endpoint == 'course.list_courses' %}active{% endif %}">
-                            <a href="{{ url_for('course.list_courses') }}">🔍 Explore Catalog</a>
+                            <a href="{{ url_for('course.list_courses') }}"><i class="fa-solid fa-magnifying-glass" style="min-width: 20px;"></i> Explore Catalog</a>
                         </li>
                         <li class="sidebar-item {% if request.endpoint == 'student.bookmarks' %}active{% endif %}">
-                            <a href="{{ url_for('student.bookmarks') }}">⭐ Bookmarks</a>
+                            <a href="{{ url_for('student.bookmarks') }}"><i class="fa-solid fa-star" style="min-width: 20px;"></i> Bookmarks</a>
                         </li>
                         <li class="sidebar-item {% if request.endpoint == 'student.notifications' %}active{% endif %}">
-                            <a href="{{ url_for('student.notifications') }}">🔔 Notifications</a>
+                            <a href="{{ url_for('student.notifications') }}"><i class="fa-solid fa-bell" style="min-width: 20px;"></i> Notifications</a>
                         </li>
                         <li class="sidebar-item {% if request.endpoint == 'student.profile' %}active{% endif %}">
-                            <a href="{{ url_for('student.profile') }}">👤 Profile</a>
+                            <a href="{{ url_for('student.profile') }}"><i class="fa-solid fa-user" style="min-width: 20px;"></i> Profile</a>
                         </li>
                     {% endif %}
                     
                     {% if session.get('user_role') in ['admin', 'super_admin'] %}
                         <li class="sidebar-item {% if request.endpoint == 'admin.courses' %}active{% endif %}">
-                            <a href="{{ url_for('admin.courses') }}">📚 Courses</a>
+                            <a href="{{ url_for('admin.courses') }}"><i class="fa-solid fa-book" style="min-width: 20px;"></i> Courses</a>
                         </li>
                         <li class="sidebar-item {% if request.endpoint == 'admin.students' %}active{% endif %}">
-                            <a href="{{ url_for('admin.students') }}">👥 Students</a>
+                            <a href="{{ url_for('admin.students') }}"><i class="fa-solid fa-users" style="min-width: 20px;"></i> Students</a>
                         </li>
                         <li class="sidebar-item {% if request.endpoint == 'admin.analytics' %}active{% endif %}">
-                            <a href="{{ url_for('admin.analytics') }}">📈 Analytics</a>
+                            <a href="{{ url_for('admin.analytics') }}"><i class="fa-solid fa-chart-line" style="min-width: 20px;"></i> Analytics</a>
                         </li>
                         <li class="sidebar-item {% if request.endpoint == 'admin.quizzes' %}active{% endif %}">
-                            <a href="{{ url_for('admin.quizzes') }}">🧠 Quizzes</a>
+                            <a href="{{ url_for('admin.quizzes') }}"><i class="fa-solid fa-brain" style="min-width: 20px;"></i> Quizzes</a>
                         </li>
                         <li class="sidebar-item {% if request.endpoint == 'admin.reports' %}active{% endif %}">
-                            <a href="{{ url_for('admin.reports') }}">📊 Reports</a>
+                            <a href="{{ url_for('admin.reports') }}"><i class="fa-solid fa-chart-simple" style="min-width: 20px;"></i> Reports</a>
                         </li>
                         <li class="sidebar-item {% if request.endpoint == 'admin.certificates' %}active{% endif %}">
-                            <a href="{{ url_for('admin.certificates') }}">🎓 Certificates</a>
+                            <a href="{{ url_for('admin.certificates') }}"><i class="fa-solid fa-graduation-cap" style="min-width: 20px;"></i> Certificates</a>
                         </li>
                     {% endif %}
                     
                     {% if session.get('user_role') == 'super_admin' %}
                         <li class="sidebar-item-header" style="padding: 0.75rem; font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); font-weight:600;">System Admin</li>
                         <li class="sidebar-item {% if request.endpoint == 'super_admin.list_users' %}active{% endif %}">
-                            <a href="{{ url_for('super_admin.list_users') }}">👥 Manage Users</a>
+                            <a href="{{ url_for('super_admin.list_users') }}"><i class="fa-solid fa-users" style="min-width: 20px;"></i> Manage Users</a>
                         </li>
                         <li class="sidebar-item {% if request.endpoint == 'super_admin.settings' %}active{% endif %}">
-                            <a href="{{ url_for('super_admin.settings') }}">⚙️ Settings</a>
+                            <a href="{{ url_for('super_admin.settings') }}"><i class="fa-solid fa-gear" style="min-width: 20px;"></i> Settings</a>
                         </li>
                         <li class="sidebar-item {% if request.endpoint == 'super_admin.list_logs' %}active{% endif %}">
-                            <a href="{{ url_for('super_admin.list_logs') }}">📋 Audit Logs</a>
+                            <a href="{{ url_for('super_admin.list_logs') }}"><i class="fa-solid fa-clipboard-list" style="min-width: 20px;"></i> Audit Logs</a>
                         </li>
                     {% endif %}
                 </nav>
                 <div class="sidebar-footer">
-                    <a href="{{ url_for('auth.logout') }}" style="color: var(--danger-color); display: flex; align-items: center; gap: 0.5rem;">🚪 Logout</a>
+                    <a href="{{ url_for('auth.logout') }}" style="color: var(--danger-color); display: flex; align-items: center; gap: 0.5rem;"><i class="fa-solid fa-right-from-bracket" style="min-width: 20px;"></i> Logout</a>
                 </div>
             </aside>
         {% endif %}
 
         <!-- Main Workspace -->
-        <div class="main-wrapper" style="{% if not session.get('user_id') %}margin-left: 0;{% endif %}">
+        <div class="main-wrapper" style="{% if not session.get('user_id') or hide_sidebar %}margin-left: 0;{% endif %}">
             <!-- Header -->
+            {% if session.get('user_id') and not hide_sidebar %}
             <header class="header">
-                <div class="header-title">
-                    <h3>{% block header_title %}{{ site_name }}{% endblock %}</h3>
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <!-- Mobile Hamburger Toggle -->
+                    <button id="sidebar-toggle" class="btn btn-outline mobile-only-toggle" style="padding: 0.35rem 0.5rem; border: none; font-size: 1.25rem; background: transparent; cursor: pointer; color: var(--text-primary);" aria-label="Open Navigation">
+                        ☰
+                    </button>
+                    <div class="header-title">
+                        <h3>{% block header_title %}{{ site_name }}{% endblock %}</h3>
+                    </div>
                 </div>
                 <div class="header-actions">
-                    <!-- Light/Dark toggle button -->
-                    <button id="theme-toggle" class="btn btn-outline" style="padding: 0.35rem 0.65rem; font-size: 1rem; border: none; background: transparent;"></button>
-                    
                     {% if current_profile %}
                         <div class="user-badge">
                             <img src="{{ current_profile.avatar_url or 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=80&h=80' }}" class="user-avatar" alt="Avatar">
@@ -103,6 +112,42 @@
                     {% endif %}
                 </div>
             </header>
+            {% else %}
+            <header class="public-header">
+                <div class="nav-logo">
+                    <a href="/">{{ site_name }}</a>
+                </div>
+                
+                <nav class="public-nav-links">
+                    <a href="/" class="nav-link-item">Home</a>
+                    <a href="{{ url_for('course.list_courses') }}" class="nav-link-item">Courses</a>
+                    <a href="/about" class="nav-link-item">About Me</a>
+                    <a href="/about#contact" class="nav-link-item">Contact</a>
+                </nav>
+                
+                <div class="header-actions">
+                    {% if session.get('user_id') %}
+                        <a href="{{ url_for('dashboard.index') }}" class="btn btn-primary">Dashboard</a>
+                    {% else %}
+                        <a href="{{ url_for('auth.login') }}" class="btn btn-primary">Login</a>
+                    {% endif %}
+                </div>
+            </header>
+            
+            <style>
+                .nav-link-item:hover {
+                    color: var(--accent-color) !important;
+                }
+                @media (max-width: 768px) {
+                    .public-header {
+                        padding: 0 1.5rem !important;
+                    }
+                    .public-nav-links {
+                        gap: 1rem !important;
+                    }
+                }
+            </style>
+            {% endif %}
 
             <!-- Content Area -->
             <main class="main-content">

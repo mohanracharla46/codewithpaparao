@@ -211,6 +211,54 @@ def new_lesson(module_id):
         
     return render_template('admin/lessons/new.html', module=module)
 
+@admin_bp.route('/lessons/<lesson_id>/edit', methods=['GET', 'POST'])
+def edit_lesson(lesson_id):
+    lesson = Lesson.query.get_or_404(lesson_id)
+    module = Module.query.get_or_404(lesson.module_id)
+    
+    if request.method == 'POST':
+        title = request.form.get('title', '').strip()
+        content_type = request.form.get('content_type', 'text')
+        sort_order = int(request.form.get('sort_order', 0))
+        text_content = request.form.get('text_content', '').strip()
+        
+        video_file = request.files.get('video_file')
+        youtube_url = request.form.get('youtube_url', '').strip()
+        pdf_file = request.files.get('pdf_file')
+        
+        if not title:
+            flash('Lesson title is required.', 'danger')
+            return render_template('admin/lessons/edit.html', lesson=lesson, module=module), 400
+            
+        try:
+            if content_type == 'video':
+                if video_file and video_file.filename != '':
+                    lesson.video_url = SupabaseService.upload_file(video_file, 'lessons', folder_name='videos')
+                elif youtube_url:
+                    import re
+                    pattern = r'(?:https?://)?(?:www\.)?(?:youtube\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})'
+                    match = re.search(pattern, youtube_url)
+                    if match:
+                        lesson.video_url = f"https://www.youtube.com/embed/{match.group(1)}"
+                    else:
+                        lesson.video_url = youtube_url
+            elif content_type == 'pdf' and pdf_file and pdf_file.filename != '':
+                lesson.pdf_url = SupabaseService.upload_file(pdf_file, 'lessons', folder_name='pdfs')
+        except Exception as e:
+            flash(f"Failed to upload lesson asset: {e}", 'danger')
+            return render_template('admin/lessons/edit.html', lesson=lesson, module=module), 500
+            
+        lesson.title = title
+        lesson.content_type = content_type
+        lesson.text_content = text_content
+        lesson.sort_order = sort_order
+        
+        db.session.commit()
+        flash('Lesson updated successfully!', 'success')
+        return redirect(url_for('admin.manage_course_details', course_id=module.course_id))
+        
+    return render_template('admin/lessons/edit.html', lesson=lesson, module=module)
+
 
 # --- QUIZ & QUESTION CRUD ---
 @admin_bp.route('/modules/<module_id>/quizzes/new', methods=['GET', 'POST'])

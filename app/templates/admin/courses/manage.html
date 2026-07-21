@@ -47,15 +47,20 @@
                                     {% for lesson in module.lessons %}
                                         <li style="display: flex; justify-content: space-between; align-items: center; font-size: 0.875rem; padding: 0.5rem; background: var(--bg-primary); border-radius: var(--radius-md); border: 1px solid var(--border-color);">
                                             <span style="display: inline-flex; align-items: center; gap: 0.5rem;">
-                                                <span>{% if lesson.content_type == 'video' %}🎥{% elif lesson.content_type == 'pdf' %}📄{% else %}📝{% endif %}</span>
+                                                <span>{% if lesson.content_type == 'video' %}<i class="fa-solid fa-video" style="color: var(--accent-color);"></i>{% elif lesson.content_type == 'pdf' %}<i class="fa-solid fa-file-pdf" style="color: var(--danger-color);"></i>{% else %}<i class="fa-solid fa-file-lines" style="color: #6366f1;"></i>{% endif %}</span>
                                                 <strong>{{ lesson.title }}</strong>
                                                 <small style="color: var(--text-secondary); text-transform: capitalize;">({{ lesson.content_type }})</small>
                                             </span>
                                             
                                             <!-- Action items -->
-                                            <span style="font-size: 0.75rem; color: var(--text-muted);">
-                                                Sort Order: {{ lesson.sort_order }}
-                                            </span>
+                                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                                <span style="font-size: 0.75rem; color: var(--text-muted);">
+                                                    Sort Order: {{ lesson.sort_order }}
+                                                </span>
+                                                <a href="{{ url_for('admin.edit_lesson', lesson_id=lesson.id) }}" class="btn btn-outline" style="padding: 0.2rem 0.5rem; font-size: 0.75rem; display: inline-flex; align-items: center; gap: 0.25rem;">
+                                                    <i class="fa-solid fa-pen-to-square"></i> Edit
+                                                </a>
+                                            </div>
                                         </li>
                                     {% endfor %}
                                 </ul>

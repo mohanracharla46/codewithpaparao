@@ -1,25 +1,28 @@
+{% set hide_sidebar = True %}
 {% extends "base.html" %}
 
 {% block title %}Course Catalog{% endblock %}
 {% block header_title %}Browse Courses{% endblock %}
 
 {% block content %}
-<div style="margin-bottom: 2rem;">
-    <h1>Explore Courses</h1>
-    <p style="color: var(--text-secondary);">Find the perfect track to learn and advance your skills.</p>
+<div style="margin-bottom: 3rem; text-align: center;">
+    <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem; font-family: var(--font-heading);">Explore Our Programming Tracks</h1>
+    <p style="color: var(--text-secondary); font-size: 1.1rem; max-width: 600px; margin: 0 auto;">
+        Learn computer science concepts, master algorithms, and build practical projects with direct guidance.
+    </p>
 </div>
 
 <!-- Search & Filter Bar -->
-<div class="card" style="padding: 1rem; margin-bottom: 2rem;">
+<div class="card" style="padding: 1.5rem; margin-bottom: 3rem; border: 1px solid var(--border-color); border-radius: var(--radius-lg);">
     <form action="{{ url_for('course.list_courses') }}" method="GET" style="display: grid; grid-template-columns: 1fr auto auto; gap: 1rem; align-items: end;">
         <div class="form-group" style="margin-bottom: 0;">
             <label for="search" class="form-label">Search Courses</label>
-            <input type="text" id="search" name="search" class="form-control" placeholder="Search by course title or keyword..." value="{{ search }}">
+            <input type="text" id="search" name="search" class="form-control" placeholder="Search by course title or keyword..." value="{{ search }}" style="width: 100%; border: 1px solid var(--border-color); padding: 0.65rem; border-radius: var(--radius-md); background: var(--bg-primary); color: var(--text-primary);">
         </div>
         
         <div class="form-group" style="margin-bottom: 0;">
             <label for="difficulty" class="form-label">Difficulty</label>
-            <select id="difficulty" name="difficulty" class="form-control" style="width: 160px; appearance: auto;">
+            <select id="difficulty" name="difficulty" class="form-control" style="width: 180px; appearance: auto; border: 1px solid var(--border-color); padding: 0.65rem; border-radius: var(--radius-md); background: var(--bg-primary); color: var(--text-primary);">
                 <option value="">All Levels</option>
                 <option value="beginner" {% if difficulty == 'beginner' %}selected{% endif %}>Beginner</option>
                 <option value="intermediate" {% if difficulty == 'intermediate' %}selected{% endif %}>Intermediate</option>
@@ -28,8 +31,8 @@
         </div>
         
         <div style="display: flex; gap: 0.5rem;">
-            <button type="submit" class="btn btn-primary" style="padding: 0.625rem 1.25rem;">Apply Filters</button>
-            <a href="{{ url_for('course.list_courses') }}" class="btn btn-secondary" style="padding: 0.625rem 1.25rem;">Clear</a>
+            <button type="submit" class="btn btn-primary" style="padding: 0.65rem 1.5rem;">Apply Filters</button>
+            <a href="{{ url_for('course.list_courses') }}" class="btn btn-secondary" style="padding: 0.65rem 1.5rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-secondary); color: var(--text-primary); text-align: center; display: inline-flex; align-items: center; justify-content: center; text-decoration: none;">Clear</a>
         </div>
     </form>
 </div>
@@ -38,27 +41,85 @@
 {% if courses %}
     <div class="grid-cols-3">
         {% for course in courses %}
-            <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
-                <div>
-                    <div style="height: 160px; background-color: var(--bg-tertiary); border-radius: var(--radius-md); overflow: hidden; margin-bottom: 1rem; border: 1px solid var(--border-color);">
+            {# Determine card color scheme depending on difficulty #}
+            {% set diff_lower = course.difficulty.lower() %}
+            {% if diff_lower == 'beginner' %}
+                {% set theme_color = '#0d9488' %}
+                {% set theme_bg = 'rgba(13, 148, 136, 0.06)' %}
+                {% set theme_light = '#ccfbf1' %}
+            {% elif diff_lower == 'intermediate' %}
+                {% set theme_color = '#6366f1' %}
+                {% set theme_bg = 'rgba(99, 102, 241, 0.06)' %}
+                {% set theme_light = '#e0e7ff' %}
+            {% else %}
+                {% set theme_color = '#10b981' %}
+                {% set theme_bg = 'rgba(16, 185, 129, 0.06)' %}
+                {% set theme_light = '#d1fae5' %}
+            {% endif %}
+            
+            <div class="card course-card-premium" style="display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; border-radius: 16px; border: 1px solid var(--border-color); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); --accent-hover-color: {{ theme_color }};">
+                <!-- Top accent line -->
+                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 5px; background-color: {{ theme_color }};"></div>
+                
+                <div style="padding: 2rem; display: flex; flex-direction: column; flex-grow: 1;">
+                    <!-- Image container -->
+                    <div style="height: 160px; background-color: var(--bg-tertiary); border-radius: var(--radius-md); overflow: hidden; margin-bottom: 1.5rem; border: 1px solid var(--border-color); position: relative;">
                         <img src="{{ course.thumbnail_url or 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&h=300' }}" alt="{{ course.title }}" style="width:100%; height:100%; object-fit:cover;">
+                        <div style="position: absolute; top: 10px; left: 10px;">
+                            <span class="badge" style="background-color: {{ theme_light }}; color: {{ theme_color }}; font-weight: 700; text-transform: uppercase; font-size: 0.7rem; padding: 0.35rem 0.75rem; border-radius: 9999px; display: inline-block;">
+                                {{ course.difficulty }}
+                            </span>
+                        </div>
                     </div>
-                    <span class="badge badge-{{ course.difficulty }}" style="margin-bottom: 0.5rem;">{{ course.difficulty }}</span>
-                    <h3 style="margin-bottom: 0.5rem; line-height: 1.2;">{{ course.title }}</h3>
-                    <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1.5rem; line-height: 1.4;">
-                        {{ course.description[:120] }}{% if course.description|length > 120 %}...{% endif %}
+                    
+                    <h3 class="course-title-header" style="margin-bottom: 0.75rem; line-height: 1.3; font-size: 1.25rem; font-family: var(--font-heading); font-weight: 700; transition: color 0.2s ease;">
+                        {{ course.title }}
+                    </h3>
+                    
+                    <p style="color: var(--text-secondary); font-size: 0.925rem; margin-bottom: 1.5rem; line-height: 1.5; flex-grow: 1;">
+                        {{ course.description[:140] }}{% if course.description|length > 140 %}...{% endif %}
                     </p>
                 </div>
                 
-                <a href="{{ url_for('course.detail', course_id=course.id) }}" class="btn btn-primary" style="width: 100%;">
-                    View Course Syllabus
-                </a>
+                <div style="padding: 0 2rem 2rem 2rem;">
+                    <a href="{{ url_for('course.detail', course_id=course.id) }}" class="btn btn-explore-action" style="width: 100%; padding: 0.75rem; text-align: center; border-radius: var(--radius-md); font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; text-decoration: none; border: 1px solid {{ theme_color }}; color: {{ theme_color }}; background: transparent; transition: all 0.25s ease;">
+                        <span>View Syllabus</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
             </div>
         {% endfor %}
     </div>
 {% else %}
-    <div class="card" style="text-align: center; padding: 4rem 1.5rem;">
-        <p style="color: var(--text-secondary); margin-bottom: 0;">No courses found matching your criteria.</p>
+    <div class="card" style="text-align: center; padding: 5rem 2rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color);">
+        <div style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;">📚</div>
+        <h3 style="margin-bottom: 0.5rem;">No Courses Found</h3>
+        <p style="color: var(--text-secondary); margin-bottom: 0;">Try adjusting your search criteria or difficulty filters.</p>
     </div>
 {% endif %}
+
+<style>
+    .course-card-premium:hover {
+        transform: translateY(-6px);
+        border-color: var(--accent-hover-color) !important;
+        box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.1), 0 0 15px rgba(0, 0, 0, 0.02);
+    }
+    .course-card-premium:hover .course-title-header {
+        color: var(--accent-hover-color);
+    }
+    .btn-explore-action:hover {
+        background-color: var(--accent-hover-color) !important;
+        color: #ffffff !important;
+        box-shadow: 0 8px 16px -8px var(--accent-hover-color);
+    }
+    @media (max-width: 768px) {
+        form {
+            grid-template-columns: 1fr !important;
+            gap: 1rem !important;
+        }
+        .form-control, select, button, a {
+            width: 100% !important;
+        }
+    }
+</style>
 {% endblock %}

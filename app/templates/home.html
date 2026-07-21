@@ -8,6 +8,7 @@
     <!-- Link Core Variables -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/variables.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layouts.css') }}">
     <!-- Online Icon Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
@@ -526,26 +527,101 @@
         .course-card-premium:hover .course-btn-premium i {
             transform: translateX(4px);
         }
+
+        @media (max-width: 768px) {
+            /* Nav Bar */
+            .landing-nav {
+                padding: 1rem 1.5rem !important;
+                flex-direction: column !important;
+                height: auto !important;
+                gap: 1rem !important;
+            }
+            .nav-links {
+                gap: 1.25rem !important;
+                flex-wrap: wrap !important;
+                justify-content: center !important;
+                padding: 0 !important;
+                width: 100% !important;
+            }
+            .nav-links li {
+                display: inline-block;
+            }
+
+            /* Hero Section */
+            .hero-section {
+                grid-template-columns: 1fr !important;
+                padding: 2.5rem 1.5rem !important;
+                gap: 2rem !important;
+                text-align: center !important;
+                min-height: auto !important;
+            }
+            .hero-content {
+                text-align: center !important;
+            }
+            .hero-title {
+                font-size: 2.5rem !important;
+            }
+            .hero-desc {
+                margin: 0 auto 2rem auto !important;
+                font-size: 1rem !important;
+            }
+            .hero-cta {
+                justify-content: center !important;
+            }
+            .btn-hero {
+                width: 100% !important;
+                justify-content: center !important;
+            }
+
+            /* Hero Graphics / Avatar */
+            .hero-graphics-container {
+                height: 300px !important;
+                margin-top: 1rem !important;
+            }
+            .developer-wrapper {
+                width: 200px !important;
+                height: 200px !important;
+            }
+            .developer-img {
+                height: 200px !important;
+            }
+            .floating-badge {
+                display: none !important; /* Hide floating absolute elements to prevent overflow */
+            }
+
+            /* Sections & Grids */
+            .section-container {
+                padding: 3rem 1.5rem !important;
+            }
+            .section-container h2 {
+                font-size: 1.85rem !important;
+            }
+            .course-card-premium {
+                padding: 1.5rem !important;
+            }
+        }
     </style>
 </head>
 <body>
 
     <!-- Landing Navigation -->
-    <nav class="landing-nav">
-        <div class="nav-logo">codewithpaparao</div>
-        <ul class="nav-links">
-            <li><a href="#">Home</a></li>
-            <li>
-                <button id="theme-toggle" class="btn btn-outline" style="padding: 0.35rem; font-size: 1rem; border: none; background: transparent;"></button>
-            </li>
-            <li>
-                {% if session.get('user_id') %}
-                    <a href="{{ url_for('dashboard.index') }}" class="btn btn-primary">Dashboard</a>
-                {% else %}
-                    <a href="{{ url_for('auth.login') }}" class="btn btn-primary">Login</a>
-                {% endif %}
-            </li>
-        </ul>
+    <nav class="public-header">
+        <div class="nav-logo">
+            <a href="/">codewithpaparao</a>
+        </div>
+        <nav class="public-nav-links">
+            <a href="/" class="nav-link-item">Home</a>
+            <a href="{{ url_for('course.list_courses') }}" class="nav-link-item">Courses</a>
+            <a href="/about" class="nav-link-item">About Me</a>
+            <a href="/about#contact" class="nav-link-item">Contact</a>
+        </nav>
+        <div class="header-actions">
+            {% if session.get('user_id') %}
+                <a href="{{ url_for('dashboard.index') }}" class="btn btn-primary">Dashboard</a>
+            {% else %}
+                <a href="{{ url_for('auth.login') }}" class="btn btn-primary">Login</a>
+            {% endif %}
+        </div>
     </nav>
 
     <!-- Hero Header Panel -->
@@ -630,17 +706,10 @@
                         Learn memory management, pointers, file handling, and structured coding patterns from the roots up.
                     </p>
                     <div style="margin-top: auto; padding-top: 1.5rem;">
-                        {% if session.get('user_id') %}
-                            <a href="{{ url_for('dashboard.index') }}" class="course-btn-premium">
-                                <span>Start Learning</span>
-                                <i class="fa-solid fa-arrow-right"></i>
-                            </a>
-                        {% else %}
-                            <a href="{{ url_for('auth.login') }}" class="course-btn-premium">
-                                <span>Start Learning</span>
-                                <i class="fa-solid fa-arrow-right"></i>
-                            </a>
-                        {% endif %}
+                        <a href="/courses/lang/c" class="course-btn-premium">
+                            <span>Start Learning</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -658,17 +727,10 @@
                         Master Object-Oriented programming, templates, STL containers, and high-performance system logic.
                     </p>
                     <div style="margin-top: auto; padding-top: 1.5rem;">
-                        {% if session.get('user_id') %}
-                            <a href="{{ url_for('dashboard.index') }}" class="course-btn-premium">
-                                <span>Start Learning</span>
-                                <i class="fa-solid fa-arrow-right"></i>
-                            </a>
-                        {% else %}
-                            <a href="{{ url_for('auth.login') }}" class="course-btn-premium">
-                                <span>Start Learning</span>
-                                <i class="fa-solid fa-arrow-right"></i>
-                            </a>
-                        {% endif %}
+                        <a href="/courses/lang/cpp" class="course-btn-premium">
+                            <span>Start Learning</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -686,17 +748,10 @@
                         Build multi-threaded backend applications, interfaces, exception frameworks, and Java Virtual Machine concepts.
                     </p>
                     <div style="margin-top: auto; padding-top: 1.5rem;">
-                        {% if session.get('user_id') %}
-                            <a href="{{ url_for('dashboard.index') }}" class="course-btn-premium">
-                                <span>Start Learning</span>
-                                <i class="fa-solid fa-arrow-right"></i>
-                            </a>
-                        {% else %}
-                            <a href="{{ url_for('auth.login') }}" class="course-btn-premium">
-                                <span>Start Learning</span>
-                                <i class="fa-solid fa-arrow-right"></i>
-                            </a>
-                        {% endif %}
+                        <a href="/courses/lang/java" class="course-btn-premium">
+                            <span>Start Learning</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -714,17 +769,10 @@
                         Learn scripting, control flows, data manipulation libraries, and Django/Flask full stack integration.
                     </p>
                     <div style="margin-top: auto; padding-top: 1.5rem;">
-                        {% if session.get('user_id') %}
-                            <a href="{{ url_for('dashboard.index') }}" class="course-btn-premium">
-                                <span>Start Learning</span>
-                                <i class="fa-solid fa-arrow-right"></i>
-                            </a>
-                        {% else %}
-                            <a href="{{ url_for('auth.login') }}" class="course-btn-premium">
-                                <span>Start Learning</span>
-                                <i class="fa-solid fa-arrow-right"></i>
-                            </a>
-                        {% endif %}
+                        <a href="/courses/lang/python" class="course-btn-premium">
+                            <span>Start Learning</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -742,17 +790,10 @@
                         Optimize runtime complexity with trees, graphs, sorting algorithms, dynamic programming, and logic.
                     </p>
                     <div style="margin-top: auto; padding-top: 1.5rem;">
-                        {% if session.get('user_id') %}
-                            <a href="{{ url_for('dashboard.index') }}" class="course-btn-premium">
-                                <span>Start Learning</span>
-                                <i class="fa-solid fa-arrow-right"></i>
-                            </a>
-                        {% else %}
-                            <a href="{{ url_for('auth.login') }}" class="course-btn-premium">
-                                <span>Start Learning</span>
-                                <i class="fa-solid fa-arrow-right"></i>
-                            </a>
-                        {% endif %}
+                        <a href="/courses/lang/dsa" class="course-btn-premium">
+                            <span>Start Learning</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
                     </div>
                 </div>
             </div>

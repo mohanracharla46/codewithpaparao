@@ -1,0 +1,179 @@
+{% set hide_sidebar = True %}
+{% extends "base.html" %}
+
+{% block title %}About Me - Papa Rao{% endblock %}
+{% block header_title %}About the Instructor{% endblock %}
+
+{% block content %}
+<div class="about-container" style="max-width: 1000px; margin: 0 auto; padding: 2rem 1rem;">
+    
+    <!-- Hero / Profile Section -->
+    <div class="card" style="padding: 3rem; margin-bottom: 3rem; border-radius: 20px; overflow: hidden; position: relative; border: 1px solid var(--border-color);">
+        <!-- Top accent line -->
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 6px; background: linear-gradient(90deg, var(--accent-color) 0%, #14b8a6 100%);"></div>
+        
+        <div class="profile-grid" style="display: grid; grid-template-columns: 280px 1fr; gap: 3rem; align-items: center;">
+            <div style="text-align: center;">
+                <div style="width: 240px; height: 280px; margin: 0 auto; border-radius: var(--radius-lg); overflow: hidden; border: 2px solid var(--border-color); box-shadow: var(--shadow-lg);">
+                    <img src="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?auto=format&fit=crop&w=480&h=560" alt="Papa Rao" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <h3 style="margin-top: 1rem; margin-bottom: 0.25rem;">Papa Rao</h3>
+                <p style="color: var(--accent-color); font-weight: 600; font-size: 0.9rem;">Founder & Lead Instructor</p>
+            </div>
+            
+            <div>
+                <span class="badge" style="background-color: var(--accent-light); color: var(--accent-color); font-weight: 700; margin-bottom: 1rem;">Meet your instructor</span>
+                <h1 style="font-size: 2.5rem; line-height: 1.15; margin-bottom: 1.25rem;">Democratizing Tech Education with a <span style="color: var(--accent-color);">Practical Approach</span></h1>
+                <p style="color: var(--text-secondary); line-height: 1.7; font-size: 1.05rem; margin-bottom: 1.5rem;">
+                    Hello! I'm Papa Rao, a seasoned software engineer and tech educator. Over the last decade, I've had the privilege of building scalable software systems and mentoring hundreds of developers. 
+                </p>
+                <p style="color: var(--text-secondary); line-height: 1.7; font-size: 1.05rem;">
+                    I founded <strong>codewithpaparao</strong> to bridge the gap between abstract computer science theory and real-world software engineering practice. Our courses focus on deep, foundational concepts—like pointer layouts, memory management, and system optimization—rather than just syntax rules.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 4rem;">
+        <div class="card stat-card" style="text-align: center; padding: 2rem; border-radius: var(--radius-lg); transition: transform 0.3s ease; border: 1px solid var(--border-color);">
+            <div style="font-size: 2.25rem; font-weight: 800; color: var(--accent-color); margin-bottom: 0.5rem;">10K+</div>
+            <div style="color: var(--text-secondary); font-weight: 600; font-size: 0.9rem;">Students Mentored</div>
+        </div>
+        <div class="card stat-card" style="text-align: center; padding: 2rem; border-radius: var(--radius-lg); transition: transform 0.3s ease; border: 1px solid var(--border-color);">
+            <div style="font-size: 2.25rem; font-weight: 800; color: var(--accent-color); margin-bottom: 0.5rem;">5+</div>
+            <div style="color: var(--text-secondary); font-weight: 600; font-size: 0.9rem;">Years of Experience</div>
+        </div>
+        <div class="card stat-card" style="text-align: center; padding: 2rem; border-radius: var(--radius-lg); transition: transform 0.3s ease; border: 1px solid var(--border-color);">
+            <div style="font-size: 2.25rem; font-weight: 800; color: var(--accent-color); margin-bottom: 0.5rem;">15+</div>
+            <div style="color: var(--text-secondary); font-weight: 600; font-size: 0.9rem;">Interactive Modules</div>
+        </div>
+        <div class="card stat-card" style="text-align: center; padding: 2rem; border-radius: var(--radius-lg); transition: transform 0.3s ease; border: 1px solid var(--border-color);">
+            <div style="font-size: 2.25rem; font-weight: 800; color: var(--accent-color); margin-bottom: 0.5rem;">98%</div>
+            <div style="color: var(--text-secondary); font-weight: 600; font-size: 0.9rem;">Completion Rate</div>
+        </div>
+    </div>
+
+    <!-- Core Philosophy Section -->
+    <div style="margin-bottom: 4rem;">
+        <h2 style="text-align: center; font-size: 2rem; margin-bottom: 2.5rem; font-family: var(--font-heading);">My Teaching Philosophy</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
+            
+            <div class="card core-card" style="padding: 2.25rem; border-radius: var(--radius-lg); transition: all 0.3s ease; border: 1px solid var(--border-color);">
+                <div style="width: 48px; height: 48px; border-radius: 12px; background: var(--accent-light); color: var(--accent-color); display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; font-size: 1.5rem;">
+                    <i class="fa-solid fa-laptop-code"></i>
+                </div>
+                <h3 style="margin-bottom: 0.75rem;">Practical First</h3>
+                <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;">
+                    Theory is important, but true understanding comes through writing code. All lessons include real-world assignments, lab projects, and interactive quizzes to reinforce concepts.
+                </p>
+            </div>
+
+            <div class="card core-card" style="padding: 2.25rem; border-radius: var(--radius-lg); transition: all 0.3s ease; border: 1px solid var(--border-color);">
+                <div style="width: 48px; height: 48px; border-radius: 12px; background: var(--accent-light); color: var(--accent-color); display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; font-size: 1.5rem;">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+                <h3 style="margin-bottom: 0.75rem;">Under the Hood</h3>
+                <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;">
+                    We don't skip the hard parts. You'll learn how programs allocate memory, compile instructions, manage call stacks, and run algorithms under constraints.
+                </p>
+            </div>
+
+            <div class="card core-card" style="padding: 2.25rem; border-radius: var(--radius-lg); transition: all 0.3s ease; border: 1px solid var(--border-color);">
+                <div style="width: 48px; height: 48px; border-radius: 12px; background: var(--accent-light); color: var(--accent-color); display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; font-size: 1.5rem;">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <h3 style="margin-bottom: 0.75rem;">Continuous Mentorship</h3>
+                <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;">
+                    Learning shouldn't be a lonely journey. We provide automated feedbacks, bookmarks, modular timelines, and structured systems to help you succeed.
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Timeline Journey -->
+    <div style="margin-bottom: 4rem;">
+        <h2 style="text-align: center; font-size: 2rem; margin-bottom: 2.5rem; font-family: var(--font-heading);">The Journey</h2>
+        <div style="position: relative; max-width: 800px; margin: 0 auto; padding-left: 2rem; border-left: 3px solid var(--border-color);">
+            
+            <!-- Item 1 -->
+            <div style="position: relative; margin-bottom: 2.5rem;">
+                <div style="position: absolute; left: -2.55rem; top: 0.25rem; width: 14px; height: 14px; border-radius: 50%; background: var(--accent-color); border: 3px solid var(--bg-primary);"></div>
+                <span style="font-weight: 700; color: var(--accent-color); font-size: 0.9rem;">2015 – 2018</span>
+                <h3 style="margin: 0.25rem 0 0.5rem 0;">Software Architect & Developer</h3>
+                <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;">
+                    Worked at high-growth startups designing service architectures, optimizing SQL database constraints, and engineering modular backend environments.
+                </p>
+            </div>
+
+            <!-- Item 2 -->
+            <div style="position: relative; margin-bottom: 2.5rem;">
+                <div style="position: absolute; left: -2.55rem; top: 0.25rem; width: 14px; height: 14px; border-radius: 50%; background: var(--accent-color); border: 3px solid var(--bg-primary);"></div>
+                <span style="font-weight: 700; color: var(--accent-color); font-size: 0.9rem;">2018 – 2022</span>
+                <h3 style="margin: 0.25rem 0 0.5rem 0;">Senior Staff Engineer</h3>
+                <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;">
+                    Led development teams building large-scale enterprise platforms. Oversaw developer onboarding, mentoring junior engineers, and designing code guidelines.
+                </p>
+            </div>
+
+            <!-- Item 3 -->
+            <div style="position: relative;">
+                <div style="position: absolute; left: -2.55rem; top: 0.25rem; width: 14px; height: 14px; border-radius: 50%; background: var(--accent-color); border: 3px solid var(--bg-primary);"></div>
+                <span style="font-weight: 700; color: var(--accent-color); font-size: 0.9rem;">2022 – Present</span>
+                <h3 style="margin: 0.25rem 0 0.5rem 0;">Founder & Instructor at codewithpaparao</h3>
+                <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;">
+                    Decided to focus full-time on creating premium learning curriculum. Created detailed interactive tracks covering DSA, Python, Java, C, and C++ for developers worldwide.
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Get in Touch Card -->
+    <div id="contact" class="card" style="padding: 2.5rem; text-align: center; border-radius: var(--radius-lg); background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%); border: 1px solid var(--border-color);">
+        <h2 style="margin-bottom: 0.75rem;">Have questions about the courses?</h2>
+        <p style="color: var(--text-secondary); max-width: 600px; margin: 0 auto 1.5rem auto; line-height: 1.6;">
+            I'm always excited to talk about code, structure, algorithms, and career paths. Reach out directly at <strong>support@codewithpaparao.com</strong> or explore our catalog!
+        </p>
+        <div style="display: flex; gap: 1rem; justify-content: center;">
+            <a href="{{ url_for('course.list_courses') }}" class="btn btn-primary" style="padding: 0.75rem 1.75rem;">Browse Course Catalog</a>
+            <a href="mailto:support@codewithpaparao.com" class="btn btn-outline" style="padding: 0.75rem 1.75rem; background: var(--bg-secondary); border: 1px solid var(--border-color);">Send Email</a>
+        </div>
+    </div>
+
+</div>
+
+<style>
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-lg);
+        border-color: var(--accent-color) !important;
+    }
+    .core-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-lg);
+        border-color: var(--accent-color) !important;
+    }
+    @media (max-width: 768px) {
+        .profile-grid {
+            grid-template-columns: 1fr !important;
+            gap: 2rem !important;
+        }
+        .about-container {
+            padding: 1rem 0.5rem !important;
+        }
+        .card {
+            padding: 1.5rem !important;
+        }
+        h1 {
+            font-size: 2rem !important;
+        }
+        .btn {
+            width: 100% !important;
+            text-align: center;
+            justify-content: center;
+        }
+    }
+</style>
+{% endblock %}
