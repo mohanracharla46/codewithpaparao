@@ -44,16 +44,20 @@ if __name__ == '__main__':
             )
             db.session.add(sa)
             
-        if not Profile.query.filter_by(email='admin@lms.com').first():
+        admin_prof = Profile.query.filter_by(email='admin@lms.com').first()
+        if not admin_prof:
             a = Profile(
                 id=mock_a_id,
-                first_name='Jane',
-                last_name='Instructor',
+                first_name='Admin',
+                last_name='',
                 email='admin@lms.com',
                 role='admin',
                 status='active'
             )
             db.session.add(a)
+        else:
+            admin_prof.first_name = 'Admin'
+            admin_prof.last_name = ''
             
         if not Profile.query.filter_by(email='student@lms.com').first():
             s = Profile(

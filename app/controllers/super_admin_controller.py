@@ -96,7 +96,7 @@ def settings():
         site_info_setting = SystemSetting(
             key='site_info',
             value={
-                'site_name': 'codewithpaparao',
+                'site_name': 'CodeWithPapaRao',
                 'tagline': 'Premium SaaS Learning Portal',
                 'contact_email': 'support@codewithpaparao.com',
                 'registration_open': True
@@ -108,7 +108,7 @@ def settings():
     site_info = site_info_setting.value
     
     if request.method == 'POST':
-        site_name = request.form.get('site_name', 'codewithpaparao').strip()
+        site_name = request.form.get('site_name', 'CodeWithPapaRao').strip()
         tagline = request.form.get('tagline', '').strip()
         contact_email = request.form.get('contact_email', '').strip()
         registration_open = request.form.get('registration_open') == 'on'

@@ -123,7 +123,7 @@ class LMSTestCase(unittest.TestCase):
     def test_landing_page_rendering(self):
         res = self.client.get('/')
         self.assertEqual(res.status_code, 200)
-        self.assertIn(b'codewithpaparao', res.data)
+        self.assertIn(b'CodeWithPapaRao', res.data)
         self.assertIn(b'Master In-Demand', res.data)
 
     # Test 8: Public About Me page rendering

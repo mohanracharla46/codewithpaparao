@@ -67,6 +67,9 @@
                         <li class="sidebar-item {% if request.endpoint == 'admin.certificates' %}active{% endif %}">
                             <a href="{{ url_for('admin.certificates') }}"><i class="fa-solid fa-graduation-cap" style="min-width: 20px;"></i> Certificates</a>
                         </li>
+                        <li class="sidebar-item">
+                            <a href="{{ url_for('index') }}" target="_blank"><i class="fa-solid fa-globe" style="min-width: 20px;"></i> View Site</a>
+                        </li>
                     {% endif %}
                     
                     {% if session.get('user_role') == 'super_admin' %}
@@ -103,11 +106,14 @@
                     </div>
                 </div>
                 <div class="header-actions">
+                    <a href="{{ url_for('index') }}" target="_blank" class="btn btn-outline" style="font-size: 0.85rem; padding: 0.35rem 0.75rem; display: inline-flex; align-items: center; gap: 0.4rem; border-radius: var(--radius-md); text-decoration: none;">
+                        <i class="fa-solid fa-globe"></i> View Site
+                    </a>
                     {% if current_profile %}
                         <div class="user-badge">
                             <img src="{{ current_profile.avatar_url or 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=80&h=80' }}" class="user-avatar" alt="Avatar">
                             <span>{{ current_profile.full_name }}</span>
-                            <span class="badge" style="font-size:0.65rem; background: var(--accent-light); color: var(--accent-color);">{{ current_profile.role }}</span>
+                            <span class="badge" style="font-size:0.65rem; background: var(--accent-light); color: var(--accent-color); font-weight: 700; text-transform: uppercase;">{{ current_profile.role | replace('_', ' ') }}</span>
                         </div>
                     {% endif %}
                 </div>

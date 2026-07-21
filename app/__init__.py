@@ -25,13 +25,13 @@ def create_app(config_name='development'):
     @app.context_processor
     def inject_global_data():
         from app.models.models import SystemSetting, Profile
-        site_name = "codewithpaparao"
+        site_name = "CodeWithPapaRao"
         
         # Safe query
         try:
             site_info = SystemSetting.query.filter_by(key='site_info').first()
             if site_info and isinstance(site_info.value, dict):
-                site_name = site_info.value.get('site_name', 'codewithpaparao')
+                site_name = site_info.value.get('site_name', 'CodeWithPapaRao')
         except Exception:
             pass
             
