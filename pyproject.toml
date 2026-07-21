@@ -1,8 +1,12 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "codewithpaparao"
 version = "0.1.0"
 description = "CodeWithPapaRao SaaS Learning Portal"
-requires-python = ">=3.10"
+requires-python = ">=3.9"
 dependencies = [
     "Flask==3.0.2",
     "Flask-SQLAlchemy==3.1.1",
