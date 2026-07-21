@@ -14,10 +14,15 @@ class Config:
     # Supabase PostgreSQL URI (fallback to local SQLite if not configured)
     db_url = os.environ.get('DATABASE_URL') or os.environ.get('SUPABASE_DB_URL')
     if db_url and db_url.startswith("postgres://"):
-        # SQLAlchemy requires postgresql:// instead of postgres://
         db_url = db_url.replace("postgres://", "postgresql://", 1)
-    
-    SQLALCHEMY_DATABASE_URI = db_url or "sqlite:///lms.sqlite"
+        
+    if not db_url:
+        if os.environ.get('VERCEL'):
+            db_url = "sqlite:////tmp/lms.sqlite"
+        else:
+            db_url = "sqlite:///lms.sqlite"
+
+    SQLALCHEMY_DATABASE_URI = db_url
     
     # Mock settings (if True, services will mock external API calls)
     MOCK_SERVICES = os.environ.get('MOCK_SERVICES', 'True').lower() in ('true', '1', 'yes')
