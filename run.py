@@ -4,13 +4,11 @@ from app import create_app, db
 env = os.environ.get('FLASK_ENV', 'development')
 app = create_app(env)
 
-if __name__ == '__main__':
-    with app.app_context():
-        # Setup tables (specifically for SQLite development/testing)
+# Initialize tables & default seed data on startup
+with app.app_context():
+    try:
         db.create_all()
-        # Seed basic system settings and initial superadmin if needed
         from app.models.models import Profile, SystemSetting
-        import uuid
         
         # Check if settings exist, seed default
         if not SystemSetting.query.filter_by(key='site_info').first():
@@ -26,9 +24,6 @@ if __name__ == '__main__':
             db.session.add(site_info)
             db.session.commit()
             
-        # Seed a mock admin/superadmin for initial local developer setup if it's empty
-        # We can seed a superadmin, an admin, and a student user.
-        # Since it is a demo environment, this helps developers boot it instantly.
         mock_sa_id = '00000000-0000-0000-0000-000000000001'
         mock_a_id = '00000000-0000-0000-0000-000000000002'
         mock_s_id = '00000000-0000-0000-0000-000000000003'
@@ -71,11 +66,9 @@ if __name__ == '__main__':
             db.session.add(s)
             
         db.session.commit()
-        print("Database seeded with default mock profiles:")
-        print(" - Super Admin: superadmin@lms.com")
-        print(" - Admin: admin@lms.com (credentials: admin / password)")
-        print(" - Student: student@lms.com")
-        print("All mock passwords in mock mode are 'password123', except Admin which is 'password'.")
-        
+    except Exception as e:
+        print(f"Database setup notice: {e}")
+
+if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
