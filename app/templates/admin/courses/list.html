@@ -40,7 +40,7 @@
                             </td>
                             <td>
                                 <strong>{{ course.title }}</strong>
-                                <div style="color: var(--text-secondary); font-size: 0.75rem;">ID: {{ course.id[:8] }}</div>
+                                <div style="color: var(--text-secondary); font-size: 0.75rem;">ID: {{ (course.id|string)[:8] }}</div>
                             </td>
                             <td>
                                 <span class="badge badge-{{ course.difficulty }}">{{ course.difficulty }}</span>

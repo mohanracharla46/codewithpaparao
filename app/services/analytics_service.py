@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta, timezone
 from app import db
 from app.models.models import Profile, Course, Module, Lesson, Quiz, QuizAttempt, StudentProgress, Certificate, ActivityLog
 from sqlalchemy import func
@@ -45,6 +46,10 @@ class AnalyticsService:
         # Student count - total unique students who have started progress or taken quizzes
         student_count = 0
         quiz_pass_rate = 0.0
+        active_last_week = 0
+        
+        system_total_students = Profile.query.filter(Profile.role == 'student').count()
+        cutoff = datetime.now(timezone.utc).replace(tzinfo=None) - timedelta(days=7)
         
         if course_ids:
             # Let's count how many students have certificates or progress in these courses
@@ -57,19 +62,40 @@ class AnalyticsService:
                     StudentProgress.lesson_id.in_(lesson_ids)
                 ).distinct().count()
                 
-            # Quiz success rate
-            attempts = QuizAttempt.query.join(QuizAttempt.quiz).filter(
+                # Active last week (lesson progress)
+                active_sp = db.session.query(StudentProgress.student_id).filter(
+                    StudentProgress.lesson_id.in_(lesson_ids),
+                    StudentProgress.completed_at >= cutoff
+                ).distinct().all()
+            else:
+                active_sp = []
+                
+            # Quiz success rate and attempts
+            attempts_query = QuizAttempt.query.join(QuizAttempt.quiz).filter(
                 Quiz.module.has(Module.course_id.in_(course_ids))
-            ).all()
+            )
+            attempts = attempts_query.all()
             
             if attempts:
                 passes = sum(1 for a in attempts if a.passed)
                 quiz_pass_rate = round((passes / len(attempts)) * 100, 1)
+                
+            # Active last week (quiz attempts)
+            active_qa = db.session.query(QuizAttempt.student_id).join(QuizAttempt.quiz).filter(
+                Quiz.module.has(Module.course_id.in_(course_ids)),
+                QuizAttempt.completed_at >= cutoff
+            ).distinct().all()
+            
+            active_student_ids = set([r[0] for r in active_sp] + [r[0] for r in active_qa])
+            active_last_week = len(active_student_ids)
 
         return {
             "total_courses": total_courses,
             "published_courses": published_courses,
             "total_students": student_count,
+            "system_total_students": system_total_students,
+            "active_students": student_count,
+            "active_students_last_week": active_last_week,
             "quiz_pass_rate": quiz_pass_rate
         }
 

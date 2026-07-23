@@ -42,11 +42,29 @@
     </div>
     <div class="stat-card">
         <div class="stat-info">
+            <span class="stat-lbl">Total Students</span>
+            <span class="stat-val">{{ stats.system_total_students }}</span>
+        </div>
+        <div class="stat-icon-wrapper" style="background-color: rgba(99, 102, 241, 0.12); color: #6366f1;">
+            <i class="fa-solid fa-users"></i>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-info">
             <span class="stat-lbl">Active Students</span>
-            <span class="stat-val">{{ stats.total_students }}</span>
+            <span class="stat-val">{{ stats.active_students }}</span>
         </div>
         <div class="stat-icon-wrapper" style="background-color: rgba(13, 148, 136, 0.12); color: #0d9488;">
-            <i class="fa-solid fa-user-group"></i>
+            <i class="fa-solid fa-user-check"></i>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-info">
+            <span class="stat-lbl">Active (Last 7 Days)</span>
+            <span class="stat-val">{{ stats.active_students_last_week }}</span>
+        </div>
+        <div class="stat-icon-wrapper" style="background-color: rgba(16, 185, 129, 0.12); color: #10b981;">
+            <i class="fa-solid fa-calendar-check"></i>
         </div>
     </div>
     <div class="stat-card">
@@ -94,7 +112,7 @@
                             </td>
                             <td style="padding: 0.85rem 1rem;">
                                 <strong style="font-weight: 600; color: var(--text-primary);">{{ course.title }}</strong>
-                                <div style="color: var(--text-muted); font-size: 0.75rem; font-family: monospace; margin-top: 0.15rem;">ID: {{ course.id[:8] }}</div>
+                                <div style="color: var(--text-muted); font-size: 0.75rem; font-family: monospace; margin-top: 0.15rem;">ID: {{ (course.id|string)[:8] }}</div>
                             </td>
                             <td style="padding: 0.85rem 1rem;">
                                 <span class="badge badge-{{ course.difficulty }}" style="text-transform: capitalize;">{{ course.difficulty }}</span>
