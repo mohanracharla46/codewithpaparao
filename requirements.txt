@@ -5,3 +5,4 @@ supabase==2.3.0
 firebase-admin==6.4.0
 python-dotenv==1.0.1
 werkzeug==3.0.1
+psycopg2-binary==2.9.9
