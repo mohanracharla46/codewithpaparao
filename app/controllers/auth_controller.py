@@ -23,6 +23,20 @@ def login():
                 return render_template('auth/login.html'), 400
 
             current_app.logger.info("database connection/query stage: attempting user authentication lookup")
+            
+            # Log the masked database URI to verify which host it's connecting to
+            db_uri = current_app.config.get('SQLALCHEMY_DATABASE_URI', '')
+            try:
+                from urllib.parse import urlparse
+                parsed = urlparse(db_uri)
+                if parsed.password:
+                    masked_uri = db_uri.replace(parsed.password, '********')
+                else:
+                    masked_uri = db_uri
+                current_app.logger.info(f"Database URI in use: {masked_uri}")
+            except Exception:
+                current_app.logger.info("Could not parse database URI for logging")
+                
             res, status_code = SupabaseService.login_user(email, password)
             
             if status_code == 200:
