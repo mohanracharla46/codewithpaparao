@@ -213,7 +213,10 @@ class SupabaseService:
     @staticmethod
     def _save_mock_password(email, hashed_pw):
         import json
-        db_path = os.path.join(os.path.dirname(current_app.root_path), 'instance')
+        if os.environ.get('VERCEL'):
+            db_path = '/tmp'
+        else:
+            db_path = os.path.join(os.path.dirname(current_app.root_path), 'instance')
         os.makedirs(db_path, exist_ok=True)
         file_path = os.path.join(db_path, 'mock_auth.json')
         
@@ -232,7 +235,11 @@ class SupabaseService:
     @staticmethod
     def _get_mock_password(email):
         import json
-        file_path = os.path.join(os.path.dirname(current_app.root_path), 'instance', 'mock_auth.json')
+        if os.environ.get('VERCEL'):
+            db_path = '/tmp'
+        else:
+            db_path = os.path.join(os.path.dirname(current_app.root_path), 'instance')
+        file_path = os.path.join(db_path, 'mock_auth.json')
         if not os.path.exists(file_path):
             return None
         try:

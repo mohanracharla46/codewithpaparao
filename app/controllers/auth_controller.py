@@ -11,42 +11,56 @@ def login():
         return redirect(url_for('dashboard.index'))
 
     if request.method == 'POST':
-        email = request.form.get('email', '').strip()
-        password = request.form.get('password', '')
+        import traceback
+        current_app.logger.info("login request received")
+        try:
+            email = request.form.get('email', '').strip()
+            password = request.form.get('password', '')
 
-        if not email or not password:
-            flash('Please fill in all fields.', 'danger')
-            return render_template('auth/login.html'), 400
+            if not email or not password:
+                current_app.logger.warning("authentication stage: missing email or password")
+                flash('Please fill in all fields.', 'danger')
+                return render_template('auth/login.html'), 400
 
-        res, status_code = SupabaseService.login_user(email, password)
-        
-        if status_code == 200:
-            user_data = res.get('user', {})
-            profile = res.get('profile')
+            current_app.logger.info("database connection/query stage: attempting user authentication lookup")
+            res, status_code = SupabaseService.login_user(email, password)
             
-            # Store in session
-            session['user_id'] = profile.id
-            session['user_role'] = profile.role
-            session['user_email'] = profile.email
-            session['user_name'] = profile.full_name
-            
-            # Audit log
-            AnalyticsService.log_activity(
-                user_id=profile.id,
-                action='login',
-                details={'email': email},
-                ip_address=request.remote_addr
-            )
-            
-            flash(f'Welcome back, {profile.first_name or "User"}!', 'success')
-            
-            # Redirect to next url if present
-            next_url = session.pop('next_url', None)
-            if next_url:
-                return redirect(next_url)
-            return redirect(url_for('dashboard.index'))
-        else:
-            flash(res.get('error', 'Login failed. Please verify credentials.'), 'danger')
+            if status_code == 200:
+                current_app.logger.info("authentication stage: authentication success")
+                user_data = res.get('user', {})
+                profile = res.get('profile')
+                
+                # Store in session
+                current_app.logger.info("session/token stage: creating session data")
+                session['user_id'] = profile.id
+                session['user_role'] = profile.role
+                session['user_email'] = profile.email
+                session['user_name'] = profile.full_name
+                
+                # Audit log
+                current_app.logger.info("session/token stage: logging user activity")
+                AnalyticsService.log_activity(
+                    user_id=profile.id,
+                    action='login',
+                    details={'email': email},
+                    ip_address=request.remote_addr
+                )
+                
+                flash(f'Welcome back, {profile.first_name or "User"}!', 'success')
+                
+                # Redirect to next url if present
+                next_url = session.pop('next_url', None)
+                if next_url:
+                    return redirect(next_url)
+                return redirect(url_for('dashboard.index'))
+            else:
+                current_app.logger.warning(f"authentication stage: failed authentication with status {status_code}: {res.get('error')}")
+                flash(res.get('error', 'Login failed. Please verify credentials.'), 'danger')
+        except Exception as e:
+            current_app.logger.error(f"exception type: {type(e).__name__}, message: {str(e)}")
+            current_app.logger.error(traceback.format_exc())
+            flash("An internal server error occurred. Please try again later.", "danger")
+            return render_template('auth/login.html'), 500
 
     return render_template('auth/login.html')
 
