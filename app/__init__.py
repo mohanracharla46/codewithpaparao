@@ -72,4 +72,12 @@ def create_app(config_name='development'):
     def about():
         return render_template('about.html')
         
+    # Custom route to serve local uploads from /tmp/uploads on Vercel
+    @app.route('/static/uploads/<path:filename>')
+    def serve_uploads(filename):
+        from flask import send_from_directory
+        if os.environ.get('VERCEL'):
+            return send_from_directory('/tmp/uploads', filename)
+        return send_from_directory(os.path.join(app.root_path, 'static', 'uploads'), filename)
+        
     return app

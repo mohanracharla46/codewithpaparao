@@ -165,9 +165,15 @@ class SupabaseService:
         
         path_in_bucket = f"{folder_name}/{unique_filename}" if folder_name else unique_filename
         
-        if cls.is_mock():
-            # Mock mode: save locally under app/static/uploads/bucket_name/
-            upload_folder = os.path.join(current_app.root_path, 'static', 'uploads', bucket_name)
+        # Check if running on Vercel (read-only container, write to /tmp instead)
+        is_vercel = os.environ.get('VERCEL')
+        if is_vercel:
+            local_base = '/tmp/uploads'
+        else:
+            local_base = os.path.join(current_app.root_path, 'static', 'uploads')
+            
+        def save_locally():
+            upload_folder = os.path.join(local_base, bucket_name)
             if folder_name:
                 upload_folder = os.path.join(upload_folder, folder_name)
             
@@ -180,6 +186,9 @@ class SupabaseService:
             if folder_name:
                 subpath += f"/{folder_name}"
             return f"/static/{subpath}/{unique_filename}"
+            
+        if cls.is_mock():
+            return save_locally()
         else:
             # Real Supabase Storage
             try:
@@ -200,14 +209,11 @@ class SupabaseService:
                 current_app.logger.error(f"Supabase Storage Upload Error: {e}")
                 # Fallback to local upload so the upload doesn't fail
                 try:
-                    upload_folder = os.path.join(current_app.root_path, 'static', 'uploads', bucket_name)
-                    os.makedirs(upload_folder, exist_ok=True)
-                    file_path = os.path.join(upload_folder, unique_filename)
                     file_obj.seek(0)
-                    file_obj.save(file_path)
-                    return f"/static/uploads/{bucket_name}/{unique_filename}"
+                    return save_locally()
                 except Exception as inner:
                     raise Exception(f"Upload failed: {e}. Fallback failed: {inner}")
+
 
     # --- MOCK AUTH DATABASE PERSISTENCE HELPERS ---
     @staticmethod
