@@ -16,3 +16,6 @@ dependencies = [
     "python-dotenv==1.0.1",
     "werkzeug==3.0.1",
 ]
+
+[tool.setuptools]
+packages = ["app"]
