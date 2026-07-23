@@ -3,76 +3,584 @@
 {% block title %}Dashboard{% endblock %}
 {% block header_title %}Student Portal{% endblock %}
 
+{% block extra_css %}
+<style>
+    /* Dashboard grid container */
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 2rem;
+        margin-top: 1.5rem;
+    }
+
+    @media (max-width: 1024px) {
+        .dashboard-grid {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+    }
+
+    /* Welcome banner card with gradient */
+    .welcome-banner {
+        position: relative;
+        background: linear-gradient(135deg, var(--accent-color) 0%, #0f766e 100%);
+        color: #ffffff !important;
+        padding: 2.25rem;
+        border-radius: var(--radius-lg);
+        margin-bottom: 2rem;
+        box-shadow: var(--shadow-lg);
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .welcome-banner h1 {
+        color: #ffffff !important;
+        font-size: 2.25rem;
+        margin-bottom: 0.5rem;
+        font-weight: 700;
+    }
+
+    .welcome-banner p {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1.05rem;
+        margin-bottom: 0;
+    }
+
+    .welcome-banner::after {
+        content: '';
+        position: absolute;
+        top: -60px;
+        right: -60px;
+        width: 220px;
+        height: 220px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.08);
+        pointer-events: none;
+    }
+
+    /* Stats grid and cards */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2.5rem;
+    }
+
+    .stat-card-new {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-lg);
+        padding: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1.25rem;
+        box-shadow: var(--shadow-sm);
+        transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+        cursor: default;
+    }
+
+    .stat-card-new:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .stat-icon-wrapper {
+        width: 52px;
+        height: 52px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+        flex-shrink: 0;
+    }
+
+    .stat-icon-lessons { background: rgba(13, 148, 136, 0.1); color: var(--accent-color); }
+    .stat-icon-certs { background: rgba(245, 158, 11, 0.1); color: var(--warning-color); }
+    .stat-icon-quizzes { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
+    .stat-icon-score { background: rgba(16, 185, 129, 0.1); color: var(--success-color); }
+
+    .stat-info {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .stat-num {
+        font-size: 1.8rem;
+        font-weight: 700;
+        line-height: 1.1;
+        color: var(--text-primary);
+        margin-bottom: 0.2rem;
+    }
+
+    .stat-label {
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--text-muted);
+        font-weight: 600;
+    }
+
+    /* Enrolled courses rows */
+    .course-grid-new {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+    }
+
+    .course-row-card {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-lg);
+        padding: 1.25rem;
+        display: grid;
+        grid-template-columns: 180px 1fr;
+        gap: 1.5rem;
+        box-shadow: var(--shadow-sm);
+        transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+    }
+
+    .course-row-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .course-thumb-wrapper {
+        height: 120px;
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+        position: relative;
+    }
+
+    .course-thumb-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform var(--transition-normal);
+    }
+
+    .course-row-card:hover .course-thumb-wrapper img {
+        transform: scale(1.06);
+    }
+
+    .course-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .progress-track-wrapper {
+        margin-top: 0.75rem;
+        display: grid;
+        grid-template-columns: 1fr 150px;
+        gap: 1.5rem;
+        align-items: center;
+    }
+
+    @media (max-width: 768px) {
+        .course-row-card {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        .course-thumb-wrapper {
+            height: 140px;
+        }
+        .progress-track-wrapper {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+    }
+
+    /* Bookmarks style */
+    .bookmark-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .bookmark-item {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-md);
+        padding: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: background-color var(--transition-fast), transform var(--transition-fast);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .bookmark-item:hover {
+        background-color: var(--bg-tertiary);
+        transform: translateX(4px);
+    }
+
+    /* Sidebar widget cards */
+    .widget-card {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-lg);
+        padding: 1.5rem;
+        box-shadow: var(--shadow-sm);
+        margin-bottom: 1.5rem;
+    }
+
+    .widget-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 1.25rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--text-primary);
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 0.75rem;
+    }
+
+    .notification-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.85rem;
+    }
+
+    .notification-item {
+        padding: 0.85rem;
+        border-radius: var(--radius-md);
+        background: var(--bg-primary);
+        border: 1px solid var(--border-color);
+        position: relative;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .notification-item.unread::before {
+        content: '';
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 7px;
+        height: 7px;
+        background: var(--accent-color);
+        border-radius: 50%;
+    }
+
+    .notification-title {
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+        padding-right: 1.25rem;
+        color: var(--text-primary);
+    }
+
+    .notification-desc {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        line-height: 1.35;
+    }
+
+    .notification-time {
+        font-size: 0.68rem;
+        color: var(--text-muted);
+        margin-top: 0.5rem;
+        display: block;
+    }
+
+    .btn-dismiss {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        padding: 0.2rem;
+        opacity: 0.5;
+        transition: opacity 0.2s, color 0.2s;
+    }
+
+    .btn-dismiss:hover {
+        opacity: 1;
+        color: var(--danger-color);
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<!-- Welcome Header -->
-<div style="margin-bottom: 2rem;">
-    <h1>Welcome back, {{ session.get('user_name') }}! 👋</h1>
-    <p style="color: var(--text-secondary);">Here is a snapshot of your learning progress.</p>
-</div>
-
-<!-- Stats Bar -->
-<div class="stats-bar">
-    <div class="stat-card">
-        <span class="stat-lbl">Lessons Completed</span>
-        <span class="stat-val">{{ stats.completed_lessons }}</span>
-    </div>
-    <div class="stat-card">
-        <span class="stat-lbl">Certificates Earned</span>
-        <span class="stat-val">🏆 {{ stats.certificates_count }}</span>
-    </div>
-    <div class="stat-card">
-        <span class="stat-lbl">Quizzes Taken</span>
-        <span class="stat-val">📝 {{ stats.quizzes_taken }}</span>
-    </div>
-    <div class="stat-card">
-        <span class="stat-lbl">Average Score</span>
-        <span class="stat-val">{{ stats.avg_score }}%</span>
+<!-- Welcome Header Banner -->
+<div class="welcome-banner">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; position: relative; z-index: 2;">
+        <div>
+            <h1>Welcome back, {{ session.get('user_name') }}! 👋</h1>
+            <p>Ready to level up your programming skills today? You've completed <strong>{{ stats.completed_lessons }}</strong> lessons so far.</p>
+        </div>
+        <div style="background: rgba(255, 255, 255, 0.15); padding: 0.5rem 1rem; border-radius: var(--radius-md); font-size: 0.85rem; font-weight: 500; backdrop-filter: blur(4px); display: flex; align-items: center; gap: 0.4rem; border: 1px solid rgba(255, 255, 255, 0.15);">
+            <i class="fa-regular fa-calendar"></i>
+            <span id="current-date">Today</span>
+        </div>
     </div>
 </div>
 
-<div style="margin-bottom: 2rem;">
-    <!-- Course Progress Section -->
-    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-        <h2>My Courses</h2>
+<!-- Stats Grid -->
+<div class="stats-grid">
+    <div class="stat-card-new">
+        <div class="stat-icon-wrapper stat-icon-lessons">
+            <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+        <div class="stat-info">
+            <span class="stat-num">{{ stats.completed_lessons }}</span>
+            <span class="stat-label">Lessons Completed</span>
+        </div>
+    </div>
+    
+    <div class="stat-card-new">
+        <div class="stat-icon-wrapper stat-icon-certs">
+            <i class="fa-solid fa-award"></i>
+        </div>
+        <div class="stat-info">
+            <span class="stat-num">{{ stats.certificates_count }}</span>
+            <span class="stat-label">Certificates Earned</span>
+        </div>
+    </div>
+    
+    <div class="stat-card-new">
+        <div class="stat-icon-wrapper stat-icon-quizzes">
+            <i class="fa-solid fa-brain"></i>
+        </div>
+        <div class="stat-info">
+            <span class="stat-num">{{ stats.quizzes_taken }}</span>
+            <span class="stat-label">Quizzes Taken</span>
+        </div>
+    </div>
+    
+    <div class="stat-card-new">
+        <div class="stat-icon-wrapper stat-icon-score">
+            <i class="fa-solid fa-chart-simple"></i>
+        </div>
+        <div class="stat-info">
+            <span class="stat-num">{{ stats.avg_score }}%</span>
+            <span class="stat-label">Average Score</span>
+        </div>
+    </div>
+</div>
+
+<!-- Two-Column Workspace -->
+<div class="dashboard-grid">
+    <!-- Left Main Column (Active Courses & Bookmarks) -->
+    <div style="display: flex; flex-direction: column; gap: 2.5rem;">
         
-        {% if courses_with_progress %}
-            <div class="grid-cols-2" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem;">
-                {% for item in courses_with_progress %}
-                    <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
-                        <div>
-                            <div style="height: 140px; background-color: var(--bg-tertiary); border-radius: var(--radius-md); overflow: hidden; margin-bottom: 1rem; border: 1px solid var(--border-color);">
-                                <img src="{{ item.course.thumbnail_url or 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&h=300' }}" alt="{{ item.course.title }}" style="width:100%; height:100%; object-fit:cover;">
+        <!-- My Learning Path / Active Courses -->
+        <div>
+            <h2 style="margin-bottom: 1.25rem; font-size: 1.4rem; display: flex; align-items: center; gap: 0.6rem;">
+                <i class="fa-solid fa-play" style="font-size: 1.1rem; color: var(--accent-color);"></i> My Learning Path
+            </h2>
+            
+            {% if courses_with_progress %}
+                <div class="course-grid-new">
+                    {% for item in courses_with_progress %}
+                        <div class="course-row-card">
+                            <div class="course-thumb-wrapper">
+                                <img src="{{ item.course.thumbnail_url or 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&h=300' }}" alt="{{ item.course.title }}">
                             </div>
-                            <span class="badge badge-{{ item.course.difficulty }}" style="margin-bottom: 0.5rem;">{{ item.course.difficulty }}</span>
-                            <h3 style="margin-bottom: 0.5rem; line-height: 1.2;">{{ item.course.title }}</h3>
-                            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1rem; line-height: 1.4;">
-                                {{ item.course.description[:100] }}{% if item.course.description|length > 100 %}...{% endif %}
-                            </p>
+                            <div class="course-body">
+                                <div>
+                                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.35rem;">
+                                        <span class="badge badge-{{ item.course.difficulty }}">{{ item.course.difficulty }}</span>
+                                        <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 500;">{{ item.total_lessons }} lessons</span>
+                                    </div>
+                                    <h3 style="font-size: 1.15rem; margin-bottom: 0.35rem; color: var(--text-primary);">{{ item.course.title }}</h3>
+                                    <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.4; margin-bottom: 0;">
+                                        {{ item.course.description[:120] }}{% if item.course.description|length > 120 %}...{% endif %}
+                                    </p>
+                                </div>
+                                
+                                <div class="progress-track-wrapper">
+                                    <div>
+                                        <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.35rem; font-weight: 600;">
+                                            <span>Progress</span>
+                                            <span>{{ item.progress }}%</span>
+                                        </div>
+                                        <div style="width: 100%; height: 8px; background: var(--bg-primary); border-radius: 4px; overflow: hidden; border: 1px solid var(--border-color);">
+                                            <div style="width: {{ item.progress }}%; height: 100%; background: linear-gradient(90deg, var(--accent-color) 0%, var(--success-color) 100%); border-radius: 4px;"></div>
+                                        </div>
+                                    </div>
+                                    <a href="{{ url_for('course.detail', course_id=item.course.id) }}" class="btn {% if item.progress > 0 %}btn-outline{% else %}btn-primary{% endif %}" style="display: flex; align-items: center; justify-content: center; gap: 0.4rem; padding: 0.5rem 1rem; font-size: 0.85rem;">
+                                        {% if item.progress > 0 %}
+                                            <span>Continue</span> <i class="fa-solid fa-arrow-right"></i>
+                                        {% else %}
+                                            <span>Start Course</span> <i class="fa-solid fa-play"></i>
+                                        {% endif %}
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                        
-                        <div>
-                            <div style="margin-bottom: 1rem;">
-                                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.25rem;">
-                                    <span>Progress</span>
-                                    <span>{{ item.progress }}%</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="card" style="text-align: center; padding: 3rem 1.5rem; border: 1px dashed var(--border-color); border-radius: var(--radius-lg);">
+                    <div style="font-size: 2.75rem; color: var(--text-muted); opacity: 0.5; margin-bottom: 1rem;">
+                        <i class="fa-solid fa-book-open"></i>
+                    </div>
+                    <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.95rem;">You are not enrolled in any courses yet.</p>
+                    <a href="{{ url_for('course.list_courses') }}" class="btn btn-primary">Browse Course Catalog</a>
+                </div>
+            {% endif %}
+        </div>
+        
+        <!-- Bookmarks Section -->
+        <div>
+            <h2 style="margin-bottom: 1.25rem; font-size: 1.4rem; display: flex; align-items: center; gap: 0.6rem;">
+                <i class="fa-solid fa-star" style="font-size: 1.1rem; color: #f59e0b;"></i> Bookmarked Lessons
+            </h2>
+            
+            {% if bookmarks %}
+                <div class="bookmark-list">
+                    {% for bookmark in bookmarks %}
+                        <div class="bookmark-item">
+                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                <div style="width: 38px; height: 38px; border-radius: 10px; background: rgba(245, 158, 11, 0.1); color: #f59e0b; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0;">
+                                    {% if bookmark.lesson.content_type == 'video' %}
+                                        <i class="fa-solid fa-circle-play"></i>
+                                    {% elif bookmark.lesson.content_type == 'pdf' %}
+                                        <i class="fa-solid fa-file-pdf"></i>
+                                    {% else %}
+                                        <i class="fa-solid fa-file-lines"></i>
+                                    {% endif %}
                                 </div>
-                                <div style="width: 100%; height: 6px; background: var(--border-color); border-radius: 3px; overflow: hidden;">
-                                    <div style="width: {{ item.progress }}%; height: 100%; background: var(--success-color);"></div>
+                                <div>
+                                    <h4 style="font-size: 0.92rem; margin-bottom: 0.15rem; font-weight: 600;">
+                                        <a href="{{ url_for('course.view_lesson', lesson_id=bookmark.lesson.id) }}" style="color: var(--text-primary); transition: color var(--transition-fast);">{{ bookmark.lesson.title }}</a>
+                                    </h4>
+                                    <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 500;">
+                                        Course: {{ bookmark.lesson.module.course.title }} &bull; {{ bookmark.lesson.content_type | upper }}
+                                    </span>
                                 </div>
                             </div>
-                            <a href="{{ url_for('course.detail', course_id=item.course.id) }}" class="btn btn-primary" style="width: 100%;">
-                                {% if item.progress > 0 %}Continue Learning{% else %}Start Course{% endif %}
+                            <a href="{{ url_for('course.view_lesson', lesson_id=bookmark.lesson.id) }}" class="btn btn-outline" style="padding: 0.35rem 0.75rem; font-size: 0.75rem; border-radius: var(--radius-sm);">
+                                Resume <i class="fa-solid fa-chevron-right" style="margin-left: 0.25rem; font-size: 0.7rem;"></i>
                             </a>
                         </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="card" style="text-align: center; padding: 2rem 1.5rem; border: 1px dashed var(--border-color); border-radius: var(--radius-lg); background: transparent;">
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0;">Lessons you bookmark will appear here for quick access.</p>
+                </div>
+            {% endif %}
+        </div>
+        
+    </div>
+
+    <!-- Right Sidebar Widgets Column -->
+    <div>
+        <!-- Notifications Panel -->
+        <div class="widget-card">
+            <div class="widget-title">
+                <i class="fa-solid fa-bell" style="color: var(--accent-color);"></i> Notifications
+            </div>
+            
+            {% if notifications %}
+                <div class="notification-list">
+                    {% for n in notifications %}
+                        <div class="notification-item unread" id="notification-{{ n.id }}">
+                            <button class="btn-dismiss" title="Mark as read" onclick="dismissNotification('{{ n.id }}')">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                            <h4 class="notification-title">{{ n.title }}</h4>
+                            <p class="notification-desc">{{ n.message }}</p>
+                            <span class="notification-time">
+                                <i class="fa-regular fa-clock" style="margin-right: 0.15rem;"></i> {{ n.created_at.strftime('%b %d, %H:%M') }}
+                            </span>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div style="margin-top: 1.25rem; text-align: center;">
+                    <a href="{{ url_for('student.notifications') }}" style="font-size: 0.78rem; font-weight: 600; color: var(--accent-color); display: inline-flex; align-items: center; gap: 0.25rem;">
+                        View all notifications <i class="fa-solid fa-arrow-right" style="font-size: 0.7rem;"></i>
+                    </a>
+                </div>
+            {% else %}
+                <div style="text-align: center; padding: 2rem 1rem;">
+                    <div style="font-size: 2.25rem; color: var(--text-muted); opacity: 0.4; margin-bottom: 0.75rem;">
+                        <i class="fa-regular fa-bell-slash"></i>
                     </div>
-                {% endfor %}
+                    <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0;">No unread notifications.</p>
+                </div>
+            {% endif %}
+        </div>
+        
+        <!-- Goal / Streak Card -->
+        <div class="widget-card" style="background: linear-gradient(135deg, rgba(13, 148, 136, 0.06) 0%, rgba(20, 184, 166, 0.02) 100%);">
+            <div class="widget-title" style="border-bottom: 1px solid rgba(13, 148, 136, 0.15);">
+                <i class="fa-solid fa-fire" style="color: #ef4444;"></i> Daily Goal
             </div>
-        {% else %}
-            <div class="card" style="text-align: center; padding: 3rem 1.5rem;">
-                <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">You are not enrolled in any courses yet.</p>
-                <a href="{{ url_for('course.list_courses') }}" class="btn btn-primary">Browse Course Catalog</a>
+            <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.45; margin-bottom: 0.75rem;">
+                Keep up the momentum! Study at least one lesson or take a quiz today to maintain your learning streak.
+            </p>
+            <div style="background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 0.75rem; display: flex; align-items: center; justify-content: space-between; box-shadow: var(--shadow-sm);">
+                <span style="font-size: 0.78rem; font-weight: 600; color: var(--text-primary);">Learning Streak</span>
+                <span style="font-size: 0.8rem; font-weight: 700; color: var(--accent-color); display: flex; align-items: center; gap: 0.25rem;">
+                    <i class="fa-solid fa-bolt" style="color: #f59e0b;"></i> Active
+                </span>
             </div>
-        {% endif %}
+        </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Format and display current date in welcome banner
+    const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const dateElement = document.getElementById('current-date');
+    if (dateElement) {
+        dateElement.textContent = new Date().toLocaleDateString('en-US', dateOptions);
+    }
+
+    // Dismiss single notification with AJAX fade-out
+    function dismissNotification(notificationId) {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        
+        fetch(`/student/notifications/${notificationId}/read`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': csrfToken
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                const item = document.getElementById(`notification-${notificationId}`);
+                if (item) {
+                    item.style.opacity = '0';
+                    item.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        item.remove();
+                        
+                        // Check if list is empty now
+                        const list = document.querySelector('.notification-list');
+                        if (list && list.children.length === 0) {
+                            const widget = list.closest('.widget-card');
+                            widget.innerHTML = `
+                                <div class="widget-title">
+                                    <i class="fa-solid fa-bell" style="color: var(--accent-color);"></i> Notifications
+                                </div>
+                                <div style="text-align: center; padding: 2rem 1rem;">
+                                    <div style="font-size: 2.25rem; color: var(--text-muted); opacity: 0.4; margin-bottom: 0.75rem;">
+                                        <i class="fa-regular fa-bell-slash"></i>
+                                    </div>
+                                    <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0;">No unread notifications.</p>
+                                </div>
+                            `;
+                        }
+                    }, 300);
+                }
+            }
+        })
+        .catch(err => {
+            console.error('Error dismissing notification:', err);
+        });
+    }
+</script>
 {% endblock %}
