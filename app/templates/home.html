@@ -1063,13 +1063,18 @@
             color: var(--accent-color);
         }
 
-        /* Responsive Breakpoints */
+        /* ================================================================
+           RESPONSIVE BREAKPOINTS — Full Mobile-First Redesign
+           ================================================================ */
+
+        /* ---- Tablet (≤1024px) ---- */
         @media (max-width: 1024px) {
             .hero-section {
                 grid-template-columns: 1fr;
-                padding: 4rem 2rem;
+                padding: 4rem 2.5rem;
                 text-align: center;
                 gap: 3rem;
+                min-height: auto;
             }
             .hero-content {
                 text-align: center;
@@ -1077,16 +1082,10 @@
                 flex-direction: column;
                 align-items: center;
             }
-            .hero-title {
-                font-size: 3.5rem;
-            }
-            .hero-desc {
-                margin-left: auto;
-                margin-right: auto;
-            }
-            .hero-cta {
-                justify-content: center;
-            }
+            .hero-title { font-size: 3.5rem; }
+            .hero-desc { margin: 0 auto 2rem; }
+            .hero-cta { justify-content: center; flex-wrap: wrap; }
+
             .trainer-card {
                 grid-template-columns: 1fr;
                 padding: 2.5rem;
@@ -1106,69 +1105,153 @@
                 grid-template-columns: 1fr 1fr;
                 gap: 2rem;
             }
+            .section-container {
+                padding: 5rem 2.5rem;
+            }
         }
 
+        /* ---- Mobile (≤768px) ---- */
         @media (max-width: 768px) {
+
+            /* --- Navbar: hamburger toggle --- */
             .public-header {
-                padding: 1rem 1.5rem !important;
-                flex-direction: column !important;
-                height: auto !important;
-                gap: 1rem !important;
+                padding: 0 1.25rem !important;
+                height: 64px !important;
+                flex-wrap: nowrap !important;
+                position: relative !important;
             }
             .public-nav-links {
-                gap: 1.25rem !important;
-                flex-wrap: wrap !important;
-                justify-content: center !important;
-                padding: 0 !important;
+                display: none !important;
+            }
+            .public-nav-links.nav-open {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 0 !important;
+                position: absolute !important;
+                top: 64px !important;
+                left: 0 !important;
                 width: 100% !important;
+                background: white !important;
+                border-bottom: 1px solid var(--border-color) !important;
+                box-shadow: 0 8px 24px rgba(0,0,0,0.08) !important;
+                padding: 0.5rem 0 !important;
+                z-index: 200 !important;
+                animation: navSlideDown 0.25s ease forwards !important;
             }
-            .nav-links li {
-                display: inline-block;
+            @keyframes navSlideDown {
+                from { opacity: 0; transform: translateY(-8px); }
+                to   { opacity: 1; transform: translateY(0); }
             }
-            .hero-title {
-                font-size: 2.5rem;
+            .public-nav-links.nav-open .nav-link-item {
+                padding: 0.85rem 1.75rem !important;
+                border-bottom: 1px solid var(--border-color) !important;
+                font-size: 1rem !important;
+                display: block !important;
             }
-            .hero-graphics-container {
-                height: 300px;
-                margin-top: 1rem;
+            #mobile-nav-toggle {
+                display: inline-flex !important;
+                align-items: center;
+                justify-content: center;
+                width: 40px;
+                height: 40px;
+                border: 1px solid var(--border-color);
+                border-radius: 10px;
+                background: var(--bg-tertiary);
+                cursor: pointer;
+                font-size: 1.2rem;
+                flex-shrink: 0;
+                transition: background 0.2s;
             }
-            .developer-wrapper {
-                width: 200px;
-                height: 200px;
+
+            /* --- Hero --- */
+            .hero-section {
+                padding: 3rem 1.25rem 2rem;
+                gap: 2rem;
             }
-            .developer-img {
-                height: 200px;
+            .hero-title { font-size: 2.25rem; letter-spacing: -0.03em; }
+            .hero-desc { font-size: 1rem; }
+            .hero-cta { flex-direction: column; align-items: stretch; gap: 0.75rem; }
+            .btn-hero { justify-content: center; font-size: 1rem; }
+            .hero-graphics-container { height: 260px; }
+            .developer-wrapper { width: 200px; height: 240px; }
+            .floating-badge { display: none !important; }
+
+            /* --- Sections --- */
+            .section-container { padding: 3.5rem 1.25rem; }
+            .section-header { margin-bottom: 2.5rem; }
+            .section-header h2 { font-size: 1.9rem; }
+            .section-header p { font-size: 0.95rem; }
+
+            /* --- Why Choose Grid (collapse to 1 col) --- */
+            .grid-2, .grid-3 {
+                grid-template-columns: 1fr !important;
             }
-            .floating-badge {
-                display: none !important; /* Hide floating absolute elements to prevent layout overflow */
-            }
-            .section-container {
-                padding: 3.5rem 1.5rem;
-            }
-            .section-header h2 {
-                font-size: 2rem;
-            }
+
+            /* --- Trainer Card --- */
+            .trainer-card { padding: 1.75rem; gap: 1.5rem; }
+            .trainer-image-wrapper { height: 240px; max-width: 220px; }
+
+            /* --- Batch Cards --- */
             .batch-row {
                 grid-template-columns: 1fr;
                 gap: 0.5rem;
-                padding: 1.5rem 0.5rem;
+                padding: 1.25rem 0.75rem;
             }
-            .batch-row > div {
-                padding: 0.15rem 0;
+
+            /* --- New batch card layout: stack on mobile --- */
+            [style*="display: flex"][style*="align-items: center"][style*="justify-content: space-between"] {
+                flex-direction: column !important;
+                align-items: flex-start !important;
             }
-            .footer-grid {
-                grid-template-columns: 1fr;
+
+            /* --- Stats Grid --- */
+            .stats-section .grid-3 { grid-template-columns: 1fr 1fr !important; }
+            .stat-number { font-size: 2.5rem; }
+
+            /* --- Contact Card --- */
+            .contact-grid-card { padding: 1.75rem; gap: 2rem; }
+
+            /* --- Footer --- */
+            .footer { padding: 2.5rem 1.25rem; }
+            .footer-grid { grid-template-columns: 1fr !important; gap: 2rem; }
+            .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+            .footer-bottom-links { flex-wrap: wrap; justify-content: center; gap: 1rem; }
+            .newsletter-form { flex-direction: column; }
+            .newsletter-input { width: 100%; }
+
+            /* --- Toast popups --- */
+            #toast-container {
+                bottom: 1rem !important;
+                right: 1rem !important;
+                left: 1rem !important;
             }
-            .footer-bottom {
-                flex-direction: column;
-                gap: 1rem;
-                text-align: center;
-            }
-            .footer {
-                padding: 3rem 1.5rem;
+            .toast-item {
+                min-width: unset !important;
+                max-width: 100% !important;
+                width: 100% !important;
             }
         }
+
+        /* ---- Small Mobile (≤480px) ---- */
+        @media (max-width: 480px) {
+            .hero-title { font-size: 1.9rem; }
+            .hero-section { padding: 2.5rem 1rem 1.5rem; }
+            .section-container { padding: 3rem 1rem; }
+            .section-header h2 { font-size: 1.65rem; }
+
+            .trainer-card { padding: 1.25rem; }
+            .contact-grid-card { padding: 1.25rem; }
+            .footer { padding: 2rem 1rem; }
+
+            .stats-section .grid-3 { grid-template-columns: 1fr !important; }
+            .stat-number { font-size: 2.2rem; }
+            .stat-box { padding: 1.25rem; }
+
+            /* Batch cards: compress icon/button row */
+            .batch-icon-box { display: none !important; }
+        }
     </style>
+
 </head>
 <body>
 
@@ -1177,20 +1260,23 @@
         <div class="nav-logo">
             <a href="/">CodeWithPapaRao</a>
         </div>
-        <nav class="public-nav-links">
+        <nav id="main-nav" class="public-nav-links">
             <a href="/" class="nav-link-item">Home</a>
             <a href="{{ url_for('course.list_courses') }}" class="nav-link-item">Courses</a>
             <a href="/about" class="nav-link-item">About Me</a>
             <a href="#contact" class="nav-link-item">Contact</a>
         </nav>
-        <div class="header-actions">
+        <div class="header-actions" style="display: flex; align-items: center; gap: 0.75rem;">
             {% if session.get('user_id') %}
                 <a href="{{ url_for('dashboard.index') }}" class="btn btn-primary">Dashboard</a>
             {% else %}
                 <a href="{{ url_for('auth.login') }}" class="btn btn-primary">Login</a>
             {% endif %}
+            <!-- Hamburger toggle (hidden on desktop via CSS) -->
+            <button id="mobile-nav-toggle" aria-label="Open menu" style="display: none;">☰</button>
         </div>
     </header>
+
 
     <!-- 1. Hero Section -->
     <header class="hero-section">
@@ -1458,69 +1544,132 @@
     </section>
 
     <!-- 5. Upcoming Batches Section -->
-    <section id="upcoming-batches" class="section-container" style="background-color: var(--bg-primary); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);">
-        <div class="section-header">
-            <span class="pill-badge">Live Class Schedules</span>
+    <section id="upcoming-batches" class="section-container" style="background: linear-gradient(135deg, var(--bg-primary) 0%, var(--accent-light) 100%); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); overflow: hidden; position: relative;">
+
+        <!-- Decorative background blobs -->
+        <div style="position: absolute; top: -80px; right: -80px; width: 320px; height: 320px; border-radius: 50%; background: radial-gradient(circle, var(--accent-light) 0%, transparent 70%); opacity: 0.5; pointer-events: none;"></div>
+        <div style="position: absolute; bottom: -60px; left: -60px; width: 250px; height: 250px; border-radius: 50%; background: radial-gradient(circle, var(--accent-light) 0%, transparent 70%); opacity: 0.4; pointer-events: none;"></div>
+
+        <div class="section-header" style="position: relative; z-index: 1;">
+            <span class="pill-badge">🗓️ Live Class Schedules</span>
             <h2>Upcoming Cohorts</h2>
-            <p>Join interactive structured batches. Engage in live doubt-clearing sessions and hands-on laboratory reviews.</p>
+            <p>Join interactive, structured batches with live doubt-clearing sessions and hands-on lab reviews.</p>
         </div>
-        
-        <div class="batch-card">
-            <div class="batch-row" style="border-bottom: 2px solid var(--border-color); font-weight: 800; color: var(--text-primary); font-family: var(--font-heading); background-color: var(--bg-primary); pointer-events: none;">
-                <div>Course Batch</div>
-                <div>Start Date</div>
-                <div>Duration</div>
-                <div>Learning Mode</div>
-                <div style="text-align: right; padding-right: 1.5rem;">Action</div>
-            </div>
-            
+
+        <div style="max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.25rem; position: relative; z-index: 1;">
+
             {% for batch in batches %}
-            <div class="batch-row">
-                <div class="batch-name">{{ batch.name }}</div>
-                <div class="batch-date">{{ batch.start_date.strftime('%B %d, %Y') }}</div>
-                <div class="batch-type">{{ batch.duration }}</div>
-                <div class="batch-type">{{ batch.mode }}</div>
-                <div class="batch-status" style="display: flex; align-items: center; justify-content: flex-end; gap: 1rem; padding-right: 1rem;">
-                    {% if batch.status == 'Filling Fast' %}
-                        <span class="badge" style="background-color: #fef3c7; color: #d97706; padding: 0.25rem 0.5rem; border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 600;">{{ batch.status }}</span>
-                    {% elif batch.status == 'Open' %}
-                        <span class="badge" style="background-color: #d1fae5; color: #059669; padding: 0.25rem 0.5rem; border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 600;">{{ batch.status }}</span>
+            <div style="
+                background: white;
+                border-radius: var(--radius-lg);
+                border: 1px solid var(--border-color);
+                border-left: 5px solid {% if batch.status == 'Filling Fast' %}#f59e0b{% elif batch.status == 'Open' %}#10b981{% else %}#94a3b8{% endif %};
+                padding: 1.5rem 2rem;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 1.5rem;
+                box-shadow: 0 2px 12px rgba(13,148,136,0.06);
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
+                position: relative;
+                overflow: hidden;
+            " onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 30px rgba(13,148,136,0.13)'"
+               onmouseout="this.style.transform=''; this.style.boxShadow='0 2px 12px rgba(13,148,136,0.06)'">
+
+                <!-- Subtle shimmer accent -->
+                <div style="position: absolute; top: 0; right: 0; width: 120px; height: 100%; background: linear-gradient(135deg, transparent, rgba(204,251,241,0.25)); pointer-events: none;"></div>
+
+                <!-- Course Icon -->
+                <div style="width: 52px; height: 52px; border-radius: var(--radius-md); background: var(--accent-light); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    {% if 'DSA' in batch.name or 'Algorithm' in batch.name %}
+                        <i class="fa-solid fa-diagram-project" style="font-size: 1.4rem; color: var(--accent-color);"></i>
+                    {% elif 'C++' in batch.name or 'System' in batch.name %}
+                        <i class="fa-solid fa-microchip" style="font-size: 1.4rem; color: #8b5cf6;"></i>
+                    {% elif 'Python' in batch.name %}
+                        <i class="fa-brands fa-python" style="font-size: 1.4rem; color: #3b82f6;"></i>
+                    {% elif 'Java' in batch.name %}
+                        <i class="fa-brands fa-java" style="font-size: 1.4rem; color: #f59e0b;"></i>
                     {% else %}
-                        <span class="badge" style="background-color: var(--bg-primary); border: 1px solid var(--border-color); color: var(--text-muted); padding: 0.25rem 0.5rem; border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 600;">{{ batch.status }}</span>
+                        <i class="fa-solid fa-code" style="font-size: 1.4rem; color: var(--accent-color);"></i>
                     {% endif %}
-                    
+                </div>
+
+                <!-- Batch Info -->
+                <div style="flex: 1; min-width: 0;">
+                    <h4 style="font-family: var(--font-heading); font-size: 1.05rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.5rem 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                        {{ batch.name }}
+                    </h4>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center;">
+                        <span style="display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.8rem; color: var(--accent-color); font-weight: 600;">
+                            <i class="fa-regular fa-calendar"></i>
+                            {{ batch.start_date.strftime('%b %d, %Y') }}
+                        </span>
+                        <span style="width: 4px; height: 4px; border-radius: 50%; background: var(--border-color); display: inline-block;"></span>
+                        <span style="display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.8rem; color: var(--text-muted); font-weight: 500;">
+                            <i class="fa-regular fa-clock"></i>
+                            {{ batch.duration }}
+                        </span>
+                        <span style="width: 4px; height: 4px; border-radius: 50%; background: var(--border-color); display: inline-block;"></span>
+                        <span style="display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.8rem; color: var(--text-muted); font-weight: 500;">
+                            <i class="fa-solid fa-signal"></i>
+                            {{ batch.mode }}
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Status + Action -->
+                <div style="display: flex; align-items: center; gap: 1rem; flex-shrink: 0;">
+                    <!-- Status Badge -->
+                    {% if batch.status == 'Filling Fast' %}
+                        <span style="display: inline-flex; align-items: center; gap: 0.3rem; background: #fef3c7; color: #b45309; padding: 0.3rem 0.75rem; border-radius: 999px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.05em; border: 1px solid #fde68a; white-space: nowrap;">
+                            <i class="fa-solid fa-fire"></i> FILLING FAST
+                        </span>
+                    {% elif batch.status == 'Open' %}
+                        <span style="display: inline-flex; align-items: center; gap: 0.3rem; background: #d1fae5; color: #065f46; padding: 0.3rem 0.75rem; border-radius: 999px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.05em; border: 1px solid #a7f3d0; white-space: nowrap;">
+                            <i class="fa-solid fa-circle" style="font-size: 0.45rem;"></i> OPEN
+                        </span>
+                    {% else %}
+                        <span style="display: inline-flex; align-items: center; gap: 0.3rem; background: var(--bg-tertiary); color: var(--text-muted); padding: 0.3rem 0.75rem; border-radius: 999px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.05em; border: 1px solid var(--border-color); white-space: nowrap;">
+                            <i class="fa-regular fa-bell"></i> ANNOUNCED
+                        </span>
+                    {% endif %}
+
+                    <!-- Action Button -->
                     {% if session.get('user_id') %}
                         {% if session.get('user_role') == 'student' %}
                             {% if batch.id in applied_batch_ids %}
-                                <button class="btn btn-outline" disabled style="padding: 0.4rem 0.85rem; font-size: 0.825rem; opacity: 0.75; cursor: not-allowed; border-color: var(--border-color); background: var(--bg-primary);">
-                                    <i class="fa-solid fa-circle-check" style="color: var(--success-color);"></i> Applied
+                                <button class="btn" disabled style="padding: 0.5rem 1.25rem; font-size: 0.82rem; border-radius: 999px; background: #f0fdf4; color: #16a34a; border: 1.5px solid #bbf7d0; cursor: not-allowed; font-weight: 600; white-space: nowrap;">
+                                    <i class="fa-solid fa-circle-check"></i> Applied
                                 </button>
                             {% else %}
                                 <form action="{{ url_for('student.apply_batch', batch_id=batch.id) }}" method="POST" style="margin: 0;">
                                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                                    <button type="submit" class="btn btn-primary" style="padding: 0.4rem 0.85rem; font-size: 0.825rem;">
-                                        Apply Now
+                                    <button type="submit" class="btn btn-primary" style="padding: 0.5rem 1.4rem; font-size: 0.82rem; border-radius: 999px; font-weight: 700; white-space: nowrap;">
+                                        Apply Now →
                                     </button>
                                 </form>
                             {% endif %}
                         {% else %}
-                            <span style="font-size: 0.85rem; color: var(--text-muted); font-style: italic;">(Admin Viewer)</span>
+                            <span style="font-size: 0.8rem; color: var(--text-muted); font-style: italic; white-space: nowrap;">Admin View</span>
                         {% endif %}
                     {% else %}
-                        <a href="{{ url_for('auth.login') }}" class="btn btn-secondary" style="padding: 0.4rem 0.85rem; font-size: 0.825rem;">
+                        <a href="{{ url_for('auth.login') }}" class="btn btn-primary" style="padding: 0.5rem 1.4rem; font-size: 0.82rem; border-radius: 999px; font-weight: 700; white-space: nowrap; text-decoration: none;">
                             Login to Apply
                         </a>
                     {% endif %}
                 </div>
             </div>
             {% else %}
-            <div style="padding: 3rem; text-align: center; color: var(--text-muted);">
-                <i class="fa-regular fa-calendar-xmark" style="font-size: 2.5rem; margin-bottom: 1rem; color: var(--border-color);"></i>
-                <p>No upcoming cohorts listed at this time. Check back soon!</p>
+            <div style="padding: 4rem; text-align: center; background: white; border-radius: var(--radius-lg); border: 1px dashed var(--border-color);">
+                <i class="fa-regular fa-calendar-xmark" style="font-size: 2.5rem; margin-bottom: 1rem; color: var(--border-color); display: block;"></i>
+                <p style="color: var(--text-muted); margin: 0;">No upcoming cohorts listed at this time. Check back soon!</p>
             </div>
             {% endfor %}
+
         </div>
     </section>
+
+
 
     <!-- 6. Student Testimonials Section -->
     <section id="testimonials" class="section-container">
@@ -1833,11 +1982,157 @@
         </div>
     </footer>
 
+    <!-- ========== TOAST NOTIFICATION SYSTEM ========== -->
+
+    <!-- Toast Container -->
+    <div id="toast-container" style="
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        pointer-events: none;
+    "></div>
+
+    <!-- Toast Styles -->
+    <style>
+        @keyframes toastSlideIn {
+            from { transform: translateX(120%); opacity: 0; }
+            to   { transform: translateX(0);   opacity: 1; }
+        }
+        @keyframes toastSlideOut {
+            from { transform: translateX(0);   opacity: 1; }
+            to   { transform: translateX(120%); opacity: 0; }
+        }
+        @keyframes toastProgress {
+            from { width: 100%; }
+            to   { width: 0%; }
+        }
+        .toast-item {
+            pointer-events: all;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
+            min-width: 320px;
+            max-width: 400px;
+            overflow: hidden;
+            animation: toastSlideIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            border-left: 5px solid var(--toast-color);
+            position: relative;
+        }
+        .toast-item.hide {
+            animation: toastSlideOut 0.35s ease forwards;
+        }
+        .toast-inner {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.85rem;
+            padding: 1rem 1.1rem 0.75rem;
+        }
+        .toast-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: var(--toast-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 1.05rem;
+            color: var(--toast-color);
+        }
+        .toast-body { flex: 1; min-width: 0; }
+        .toast-title {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #111827;
+            margin: 0 0 0.2rem;
+            font-family: 'Outfit', sans-serif;
+        }
+        .toast-msg {
+            font-size: 0.82rem;
+            color: #4b5563;
+            margin: 0;
+            line-height: 1.4;
+        }
+        .toast-close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #9ca3af;
+            font-size: 1rem;
+            padding: 0;
+            line-height: 1;
+            flex-shrink: 0;
+            transition: color 0.2s;
+        }
+        .toast-close:hover { color: #374151; }
+        .toast-progress {
+            height: 3px;
+            background: var(--toast-color);
+            animation: toastProgress 4s linear forwards;
+            border-radius: 0 0 0 3px;
+        }
+    </style>
+
+    <!-- Toast JS Engine -->
+    <script>
+        const toastConfig = {
+            success: { color: '#10b981', light: '#d1fae5', icon: '✅', title: '🎉 Success!' },
+            warning: { color: '#f59e0b', light: '#fef3c7', icon: '⚠️', title: 'Heads Up' },
+            danger:  { color: '#ef4444', light: '#fee2e2', icon: '❌', title: 'Error' },
+            info:    { color: '#3b82f6', light: '#dbeafe', icon: 'ℹ️', title: 'Info' },
+        };
+
+        function showToast(message, category = 'success') {
+            const cfg = toastConfig[category] || toastConfig.info;
+            const container = document.getElementById('toast-container');
+
+            const toast = document.createElement('div');
+            toast.className = 'toast-item';
+            toast.style.setProperty('--toast-color', cfg.color);
+            toast.style.setProperty('--toast-light', cfg.light);
+
+            toast.innerHTML = `
+                <div class="toast-inner">
+                    <div class="toast-icon">${cfg.icon}</div>
+                    <div class="toast-body">
+                        <p class="toast-title">${cfg.title}</p>
+                        <p class="toast-msg">${message}</p>
+                    </div>
+                    <button class="toast-close" onclick="dismissToast(this.closest('.toast-item'))">✕</button>
+                </div>
+                <div class="toast-progress"></div>
+            `;
+
+            container.appendChild(toast);
+
+            // Auto-dismiss after 4.3s (slightly after progress bar ends)
+            setTimeout(() => dismissToast(toast), 4300);
+        }
+
+        function dismissToast(toast) {
+            if (!toast || toast.classList.contains('hide')) return;
+            toast.classList.add('hide');
+            setTimeout(() => toast.remove(), 380);
+        }
+
+        // Fire flash messages from Flask on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const flashes = {{ get_flashed_messages(with_categories=true) | tojson }};
+            flashes.forEach(([category, message]) => {
+                // Small stagger so multiple toasts appear sequentially
+                setTimeout(() => showToast(message, category === 'error' ? 'danger' : category), 300);
+            });
+        });
+    </script>
+
     <!-- Scripts (deferred to not block rendering) -->
     <script src="{{ url_for('static', filename='js/theme.js') }}" defer></script>
     <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
 
-    
     <script>
         // Smooth scrolling for navigation links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -1845,7 +2140,7 @@
                 e.preventDefault();
                 const targetId = this.getAttribute('href');
                 if (targetId === '#') return;
-                
+
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
                     targetElement.scrollIntoView({
@@ -1854,6 +2149,33 @@
                 }
             });
         });
+
+        // Mobile Navigation Toggle
+        const navToggle = document.getElementById('mobile-nav-toggle');
+        const mainNav = document.getElementById('main-nav');
+
+        if (navToggle && mainNav) {
+            navToggle.addEventListener('click', () => {
+                mainNav.classList.toggle('nav-open');
+                // Toggle icon between hamburger and close
+                if (mainNav.classList.contains('nav-open')) {
+                    navToggle.innerHTML = '✕';
+                } else {
+                    navToggle.innerHTML = '☰';
+                }
+            });
+
+            // Close mobile nav when clicking a link
+            const navLinks = mainNav.querySelectorAll('.nav-link-item');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (mainNav.classList.contains('nav-open')) {
+                        mainNav.classList.remove('nav-open');
+                        navToggle.innerHTML = '☰';
+                    }
+                });
+            });
+        }
     </script>
 </body>
 </html>
