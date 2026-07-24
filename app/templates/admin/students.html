@@ -30,8 +30,17 @@
                     {% for student in students %}
                         <tr>
                             <td style="width: 60px;">
-                                <img src="{{ student.avatar_url or 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=80&h=80' }}" alt="" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border-color);">
+                                {% if student.avatar_url %}
+                                    <img src="{{ student.avatar_url }}" alt="" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border-color);">
+                                {% else %}
+                                    <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--accent-light); border: 1px solid var(--border-color); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width:55%; height:55%; color: var(--accent-color);">
+                                            <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+                                        </svg>
+                                    </div>
+                                {% endif %}
                             </td>
+
                             <td>
                                 <strong>{{ student.full_name }}</strong>
                             </td>

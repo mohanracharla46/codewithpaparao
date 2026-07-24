@@ -395,3 +395,89 @@ def certificates():
     from app.models.models import Certificate
     certificates_list = Certificate.query.order_by(Certificate.issued_at.desc()).all()
     return render_template('admin/certificates.html', certificates=certificates_list)
+
+# --- ADMIN BATCHES VIEW & CRUD ---
+@admin_bp.route('/batches')
+def list_batches():
+    from app.models.models import Batch
+    batches_list = Batch.query.order_by(Batch.start_date.asc()).all()
+    return render_template('admin/batches/list.html', batches=batches_list)
+
+@admin_bp.route('/batches/new', methods=['GET', 'POST'])
+def new_batch():
+    from app.models.models import Batch, Course
+    courses_list = Course.query.filter_by(deleted_at=None).all()
+    
+    if request.method == 'POST':
+        name = request.form.get('name', '').strip()
+        course_id = request.form.get('course_id', '').strip()
+        start_date_str = request.form.get('start_date', '').strip()
+        duration = request.form.get('duration', '').strip()
+        mode = request.form.get('mode', 'Live Classes').strip()
+        status = request.form.get('status', 'Open').strip()
+        
+        if not name or not start_date_str or not duration:
+            flash('Batch name, start date, and duration are required.', 'danger')
+            return render_template('admin/batches/new.html', courses=courses_list), 400
+            
+        try:
+            start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
+        except ValueError:
+            flash('Invalid start date format. Use YYYY-MM-DD.', 'danger')
+            return render_template('admin/batches/new.html', courses=courses_list), 400
+            
+        batch = Batch(
+            name=name,
+            course_id=course_id if course_id else None,
+            start_date=start_date,
+            duration=duration,
+            mode=mode,
+            status=status
+        )
+        db.session.add(batch)
+        db.session.commit()
+        
+        # Log activity
+        AnalyticsService.log_activity(
+            user_id=session['user_id'],
+            action='create_batch',
+            details={'batch_id': batch.id, 'name': name},
+            ip_address=request.remote_addr
+        )
+        
+        flash('Live batch created successfully!', 'success')
+        return redirect(url_for('admin.list_batches'))
+        
+    return render_template('admin/batches/new.html', courses=courses_list)
+
+@admin_bp.route('/batches/applications/<batch_id>')
+def view_batch_applicants(batch_id):
+    from app.models.models import Batch, BatchApplication
+    batch = Batch.query.get_or_404(batch_id)
+    applications = BatchApplication.query.filter_by(batch_id=batch_id).order_by(BatchApplication.applied_at.desc()).all()
+    return render_template('admin/batches/applicants.html', batch=batch, applications=applications)
+
+@admin_bp.route('/batches/applications/<app_id>/status', methods=['POST'])
+def update_application_status(app_id):
+    from app.models.models import BatchApplication
+    application = BatchApplication.query.get_or_404(app_id)
+    status = request.form.get('status', 'applied').strip()
+    
+    if status not in ['applied', 'approved', 'rejected']:
+        flash('Invalid status value.', 'danger')
+        return redirect(url_for('admin.view_batch_applicants', batch_id=application.batch_id))
+        
+    application.status = status
+    db.session.commit()
+    
+    # Notify student
+    from app.services.notification_service import NotificationService
+    status_emoji = '✅' if status == 'approved' else '❌' if status == 'rejected' else '📥'
+    NotificationService.send_notification(
+        user_id=application.student_id,
+        title=f"Batch Application Update {status_emoji}",
+        message=f"Your application for '{application.batch.name}' has been {status}."
+    )
+    
+    flash(f"Application status updated to '{status}' successfully!", 'success')
+    return redirect(url_for('admin.view_batch_applicants', batch_id=application.batch_id))

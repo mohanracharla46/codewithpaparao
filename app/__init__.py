@@ -9,12 +9,23 @@ db = SQLAlchemy()
 csrf = CSRFProtect()
 
 def create_app(config_name='development'):
-    app = Flask(__name__)
+    app = Flask(__name__, static_folder='static')
     app.config.from_object(config_by_name[config_name])
+    
+    # --- Static file caching: tell browsers to cache static assets for 7 days ---
+    app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 60 * 60 * 24 * 7  # 7 days in seconds
     
     # Initialize extensions
     db.init_app(app)
     csrf.init_app(app)
+    
+    # --- Enable gzip response compression if flask_compress is installed ---
+    try:
+        from flask_compress import Compress
+        Compress(app)
+    except ImportError:
+        pass  # Optional: install with 'pip install flask-compress'
+
     
     # Configure logging
     if not app.debug:
@@ -66,7 +77,13 @@ def create_app(config_name='development'):
     # Render landing home page
     @app.route('/')
     def index():
-        return render_template('home.html')
+        from app.models.models import Batch, BatchApplication
+        batches = Batch.query.order_by(Batch.start_date.asc()).all()
+        applied_batch_ids = set()
+        if session.get('user_id') and session.get('user_role') == 'student':
+            applied = BatchApplication.query.filter_by(student_id=session['user_id']).all()
+            applied_batch_ids = {app.batch_id for app in applied}
+        return render_template('home.html', batches=batches, applied_batch_ids=applied_batch_ids)
         
     @app.route('/about')
     def about():

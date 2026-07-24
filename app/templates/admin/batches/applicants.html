@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}Batch Applicants{% endblock %}
+{% block header_title %}Cohorts Manager{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 1.5rem;">
+    <a href="{{ url_for('admin.list_batches') }}" style="font-size: 0.875rem;">← Back to Batches</a>
+</div>
+
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <div>
+        <h1>Applicants for {{ batch.name }}</h1>
+        <p style="color: var(--text-secondary);">Manage and review student registrations for this live batch.</p>
+    </div>
+</div>
+
+<div class="card" style="padding: 2rem; background-color: var(--bg-secondary); border-radius: var(--radius-lg);">
+    <h2 style="margin-bottom: 1.5rem;">Registrations List</h2>
+    
+    {% if applications %}
+        <div class="table-container">
+            <table class="table" style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead>
+                    <tr style="border-bottom: 2px solid var(--border-color); padding: 0.75rem;">
+                        <th style="padding: 0.75rem 1rem;">Student Details</th>
+                        <th style="padding: 0.75rem 1rem;">Email Address</th>
+                        <th style="padding: 0.75rem 1rem;">Applied Date</th>
+                        <th style="padding: 0.75rem 1rem;">Current Status</th>
+                        <th style="padding: 0.75rem 1rem; text-align: right;">Update Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for app in applications %}
+                        <tr style="border-bottom: 1px solid var(--border-color);">
+                            <td style="padding: 1rem;">
+                                <strong>{{ app.student.full_name }}</strong>
+                            </td>
+                            <td style="padding: 1rem;">
+                                {{ app.student.email }}
+                            </td>
+                            <td style="padding: 1rem;">
+                                {{ app.applied_at.strftime('%Y-%m-%d %H:%M') }}
+                            </td>
+                            <td style="padding: 1rem;">
+                                {% if app.status == 'approved' %}
+                                    <span class="badge" style="background-color: #d1fae5; color: #059669; padding: 0.25rem 0.5rem; border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 600;">Approved</span>
+                                {% elif app.status == 'rejected' %}
+                                    <span class="badge" style="background-color: #fee2e2; color: #dc2626; padding: 0.25rem 0.5rem; border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 600;">Rejected</span>
+                                {% else %}
+                                    <span class="badge" style="background-color: #f3f4f6; color: #374151; padding: 0.25rem 0.5rem; border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 600;">Applied</span>
+                                {% endif %}
+                            </td>
+                            <td style="padding: 1rem; text-align: right;">
+                                <div style="display: inline-flex; gap: 0.5rem; justify-content: flex-end;">
+                                    {% if app.status != 'approved' %}
+                                        <form action="{{ url_for('admin.update_application_status', app_id=app.id) }}" method="POST" style="margin: 0;">
+                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                            <input type="hidden" name="status" value="approved">
+                                            <button type="submit" class="btn btn-primary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; background-color: var(--success-color); border-color: var(--success-color);">
+                                                Approve
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                    
+                                    {% if app.status != 'rejected' %}
+                                        <form action="{{ url_for('admin.update_application_status', app_id=app.id) }}" method="POST" style="margin: 0;">
+                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                            <input type="hidden" name="status" value="rejected">
+                                            <button type="submit" class="btn btn-danger" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">
+                                                Reject
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 3rem 0; color: var(--text-muted);">
+            <i class="fa-solid fa-users-slash" style="font-size: 2.5rem; margin-bottom: 1rem; color: var(--border-color);"></i>
+            <p>No student applications have been received for this batch yet.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

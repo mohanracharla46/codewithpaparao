@@ -163,7 +163,12 @@ class SupabaseService:
         # Prefix with UUID to prevent collisions
         unique_filename = f"{uuid.uuid4()}_{filename}"
         
+        # Guard: always convert folder_name to str to avoid UUID/type errors from os.path.join
+        if folder_name is not None:
+            folder_name = str(folder_name)
+        
         path_in_bucket = f"{folder_name}/{unique_filename}" if folder_name else unique_filename
+
         
         # Check if running on Vercel (read-only container, write to /tmp instead)
         is_vercel = os.environ.get('VERCEL')

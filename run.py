@@ -65,6 +65,53 @@ with app.app_context():
             )
             db.session.add(s)
             
+        # Seed default batches
+        from app.models.models import Batch
+        from datetime import date
+        if not Batch.query.first():
+            from app.models.models import Course
+            dsa_course = Course.query.filter(Course.title.ilike('%dsa%') | Course.title.ilike('%data structure%')).first()
+            cpp_course = Course.query.filter(Course.title.ilike('%c++%') | Course.title.ilike('%cpp%')).first()
+            python_course = Course.query.filter(Course.title.ilike('%python%')).first()
+            java_course = Course.query.filter(Course.title.ilike('%java%')).first()
+            
+            batches_to_seed = [
+                Batch(
+                    name='DSA & Algorithms Masterclass',
+                    course_id=dsa_course.id if dsa_course else None,
+                    start_date=date(2026, 8, 10),
+                    duration='8 Weeks',
+                    mode='Live Classes',
+                    status='Filling Fast'
+                ),
+                Batch(
+                    name='C++ Systems Core & Architecture',
+                    course_id=cpp_course.id if cpp_course else None,
+                    start_date=date(2026, 8, 18),
+                    duration='6 Weeks',
+                    mode='Live + Mentorship',
+                    status='Open'
+                ),
+                Batch(
+                    name='Python Core Fast-Track',
+                    course_id=python_course.id if python_course else None,
+                    start_date=date(2026, 9, 1),
+                    duration='4 Weeks',
+                    mode='Live Interactive',
+                    status='Announced'
+                ),
+                Batch(
+                    name='Java Enterprise Architecture',
+                    course_id=java_course.id if java_course else None,
+                    start_date=date(2026, 9, 15),
+                    duration='10 Weeks',
+                    mode='Live Cohort',
+                    status='Announced'
+                )
+            ]
+            for b in batches_to_seed:
+                db.session.add(b)
+            
         db.session.commit()
     except Exception as e:
         print(f"Database setup notice: {e}")

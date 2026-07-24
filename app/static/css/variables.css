@@ -1,6 +1,6 @@
 /* Modern SaaS Color System & Variables (Notion/Stripe/Linear Inspired) */
+/* Note: Google Fonts (Inter + Outfit) loaded via non-blocking <link> in HTML */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap');
 
 :root {
     /* Font Families */

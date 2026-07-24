@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Create Batch{% endblock %}
+{% block header_title %}Batches Manager{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 0 auto;">
+    <div style="margin-bottom: 1.5rem;">
+        <a href="{{ url_for('admin.list_batches') }}" style="font-size: 0.875rem;">← Back to Batches</a>
+    </div>
+
+    <h1>Create New Live Batch</h1>
+    <p style="color: var(--text-secondary); margin-bottom: 2rem;">Schedule a new upcoming live cohort session and open registrations.</p>
+
+    <div class="card" style="padding: 2rem; background: var(--bg-secondary);">
+        <form action="{{ url_for('admin.new_batch') }}" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            
+            <div class="form-group">
+                <label for="name" class="form-label">Batch Name</label>
+                <input type="text" id="name" name="name" class="form-control" placeholder="e.g. DSA Masterclass (Live)" required>
+            </div>
+
+            <div class="form-group">
+                <label for="course_id" class="form-label">Associate Course Curriculum (Optional)</label>
+                <select id="course_id" name="course_id" class="form-control" style="appearance: auto;">
+                    <option value="">-- No Linked Course --</option>
+                    {% for course in courses %}
+                        <option value="{{ course.id }}">{{ course.title }} ({{ course.difficulty }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                    <label for="start_date" class="form-label">Start Date</label>
+                    <input type="date" id="start_date" name="start_date" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="duration" class="form-label">Cohort Duration</label>
+                    <input type="text" id="duration" name="duration" class="form-control" placeholder="e.g. 8 Weeks" required>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                    <label for="mode" class="form-label">Learning Mode</label>
+                    <input type="text" id="mode" name="mode" class="form-control" value="Live Interactive" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="status" class="form-label">Registration Status</label>
+                    <select id="status" name="status" class="form-control" style="appearance: auto;">
+                        <option value="Open">Open</option>
+                        <option value="Filling Fast">Filling Fast</option>
+                        <option value="Closed">Closed</option>
+                        <option value="Announced">Announced</option>
+                    </select>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                <button type="submit" class="btn btn-primary" style="padding: 0.625rem 1.5rem;">Create Batch</button>
+                <a href="{{ url_for('admin.list_batches') }}" class="btn btn-secondary" style="padding: 0.625rem 1.5rem;">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

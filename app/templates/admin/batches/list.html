@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Live Batches{% endblock %}
+{% block header_title %}Batches Management{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <div>
+        <h1>Live Cohort Batches</h1>
+        <p style="color: var(--text-secondary);">Manage and schedule upcoming live training batches.</p>
+    </div>
+    <div>
+        <a href="{{ url_for('admin.new_batch') }}" class="btn btn-primary">➕ Create Live Batch</a>
+    </div>
+</div>
+
+<div class="card" style="padding: 2rem; background-color: var(--bg-secondary); border-radius: var(--radius-lg);">
+    <h2 style="margin-bottom: 1.5rem;">All Active Batches</h2>
+    
+    {% if batches %}
+        <div class="table-container">
+            <table class="table" style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead>
+                    <tr style="border-bottom: 2px solid var(--border-color); padding: 0.75rem;">
+                        <th style="padding: 0.75rem 1rem;">Batch Name</th>
+                        <th style="padding: 0.75rem 1rem;">Start Date</th>
+                        <th style="padding: 0.75rem 1rem;">Duration</th>
+                        <th style="padding: 0.75rem 1rem;">Mode</th>
+                        <th style="padding: 0.75rem 1rem;">Status</th>
+                        <th style="padding: 0.75rem 1rem;">Applicants</th>
+                        <th style="padding: 0.75rem 1rem; text-align: right;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for batch in batches %}
+                        <tr style="border-bottom: 1px solid var(--border-color);">
+                            <td style="padding: 1rem;">
+                                <strong>{{ batch.name }}</strong>
+                                {% if batch.course %}
+                                    <div style="color: var(--accent-color); font-size: 0.8rem;">Linked: {{ batch.course.title }}</div>
+                                {% endif %}
+                            </td>
+                            <td style="padding: 1rem;">
+                                {{ batch.start_date.strftime('%Y-%m-%d') }}
+                            </td>
+                            <td style="padding: 1rem;">
+                                {{ batch.duration }}
+                            </td>
+                            <td style="padding: 1rem;">
+                                {{ batch.mode }}
+                            </td>
+                            <td style="padding: 1rem;">
+                                {% if batch.status == 'Filling Fast' %}
+                                    <span class="badge" style="background-color: #fef3c7; color: #d97706; padding: 0.25rem 0.5rem; border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 600;">{{ batch.status }}</span>
+                                {% elif batch.status == 'Open' %}
+                                    <span class="badge" style="background-color: #d1fae5; color: #059669; padding: 0.25rem 0.5rem; border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 600;">{{ batch.status }}</span>
+                                {% else %}
+                                    <span class="badge" style="background-color: var(--bg-primary); border: 1px solid var(--border-color); color: var(--text-muted); padding: 0.25rem 0.5rem; border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 600;">{{ batch.status }}</span>
+                                {% endif %}
+                            </td>
+                            <td style="padding: 1rem;">
+                                <span class="badge" style="background-color: var(--accent-light); color: var(--accent-color); font-weight: 700;">
+                                    {{ batch.applications|length }}
+                                </span>
+                            </td>
+                            <td style="padding: 1rem; text-align: right;">
+                                <div style="display: inline-flex; gap: 0.5rem;">
+                                    <a href="{{ url_for('admin.view_batch_applicants', batch_id=batch.id) }}" class="btn btn-outline" style="padding: 0.35rem 0.65rem; font-size: 0.8rem;">
+                                        👥 Applicants
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 3rem 0;">
+            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">No active batches in the system.</p>
+            <a href="{{ url_for('admin.new_batch') }}" class="btn btn-primary">Create the First Live Batch</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

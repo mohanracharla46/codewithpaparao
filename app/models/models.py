@@ -1,6 +1,31 @@
 import uuid
 from datetime import datetime
 from app import db
+from sqlalchemy.types import TypeDecorator, CHAR
+from sqlalchemy.dialects.postgresql import UUID as pgUUID
+
+class GUID(TypeDecorator):
+    """Platform-independent GUID type.
+    Uses PostgreSQL's UUID type, otherwise CHAR(36), storing as string.
+    """
+    impl = CHAR
+    cache_ok = True
+
+    def load_dialect_impl(self, dialect):
+        if dialect.name == 'postgresql':
+            return dialect.type_descriptor(pgUUID(as_uuid=False))
+        else:
+            return dialect.type_descriptor(CHAR(36))
+
+    def process_bind_param(self, value, dialect):
+        if value is None:
+            return value
+        else:
+            return str(value)
+
+    def process_result_value(self, value, dialect):
+        return value
+
 
 class Profile(db.Model):
     __tablename__ = 'profiles'
@@ -165,3 +190,33 @@ class SystemSetting(db.Model):
     key = db.Column(db.String(100), primary_key=True)
     value = db.Column(db.JSON, nullable=False)
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+class Batch(db.Model):
+    __tablename__ = 'batches'
+    
+    id = db.Column(GUID, primary_key=True, default=lambda: str(uuid.uuid4()))
+    name = db.Column(db.String(255), nullable=False)
+    course_id = db.Column(GUID, db.ForeignKey('courses.id', ondelete='CASCADE'), nullable=True)
+    start_date = db.Column(db.Date, nullable=False)
+    duration = db.Column(db.String(100), nullable=False)
+    mode = db.Column(db.String(100), nullable=False, default='Live Classes')
+    status = db.Column(db.String(50), nullable=False, default='Open')
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    
+    # Relationships
+    course = db.relationship('Course', backref='batches', lazy=True)
+    applications = db.relationship('BatchApplication', backref='batch', lazy=True, cascade="all, delete-orphan")
+
+class BatchApplication(db.Model):
+    __tablename__ = 'batch_applications'
+    
+    id = db.Column(GUID, primary_key=True, default=lambda: str(uuid.uuid4()))
+    batch_id = db.Column(GUID, db.ForeignKey('batches.id', ondelete='CASCADE'), nullable=False)
+    student_id = db.Column(GUID, db.ForeignKey('profiles.id', ondelete='CASCADE'), nullable=False)
+    status = db.Column(db.String(50), nullable=False, default='applied') # applied, approved, rejected
+    applied_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    
+    # Relationships
+    student = db.relationship('Profile', backref='batch_applications', lazy=True)
+    
+    __table_args__ = (db.UniqueConstraint('batch_id', 'student_id', name='unique_student_batch_application'),)

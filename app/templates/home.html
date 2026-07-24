@@ -3,15 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to CodeWithPapaRao</title>
-    
-    <!-- Link Core Variables -->
+    <title>Welcome to CodeWithPapaRao | Deep Foundational Tech Learning</title>
+    <meta name="description" content="Learn programming from the roots — C, C++, Java, Python, and DSA with PapaRao's live mentorship.">
+
+    <!-- Preconnect for faster DNS resolution -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+
+    <!-- Google Fonts - async non-blocking load -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700&display=swap" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700&display=swap"></noscript>
+
+    <!-- Core CSS: variables, components, layout -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/variables.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/layouts.css') }}">
-    <!-- Online Icon Fonts -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+
+    <!-- Font Awesome - async non-blocking load -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
+
+    <!-- Devicons - async non-blocking load -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css"></noscript>
+
+
     
     <style>
         /* Landing Page Custom Styles */
@@ -22,52 +40,6 @@
             margin: 0;
             padding: 0;
             overflow-x: hidden;
-        }
-
-        /* Nav Bar */
-        .landing-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: var(--header-height);
-            padding: 0 4rem;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border-color);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            transition: all var(--transition-normal);
-        }
-        
-        [data-theme="dark"] .landing-nav {
-            background: rgba(11, 15, 25, 0.8);
-        }
-
-        .nav-logo {
-            font-family: var(--font-heading);
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--accent-color);
-            letter-spacing: -0.03em;
-        }
-
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 2.5rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--text-secondary);
-            font-weight: 500;
-            font-size: 0.925rem;
-            transition: color var(--transition-fast);
-        }
-
-        .nav-links a:hover {
-            color: var(--accent-color);
         }
 
         /* Hero Section with Grid Layout & Glow */
@@ -81,8 +53,7 @@
             margin: 0 auto;
             gap: 4rem;
             min-height: calc(100vh - var(--header-height));
-            background-image: 
-                radial-gradient(var(--border-color) 1px, transparent 1px);
+            background-image: radial-gradient(var(--border-color) 1px, transparent 1px);
             background-size: 24px 24px;
             background-color: var(--bg-primary);
         }
@@ -108,22 +79,17 @@
         .pill-badge {
             display: inline-flex;
             align-items: center;
-            background-color: #e0e7ff;
-            color: #4f46e5;
+            background-color: var(--accent-light);
+            color: var(--text-secondary);
             padding: 0.5rem 1rem;
             border-radius: 9999px;
             font-size: 0.75rem;
             font-weight: 700;
             margin-bottom: 1.5rem;
-            letter-spacing: 0.03em;
-            box-shadow: 0 2px 4px rgba(79, 70, 229, 0.05);
-            border: 1px solid rgba(79, 70, 229, 0.1);
-        }
-        
-        [data-theme="dark"] .pill-badge {
-            background-color: #1e1b4b;
-            color: #a5b4fc;
-            border-color: rgba(165, 180, 252, 0.1);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
         }
 
         .hero-title {
@@ -137,29 +103,13 @@
         }
 
         .hero-title span {
-            color: #0d9488; /* Teal */
-        }
-        
-        [data-theme="dark"] .hero-title span {
-            color: #14b8a6;
-        }
-
-        .hero-subtitle {
-            font-size: 1.75rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 1.5rem;
-            letter-spacing: -0.02em;
-        }
-
-        .hero-subtitle span {
-            color: #14b8a6; /* Teal */
+            color: var(--accent-color);
         }
 
         .hero-desc {
             font-size: 1.1rem;
             line-height: 1.6;
-            color: var(--text-secondary);
+            color: var(--text-muted);
             margin-bottom: 2.5rem;
             max-width: 580px;
         }
@@ -170,7 +120,7 @@
         }
 
         .btn-hero {
-            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+            background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-hover) 100%);
             color: white !important;
             padding: 0.85rem 2rem;
             font-size: 1.05rem;
@@ -180,12 +130,12 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            transition: all var(--transition-fast);
+            transition: all var(--transition-normal);
         }
 
         .btn-hero:hover {
             transform: translateY(-2px);
-            box-shadow: 0 15px 20px -3px rgba(13, 148, 136, 0.4);
+            box-shadow: 0 15px 20px -3px rgba(13, 148, 136, 0.45);
         }
 
         /* Right Graphic & Floating Badges */
@@ -238,8 +188,7 @@
 
         .floating-badge {
             position: absolute;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(8px);
+            background: var(--bg-secondary);
             color: var(--text-primary);
             border: 1px solid var(--border-color);
             padding: 0.6rem 1.2rem;
@@ -253,10 +202,6 @@
             animation: float 6s ease-in-out infinite;
             z-index: 3;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        [data-theme="dark"] .floating-badge {
-            background: rgba(17, 24, 39, 0.85);
         }
 
         .floating-badge:hover {
@@ -309,7 +254,7 @@
             50% { transform: translateY(-8px); }
         }
 
-        /* Section Styling */
+        /* General Section Layout */
         .section-container {
             padding: 6rem 4rem;
             max-width: 1280px;
@@ -323,143 +268,188 @@
 
         .section-header h2 {
             font-family: var(--font-heading);
-            font-size: 2.25rem;
+            font-size: 2.75rem;
+            font-weight: 800;
             margin-bottom: 1rem;
+            color: var(--text-primary);
         }
 
         .section-header p {
-            color: var(--text-secondary);
+            color: var(--text-muted);
             max-width: 600px;
             margin: 0 auto;
+            font-size: 1.1rem;
+            line-height: 1.6;
         }
 
-        /* About Me Section */
-        .about-grid {
+        .grid-2 {
             display: grid;
-            grid-template-columns: 1fr 1.2fr;
-            gap: 4rem;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
             align-items: center;
         }
 
-        .about-avatar {
-            width: 100%;
-            height: 380px;
-            border-radius: var(--radius-lg);
-            object-fit: cover;
-            box-shadow: var(--shadow-md);
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        /* 2. Why Choose Section Cards */
+        .why-card {
+            background-color: var(--bg-secondary);
             border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            transition: all var(--transition-normal);
+            position: relative;
+            overflow: hidden;
         }
 
-        .about-text p {
-            font-size: 1.05rem;
-            line-height: 1.7;
-            color: var(--text-secondary);
+        .why-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--accent-light) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1;
+        }
+
+        .why-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent-color);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .why-card:hover::before {
+            opacity: 0.15;
+        }
+
+        .why-card-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .why-icon {
+            width: 54px;
+            height: 54px;
+            border-radius: var(--radius-md);
+            background-color: var(--accent-light);
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
             margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
         }
 
-        /* Contact Section */
-        .contact-card {
+        .why-card:hover .why-icon {
+            transform: scale(1.1) rotate(5deg);
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .why-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        .why-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* 3. Trainer Card Styling */
+        .trainer-card {
             background-color: var(--bg-secondary);
             border: 1px solid var(--border-color);
             border-radius: var(--radius-lg);
             padding: 3rem;
+            position: relative;
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 0.8fr 1.2fr;
             gap: 3rem;
+            align-items: center;
             box-shadow: var(--shadow-sm);
         }
 
-        /* Footer */
-        .footer {
-            border-top: 1px solid var(--border-color);
-            padding: 2.5rem 4rem;
-            color: var(--text-muted);
-            font-size: 0.875rem;
-            background: var(--bg-secondary);
+        .trainer-image-wrapper {
+            position: relative;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            height: 320px;
+            border: 1px solid var(--border-color);
         }
-        .footer-content {
+
+        .trainer-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .trainer-highlights {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-            flex-wrap: wrap;
+            flex-direction: column;
             gap: 1rem;
+            margin-top: 1.5rem;
         }
-        .footer-links {
+
+        .trainer-highlight-item {
             display: flex;
-            gap: 1.5rem;
-        }
-        .footer-links a {
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.95rem;
             color: var(--text-muted);
-            text-decoration: none;
-            transition: color 0.2s;
         }
-        .footer-links a:hover {
+
+        .trainer-highlight-item i {
             color: var(--accent-color);
         }
-        @media (max-width: 768px) {
-            .footer-content {
-                flex-direction: column;
-                text-align: center;
-            }
+
+        .trainer-socials {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
         }
 
-        @media (max-width: 992px) {
-            .landing-nav {
-                padding: 0 2rem;
-            }
-            .hero-section {
-                grid-template-columns: 1fr;
-                padding: 4rem 2rem;
-                text-align: center;
-                gap: 3rem;
-            }
-            .hero-content h1 {
-                font-size: 2.75rem;
-            }
-            .hero-content p {
-                margin-left: auto;
-                margin-right: auto;
-            }
-            .hero-cta {
-                justify-content: center;
-            }
-            .hero-image-container {
-                height: 320px;
-            }
-            .section-container {
-                padding: 4rem 2rem;
-            }
-            .about-grid {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-            .about-avatar {
-                height: 280px;
-            }
-            .contact-card {
-                grid-template-columns: 1fr;
-            }
+        .trainer-social-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            transition: all 0.2s ease;
         }
 
-        /* Premium Course Cards */
+        .trainer-social-btn:hover {
+            color: var(--accent-color);
+            border-color: var(--accent-color);
+            background-color: var(--accent-light);
+            transform: scale(1.1);
+        }
+
+        /* 4. Course Cards Styling (Dynamic Overlay Accent Color) */
         .course-card-premium {
-            background: var(--bg-primary);
-            border-radius: 20px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
             border: 1px solid var(--border-color);
             position: relative;
             overflow: hidden;
             display: flex;
             flex-direction: column;
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.02);
-        }
-        
-        [data-theme="dark"] .course-card-premium {
-            background: rgba(17, 24, 39, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: var(--shadow-sm);
         }
 
         .course-card-premium:hover {
@@ -478,7 +468,7 @@
             opacity: 0.8;
             transition: height 0.3s ease;
         }
-        
+
         .course-card-premium:hover .course-card-top-accent {
             height: 8px;
         }
@@ -503,17 +493,17 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s ease;
         }
-        
+
         .course-card-premium:hover .course-logo-wrapper {
             transform: scale(1.1) rotate(5deg);
             background: var(--card-theme);
         }
-        
+
         .course-logo-wrapper i {
             font-size: 2.25rem;
             transition: color 0.3s ease;
         }
-        
+
         .course-card-premium:hover .course-logo-wrapper i {
             color: #fff !important;
         }
@@ -527,19 +517,18 @@
             transition: color 0.3s ease;
             margin-top: 0;
         }
-        
+
         .course-card-premium:hover .course-card-title {
             color: var(--card-theme);
         }
 
         .course-card-text {
-            color: var(--text-secondary);
+            color: var(--text-muted);
             font-size: 0.95rem;
             line-height: 1.6;
             margin-bottom: 1.5rem;
         }
 
-        /* Premium Button */
         .course-btn-premium {
             display: inline-flex;
             align-items: center;
@@ -549,7 +538,7 @@
             padding: 0.85rem 1.5rem;
             background: var(--card-theme-bg);
             color: var(--card-theme);
-            border-radius: 12px;
+            border-radius: var(--radius-md);
             font-weight: 600;
             font-size: 0.95rem;
             border: 1px solid transparent;
@@ -563,25 +552,570 @@
             color: #fff;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
-        
+
         .course-btn-premium i {
             transition: transform 0.3s ease;
         }
-        
+
         .course-btn-premium:hover i,
         .course-card-premium:hover .course-btn-premium i {
             transform: translateX(4px);
         }
 
+        /* 5. Upcoming Batches Table/Rows */
+        .batch-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .batch-row {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1fr 1.2fr;
+            padding: 1.5rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            align-items: center;
+            gap: 1rem;
+            transition: background var(--transition-fast);
+        }
+
+        .batch-row:last-child {
+            border-bottom: none;
+        }
+
+        .batch-row:hover {
+            background-color: var(--bg-primary);
+        }
+
+        .batch-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+        }
+
+        .batch-date {
+            color: var(--accent-color);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .batch-type {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .batch-status {
+            align-self: center;
+        }
+
+        .batch-status .badge {
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            padding: 0.25rem 0.6rem;
+            letter-spacing: 0.05em;
+        }
+
+        /* 6. Testimonials Styling */
+        .testimonial-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            transition: all var(--transition-normal);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .quote-icon {
+            font-size: 2.5rem;
+            color: var(--accent-light);
+            position: absolute;
+            top: 1.5rem;
+            right: 2rem;
+            opacity: 0.5;
+        }
+
+        .testimonial-stars {
+            color: #fbbf24;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            line-height: 1.7;
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .testimonial-user {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .testimonial-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid var(--border-color);
+        }
+
+        .testimonial-details h4 {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .testimonial-details span {
+            font-size: 0.8rem;
+            color: var(--accent-color);
+            font-weight: 500;
+        }
+
+        /* 7. Success Statistics Styling */
+        .stats-section {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .stat-number {
+            font-family: var(--font-heading);
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-sublabel {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* 8. YouTube Video Section Mockup */
+        .youtube-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 3rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-md);
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .video-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{{ url_for("static", filename="assets/coding_hero.png") }}');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+        }
+
+        .video-placeholder:hover {
+            transform: scale(1.02);
+            filter: brightness(1.1);
+        }
+
+        .play-btn {
+            width: 76px;
+            height: 76px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 10px 25px rgba(13, 148, 136, 0.4);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .video-placeholder:hover .play-btn {
+            transform: scale(1.15);
+            background: var(--accent-hover);
+            box-shadow: 0 15px 30px rgba(13, 148, 136, 0.6);
+        }
+
+        /* 9. FAQ Detail Accordion */
+        .faq-accordion {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .faq-item {
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            background: var(--bg-secondary);
+            overflow: hidden;
+            transition: all var(--transition-fast);
+        }
+
+        .faq-item[open] {
+            border-color: var(--accent-color);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .faq-item summary {
+            padding: 1.25rem 1.5rem;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            list-style: none;
+            user-select: none;
+        }
+
+        .faq-item summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .faq-icon-chevron {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            transition: transform 0.25s ease;
+        }
+
+        .faq-item[open] .faq-icon-chevron {
+            transform: rotate(180deg);
+            color: var(--accent-color);
+        }
+
+        .faq-content {
+            padding: 0 1.5rem 1.5rem 1.5rem;
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 1.6;
+            border-top: 1px solid transparent;
+        }
+
+        .faq-item[open] .faq-content {
+            border-top-color: var(--border-color);
+        }
+
+        /* 10. Contact Card & Form */
+        .contact-grid-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 3.5rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .contact-info-panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .contact-detail-list {
+            margin: 2.5rem 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .contact-detail-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .contact-detail-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: var(--radius-sm);
+            background-color: var(--accent-light);
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+            flex-shrink: 0;
+        }
+
+        .contact-detail-text h4 {
+            margin: 0 0 0.25rem 0;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .contact-detail-text p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 0.925rem;
+        }
+
+        .contact-form-panel form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .form-control {
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            font-size: 0.95rem;
+            transition: all var(--transition-fast);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        /* Footer */
+        .footer {
+            border-top: 1px solid var(--border-color);
+            padding: 4rem 4rem;
+            background: var(--bg-secondary);
+            color: var(--text-muted);
+        }
+
+        .footer-grid {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1.5fr;
+            gap: 3rem;
+            padding-bottom: 3rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .footer-brand h3 {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .footer-brand p {
+            font-size: 0.925rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            max-width: 280px;
+        }
+
+        .footer-links-col h4 {
+            font-family: var(--font-heading);
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .footer-links-col ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .footer-links-col ul a {
+            color: var(--text-muted);
+            font-size: 0.925rem;
+            transition: color 0.2s;
+        }
+
+        .footer-links-col ul a:hover {
+            color: var(--accent-color);
+        }
+
+        .footer-newsletter h4 {
+            font-family: var(--font-heading);
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.25rem;
+        }
+
+        .footer-newsletter p {
+            font-size: 0.925rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .newsletter-input {
+            flex-grow: 1;
+            padding: 0.625rem 0.85rem;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            font-size: 0.9rem;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .newsletter-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        .footer-bottom {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.875rem;
+        }
+
+        .footer-bottom-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-bottom-links a {
+            color: var(--text-muted);
+        }
+
+        .footer-bottom-links a:hover {
+            color: var(--accent-color);
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 1024px) {
+            .hero-section {
+                grid-template-columns: 1fr;
+                padding: 4rem 2rem;
+                text-align: center;
+                gap: 3rem;
+            }
+            .hero-content {
+                text-align: center;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            .hero-title {
+                font-size: 3.5rem;
+            }
+            .hero-desc {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .hero-cta {
+                justify-content: center;
+            }
+            .trainer-card {
+                grid-template-columns: 1fr;
+                padding: 2.5rem;
+                gap: 2rem;
+            }
+            .trainer-image-wrapper {
+                height: 280px;
+                max-width: 280px;
+                margin: 0 auto;
+            }
+            .contact-grid-card {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+                padding: 2.5rem;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 2rem;
+            }
+        }
+
         @media (max-width: 768px) {
-            /* Nav Bar */
-            .landing-nav {
+            .public-header {
                 padding: 1rem 1.5rem !important;
                 flex-direction: column !important;
                 height: auto !important;
                 gap: 1rem !important;
             }
-            .nav-links {
+            .public-nav-links {
                 gap: 1.25rem !important;
                 flex-wrap: wrap !important;
                 justify-content: center !important;
@@ -591,58 +1125,47 @@
             .nav-links li {
                 display: inline-block;
             }
-
-            /* Hero Section */
-            .hero-section {
-                grid-template-columns: 1fr !important;
-                padding: 2.5rem 1.5rem !important;
-                gap: 2rem !important;
-                text-align: center !important;
-                min-height: auto !important;
-            }
-            .hero-content {
-                text-align: center !important;
-            }
             .hero-title {
-                font-size: 2.5rem !important;
+                font-size: 2.5rem;
             }
-            .hero-desc {
-                margin: 0 auto 2rem auto !important;
-                font-size: 1rem !important;
-            }
-            .hero-cta {
-                justify-content: center !important;
-            }
-            .btn-hero {
-                width: 100% !important;
-                justify-content: center !important;
-            }
-
-            /* Hero Graphics / Avatar */
             .hero-graphics-container {
-                height: 300px !important;
-                margin-top: 1rem !important;
+                height: 300px;
+                margin-top: 1rem;
             }
             .developer-wrapper {
-                width: 200px !important;
-                height: 200px !important;
+                width: 200px;
+                height: 200px;
             }
             .developer-img {
-                height: 200px !important;
+                height: 200px;
             }
             .floating-badge {
-                display: none !important; /* Hide floating absolute elements to prevent overflow */
+                display: none !important; /* Hide floating absolute elements to prevent layout overflow */
             }
-
-            /* Sections & Grids */
             .section-container {
-                padding: 3rem 1.5rem !important;
+                padding: 3.5rem 1.5rem;
             }
-            .section-container h2 {
-                font-size: 1.85rem !important;
+            .section-header h2 {
+                font-size: 2rem;
             }
-            .course-card-premium {
-                padding: 1.5rem !important;
+            .batch-row {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+                padding: 1.5rem 0.5rem;
+            }
+            .batch-row > div {
+                padding: 0.15rem 0;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            .footer {
+                padding: 3rem 1.5rem;
             }
         }
     </style>
@@ -650,7 +1173,7 @@
 <body>
 
     <!-- Landing Navigation -->
-    <nav class="public-header">
+    <header class="public-header">
         <div class="nav-logo">
             <a href="/">CodeWithPapaRao</a>
         </div>
@@ -658,7 +1181,7 @@
             <a href="/" class="nav-link-item">Home</a>
             <a href="{{ url_for('course.list_courses') }}" class="nav-link-item">Courses</a>
             <a href="/about" class="nav-link-item">About Me</a>
-            <a href="/about#contact" class="nav-link-item">Contact</a>
+            <a href="#contact" class="nav-link-item">Contact</a>
         </nav>
         <div class="header-actions">
             {% if session.get('user_id') %}
@@ -667,19 +1190,20 @@
                 <a href="{{ url_for('auth.login') }}" class="btn btn-primary">Login</a>
             {% endif %}
         </div>
-    </nav>
+    </header>
 
-    <!-- Hero Header Panel -->
+    <!-- 1. Hero Section -->
     <header class="hero-section">
         <div class="hero-content">
-            <h1 class="hero-title">Master In-Demand Tech Skills <br>with <span>Practical Learning.|</span></h1>
+            <span class="pill-badge">Next batch starts August 10</span>
+            <h1 class="hero-title">Master In-Demand Tech Skills <br>with <span>Practical Learning.</span></h1>
             
             <p class="hero-desc">
-                Join live and recorded courses, practice with quizzes, access downloadable notes, and earn verified certificates. Learn at your own pace with a modern learning experience designed for students and professionals.
+                Join live and recorded courses, practice with interactive quizzes, access downloadable notes, and earn verified certificates. Learn at your own pace with a modern systems-focused design.
             </p>
             
             <div class="hero-cta">
-                <a href="#courses" class="btn btn-hero">Start Learning for Free &rarr;</a>
+                <a href="#courses" class="btn btn-hero">Start Learning &rarr;</a>
             </div>
         </div>
         
@@ -727,25 +1251,112 @@
         </div>
     </header>
 
-    <!-- Curriculums Section -->
-    <section id="courses" class="section-container" style="background-color: var(--bg-secondary); border-top: 1px solid var(--border-color); padding: 5rem 2rem;">
-        <div style="text-align: center; margin-bottom: 4rem;">
-            <h2 style="font-family: var(--font-heading); font-size: 2.5rem; font-weight: 800; color: var(--text-primary); margin-bottom: 1rem;">Master Coding Programs</h2>
-            <p style="color: var(--text-secondary); max-width: 600px; margin: 0 auto; font-size: 1.1rem; line-height: 1.6;">
-                Step-by-step tracks designed by software professionals. Real projects, quizzes, and certificates.
-            </p>
+    <!-- 2. Why Choose Section -->
+    <section id="why-choose" class="section-container" style="border-top: 1px solid var(--border-color);">
+        <div class="section-header">
+            <span class="pill-badge" style="background-color: var(--accent-light); color: var(--text-secondary);">The Difference</span>
+            <h2>Why Learn with Papa Rao?</h2>
+            <p>We bridge the gap between abstract computer science theory and real-world system architecture principles.</p>
+        </div>
+        
+        <div class="grid-3">
+            <div class="why-card">
+                <div class="why-card-content">
+                    <div class="why-icon">
+                        <i class="fa-solid fa-microchip"></i>
+                    </div>
+                    <h3 class="why-title">Under-the-Hood Concept</h3>
+                    <p class="why-desc">We don't skip the hard parts. Learn how programs allocate memory, compile instructions, manage pointer structures, and run under performance constraints.</p>
+                </div>
+            </div>
+            
+            <div class="why-card">
+                <div class="why-card-content">
+                    <div class="why-icon">
+                        <i class="fa-solid fa-laptop-code"></i>
+                    </div>
+                    <h3 class="why-title">Hands-on Lab Projects</h3>
+                    <p class="why-desc">Practice what you learn by building real compilers, memory simulators, and backend web databases. Build a solid portfolio that stands out in job applications.</p>
+                </div>
+            </div>
+            
+            <div class="why-card">
+                <div class="why-card-content">
+                    <div class="why-icon">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <h3 class="why-title">Verified Certifications</h3>
+                    <p class="why-desc">Earn shareable, verified course completion certificates once you finish 100% of course lessons, modules, and passing quiz requirements.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. About Trainer Section -->
+    <section id="trainer" class="section-container" style="background-color: var(--bg-primary); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);">
+        <div class="section-header">
+            <span class="pill-badge">Lead Educator</span>
+            <h2>Meet Your Trainer</h2>
+            <p>Learn directly from an experienced software veteran passionate about mentoring the next generation.</p>
+        </div>
+        
+        <div class="trainer-card">
+            <div class="trainer-image-wrapper">
+                <img src="{{ url_for('static', filename='assets/smiling_developer.png') }}" alt="Trainer Papa Rao" class="trainer-image">
+            </div>
+            <div>
+                <h3 style="font-size: 1.85rem; margin-bottom: 0.5rem; font-family: var(--font-heading); color: var(--text-primary);">Papa Rao</h3>
+                <p style="color: var(--accent-color); font-weight: 700; font-size: 1rem; margin-bottom: 1.25rem; text-transform: uppercase; letter-spacing: 0.05em;">Founder & Lead Instructor</p>
+                
+                <p style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.7; margin-bottom: 1rem;">
+                    Hello! I'm a seasoned software architect and technical mentor. Over the last decade, I've had the privilege of building high-performance systems and coaching thousands of young software developers.
+                </p>
+                <p style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.7; margin-bottom: 1.5rem;">
+                    I founded <strong>CodeWithPapaRao</strong> to make systems-level thinking and structural programming principles accessible. My goal is to teach you how computer memory and runtime mechanics work so you can solve any engineering challenge.
+                </p>
+                
+                <div class="trainer-highlights">
+                    <div class="trainer-highlight-item">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>10K+ Students Mentored Worldwide</span>
+                    </div>
+                    <div class="trainer-highlight-item">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>5+ Years of Dedicated Tutoring Experience</span>
+                    </div>
+                    <div class="trainer-highlight-item">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>Ex-Staff Software Systems Engineer</span>
+                    </div>
+                </div>
+                
+                <div class="trainer-socials">
+                    <a href="https://linkedin.com" target="_blank" class="trainer-social-btn" aria-label="LinkedIn Profile"><i class="fa-brands fa-linkedin-in"></i></a>
+                    <a href="https://github.com" target="_blank" class="trainer-social-btn" aria-label="GitHub Profile"><i class="fa-brands fa-github"></i></a>
+                    <a href="https://youtube.com" target="_blank" class="trainer-social-btn" aria-label="YouTube Channel"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Courses Section -->
+    <section id="courses" class="section-container">
+        <div class="section-header">
+            <span class="pill-badge" style="background-color: var(--accent-light); color: var(--text-secondary);">Core Catalog</span>
+            <h2>Master Coding Programs</h2>
+            <p>Choose from our verified foundational tracks designed by systems experts.</p>
         </div>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto;">
+        <div class="grid-3">
             
             <!-- C Course -->
-            <div class="card course-card-premium" style="--card-theme: #0284c7; --card-theme-bg: rgba(2, 132, 199, 0.08); --card-theme-light: #e0f2fe;">
+            <div class="course-card-premium" style="--card-theme: #0284c7; --card-theme-bg: rgba(2, 132, 199, 0.08); --card-theme-light: #e0f2fe;">
                 <div class="course-card-top-accent"></div>
                 <div class="course-card-inner">
                     <div class="course-logo-wrapper">
                         <i class="devicon-c-plain colored"></i>
                     </div>
-                    <span class="badge" style="background-color: var(--card-theme-light); color: var(--card-theme); font-weight: 700; margin-bottom: 1rem; align-self: flex-start; letter-spacing: 0.05em; font-size: 0.7rem; text-transform: uppercase;">Beginner</span>
+                    <span class="badge" style="background-color: var(--card-theme-light); color: var(--card-theme); font-weight: 700; margin-bottom: 1rem; align-self: flex-start; letter-spacing: 0.05em; font-size: 0.7rem;">Beginner</span>
                     <h3 class="course-card-title">C Programming</h3>
                     <p class="course-card-text">
                         Learn memory management, pointers, file handling, and structured coding patterns from the roots up.
@@ -760,13 +1371,13 @@
             </div>
 
             <!-- C++ Course -->
-            <div class="card course-card-premium" style="--card-theme: #6366f1; --card-theme-bg: rgba(99, 102, 241, 0.08); --card-theme-light: #e0e7ff;">
+            <div class="course-card-premium" style="--card-theme: #6366f1; --card-theme-bg: rgba(99, 102, 241, 0.08); --card-theme-light: #e0e7ff;">
                 <div class="course-card-top-accent"></div>
                 <div class="course-card-inner">
                     <div class="course-logo-wrapper">
                         <i class="devicon-cplusplus-plain colored"></i>
                     </div>
-                    <span class="badge" style="background-color: var(--card-theme-light); color: var(--card-theme); font-weight: 700; margin-bottom: 1rem; align-self: flex-start; letter-spacing: 0.05em; font-size: 0.7rem; text-transform: uppercase;">Intermediate</span>
+                    <span class="badge" style="background-color: var(--card-theme-light); color: var(--card-theme); font-weight: 700; margin-bottom: 1rem; align-self: flex-start; letter-spacing: 0.05em; font-size: 0.7rem;">Intermediate</span>
                     <h3 class="course-card-title">C++ Development</h3>
                     <p class="course-card-text">
                         Master Object-Oriented programming, templates, STL containers, and high-performance system logic.
@@ -781,13 +1392,13 @@
             </div>
 
             <!-- Java Course -->
-            <div class="card course-card-premium" style="--card-theme: #ea580c; --card-theme-bg: rgba(234, 88, 12, 0.08); --card-theme-light: #ffedd5;">
+            <div class="course-card-premium" style="--card-theme: #ea580c; --card-theme-bg: rgba(234, 88, 12, 0.08); --card-theme-light: #ffedd5;">
                 <div class="course-card-top-accent"></div>
                 <div class="course-card-inner">
                     <div class="course-logo-wrapper">
                         <i class="devicon-java-plain colored"></i>
                     </div>
-                    <span class="badge" style="background-color: var(--card-theme-light); color: var(--card-theme); font-weight: 700; margin-bottom: 1rem; align-self: flex-start; letter-spacing: 0.05em; font-size: 0.7rem; text-transform: uppercase;">Intermediate</span>
+                    <span class="badge" style="background-color: var(--card-theme-light); color: var(--card-theme); font-weight: 700; margin-bottom: 1rem; align-self: flex-start; letter-spacing: 0.05em; font-size: 0.7rem;">Intermediate</span>
                     <h3 class="course-card-title">Java Core</h3>
                     <p class="course-card-text">
                         Build multi-threaded backend applications, interfaces, exception frameworks, and Java Virtual Machine concepts.
@@ -802,13 +1413,13 @@
             </div>
 
             <!-- Python Course -->
-            <div class="card course-card-premium" style="--card-theme: #ca8a04; --card-theme-bg: rgba(202, 138, 4, 0.08); --card-theme-light: #fef9c3;">
+            <div class="course-card-premium" style="--card-theme: #ca8a04; --card-theme-bg: rgba(202, 138, 4, 0.08); --card-theme-light: #fef9c3;">
                 <div class="course-card-top-accent"></div>
                 <div class="course-card-inner">
                     <div class="course-logo-wrapper">
                         <i class="devicon-python-plain colored"></i>
                     </div>
-                    <span class="badge" style="background-color: var(--card-theme-light); color: var(--card-theme); font-weight: 700; margin-bottom: 1rem; align-self: flex-start; letter-spacing: 0.05em; font-size: 0.7rem; text-transform: uppercase;">Beginner</span>
+                    <span class="badge" style="background-color: var(--card-theme-light); color: var(--card-theme); font-weight: 700; margin-bottom: 1rem; align-self: flex-start; letter-spacing: 0.05em; font-size: 0.7rem;">Beginner</span>
                     <h3 class="course-card-title">Python Core</h3>
                     <p class="course-card-text">
                         Learn scripting, control flows, data manipulation libraries, and Django/Flask full stack integration.
@@ -823,13 +1434,13 @@
             </div>
 
             <!-- DSA Course -->
-            <div class="card course-card-premium" style="--card-theme: #10b981; --card-theme-bg: rgba(16, 185, 129, 0.08); --card-theme-light: #d1fae5;">
+            <div class="course-card-premium" style="--card-theme: #10b981; --card-theme-bg: rgba(16, 185, 129, 0.08); --card-theme-light: #d1fae5;">
                 <div class="course-card-top-accent"></div>
                 <div class="course-card-inner">
                     <div class="course-logo-wrapper">
-                        <i class="fas fa-project-diagram" style="color: var(--card-theme);"></i>
+                        <i class="fas fa-project-diagram" style="color: var(--card-theme); font-size: 2rem;"></i>
                     </div>
-                    <span class="badge" style="background-color: var(--card-theme-light); color: var(--card-theme); font-weight: 700; margin-bottom: 1rem; align-self: flex-start; letter-spacing: 0.05em; font-size: 0.7rem; text-transform: uppercase;">Advanced</span>
+                    <span class="badge" style="background-color: var(--card-theme-light); color: var(--card-theme); font-weight: 700; margin-bottom: 1rem; align-self: flex-start; letter-spacing: 0.05em; font-size: 0.7rem;">Advanced</span>
                     <h3 class="course-card-title">DSA Masterclass</h3>
                     <p class="course-card-text">
                         Optimize runtime complexity with trees, graphs, sorting algorithms, dynamic programming, and logic.
@@ -846,20 +1457,403 @@
         </div>
     </section>
 
+    <!-- 5. Upcoming Batches Section -->
+    <section id="upcoming-batches" class="section-container" style="background-color: var(--bg-primary); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);">
+        <div class="section-header">
+            <span class="pill-badge">Live Class Schedules</span>
+            <h2>Upcoming Cohorts</h2>
+            <p>Join interactive structured batches. Engage in live doubt-clearing sessions and hands-on laboratory reviews.</p>
+        </div>
+        
+        <div class="batch-card">
+            <div class="batch-row" style="border-bottom: 2px solid var(--border-color); font-weight: 800; color: var(--text-primary); font-family: var(--font-heading); background-color: var(--bg-primary); pointer-events: none;">
+                <div>Course Batch</div>
+                <div>Start Date</div>
+                <div>Duration</div>
+                <div>Learning Mode</div>
+                <div style="text-align: right; padding-right: 1.5rem;">Action</div>
+            </div>
+            
+            {% for batch in batches %}
+            <div class="batch-row">
+                <div class="batch-name">{{ batch.name }}</div>
+                <div class="batch-date">{{ batch.start_date.strftime('%B %d, %Y') }}</div>
+                <div class="batch-type">{{ batch.duration }}</div>
+                <div class="batch-type">{{ batch.mode }}</div>
+                <div class="batch-status" style="display: flex; align-items: center; justify-content: flex-end; gap: 1rem; padding-right: 1rem;">
+                    {% if batch.status == 'Filling Fast' %}
+                        <span class="badge" style="background-color: #fef3c7; color: #d97706; padding: 0.25rem 0.5rem; border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 600;">{{ batch.status }}</span>
+                    {% elif batch.status == 'Open' %}
+                        <span class="badge" style="background-color: #d1fae5; color: #059669; padding: 0.25rem 0.5rem; border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 600;">{{ batch.status }}</span>
+                    {% else %}
+                        <span class="badge" style="background-color: var(--bg-primary); border: 1px solid var(--border-color); color: var(--text-muted); padding: 0.25rem 0.5rem; border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 600;">{{ batch.status }}</span>
+                    {% endif %}
+                    
+                    {% if session.get('user_id') %}
+                        {% if session.get('user_role') == 'student' %}
+                            {% if batch.id in applied_batch_ids %}
+                                <button class="btn btn-outline" disabled style="padding: 0.4rem 0.85rem; font-size: 0.825rem; opacity: 0.75; cursor: not-allowed; border-color: var(--border-color); background: var(--bg-primary);">
+                                    <i class="fa-solid fa-circle-check" style="color: var(--success-color);"></i> Applied
+                                </button>
+                            {% else %}
+                                <form action="{{ url_for('student.apply_batch', batch_id=batch.id) }}" method="POST" style="margin: 0;">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                    <button type="submit" class="btn btn-primary" style="padding: 0.4rem 0.85rem; font-size: 0.825rem;">
+                                        Apply Now
+                                    </button>
+                                </form>
+                            {% endif %}
+                        {% else %}
+                            <span style="font-size: 0.85rem; color: var(--text-muted); font-style: italic;">(Admin Viewer)</span>
+                        {% endif %}
+                    {% else %}
+                        <a href="{{ url_for('auth.login') }}" class="btn btn-secondary" style="padding: 0.4rem 0.85rem; font-size: 0.825rem;">
+                            Login to Apply
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% else %}
+            <div style="padding: 3rem; text-align: center; color: var(--text-muted);">
+                <i class="fa-regular fa-calendar-xmark" style="font-size: 2.5rem; margin-bottom: 1rem; color: var(--border-color);"></i>
+                <p>No upcoming cohorts listed at this time. Check back soon!</p>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- 6. Student Testimonials Section -->
+    <section id="testimonials" class="section-container">
+        <div class="section-header">
+            <span class="pill-badge" style="background-color: var(--accent-light); color: var(--text-secondary);">Success Stories</span>
+            <h2>What Our Students Say</h2>
+            <p>Read about the learning experience from graduates who landed roles in leading tech teams.</p>
+        </div>
+        
+        <div class="grid-3">
+            <div class="testimonial-card">
+                <i class="fa-solid fa-quote-right quote-icon"></i>
+                <div>
+                    <div class="testimonial-stars">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">
+                        "The pointer arithmetic explanations in C completely demystified system memory! Papa Rao's bottom-up teaching structure is second to none."
+                    </p>
+                </div>
+                <div class="testimonial-user">
+                    <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=100&h=100" alt="Student Amit" class="testimonial-avatar">
+                    <div class="testimonial-details">
+                        <h4>Amit Sharma</h4>
+                        <span>SDE at Amazon</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial-card">
+                <i class="fa-solid fa-quote-right quote-icon"></i>
+                <div>
+                    <div class="testimonial-stars">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">
+                        "I cleared my backend systems interview because of the DSA Masterclass! The focus on runtimes, memory footprints, and big-O was highly practical."
+                    </p>
+                </div>
+                <div class="testimonial-user">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&h=100" alt="Student Priya" class="testimonial-avatar">
+                    <div class="testimonial-details">
+                        <h4>Priya Patel</h4>
+                        <span>System Dev at TCS</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial-card">
+                <i class="fa-solid fa-quote-right quote-icon"></i>
+                <div>
+                    <div class="testimonial-stars">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">
+                        "The quizzes, downloadable notes, and verified certificates gave me a structured roadmap that my university classes simply lacked."
+                    </p>
+                </div>
+                <div class="testimonial-user">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&h=100" alt="Student John" class="testimonial-avatar">
+                    <div class="testimonial-details">
+                        <h4>John Doe</h4>
+                        <span>Computer Science Graduate</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. Success Statistics Section -->
+    <section id="statistics" class="stats-section">
+        <div class="section-container" style="padding: 4rem 2rem;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2rem;">
+                <div class="stat-box">
+                    <div class="stat-number">10,000+</div>
+                    <div class="stat-label">Active Learners</div>
+                    <div class="stat-sublabel">Across 48 countries</div>
+                </div>
+                
+                <div class="stat-box">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Completion Rate</div>
+                    <div class="stat-sublabel">With modular track milestones</div>
+                </div>
+                
+                <div class="stat-box">
+                    <div class="stat-number">15+</div>
+                    <div class="stat-label">Hands-on Projects</div>
+                    <div class="stat-sublabel">Real compilable lab items</div>
+                </div>
+                
+                <div class="stat-box">
+                    <div class="stat-number">5+</div>
+                    <div class="stat-label">Years of Trust</div>
+                    <div class="stat-sublabel">Dedicated tech coaching</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. YouTube Video Section -->
+    <section id="youtube-video" class="section-container">
+        <div class="grid-2">
+            <div>
+                <span class="pill-badge">Free Resources</span>
+                <h2 style="font-family: var(--font-heading); font-size: 2.5rem; font-weight: 800; color: var(--text-primary); margin-bottom: 1.5rem; line-height: 1.15;">Learn for Free on <span style="color: #ff0000;">YouTube</span></h2>
+                <p style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.7; margin-bottom: 1.5rem;">
+                    We believe in democratizing tech learning. Watch detailed systems programming playlists, interview analysis, and DSA logic-building crash courses completely free on our channel.
+                </p>
+                <p style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.7; margin-bottom: 2rem;">
+                    Subscribe to get notified whenever Papa Rao drops new high-fidelity explanation walkthroughs on memory architectures, debugging, and software craftsmanship.
+                </p>
+                
+                <a href="https://youtube.com" target="_blank" class="btn btn-primary" style="padding: 0.85rem 2rem; background: #ff0000; border-color: #ff0000;">
+                    <i class="fa-brands fa-youtube"></i>
+                    <span>Subscribe to Channel</span>
+                </a>
+            </div>
+            
+            <div class="youtube-card">
+                <div class="video-wrapper">
+                    <!-- Placeholder mockup with custom hover preview and play trigger -->
+                    <div class="video-placeholder" onclick="this.style.display='none'; document.getElementById('youtube-iframe').src='https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1';">
+                        <div class="play-btn">
+                            <i class="fa-solid fa-play" style="margin-left: 5px;"></i>
+                        </div>
+                    </div>
+                    <iframe id="youtube-iframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. FAQ Section -->
+    <section id="faq" class="section-container" style="background-color: var(--bg-primary); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);">
+        <div class="section-header">
+            <span class="pill-badge">Common Inquiries</span>
+            <h2>Frequently Asked Questions</h2>
+            <p>Clear details about curriculum structures, certification access, and batch types.</p>
+        </div>
+        
+        <div class="faq-accordion">
+            <details class="faq-item" open>
+                <summary>
+                    <span>Can absolute beginners join these courses?</span>
+                    <i class="fa-solid fa-chevron-down faq-icon-chevron"></i>
+                </summary>
+                <div class="faq-content">
+                    Yes! Our C Programming and Python Core tracks are designed from absolute scratch. We don't assume prior development experience, teaching you both logic and execution from day one.
+                </div>
+            </details>
+            
+            <details class="faq-item">
+                <summary>
+                    <span>Are the certificates verified?</span>
+                    <i class="fa-solid fa-chevron-down faq-icon-chevron"></i>
+                </summary>
+                <div class="faq-content">
+                    Yes, every course completion certificate contains a unique alphanumeric validation code. This can be shared on LinkedIn, and employers can verify authenticity directly on our platform.
+                </div>
+            </details>
+            
+            <details class="faq-item">
+                <summary>
+                    <span>How do I get help if I get stuck on a coding assignment?</span>
+                    <i class="fa-solid fa-chevron-down faq-icon-chevron"></i>
+                </summary>
+                <div class="faq-content">
+                    Every active course comes with access to our student dashboard bookmark system and community channels, where mentors and peers answer query logs daily.
+                </div>
+            </details>
+            
+            <details class="faq-item">
+                <summary>
+                    <span>Are the batches live or recorded?</span>
+                    <i class="fa-solid fa-chevron-down faq-icon-chevron"></i>
+                </summary>
+                <div class="faq-content">
+                    We offer a hybrid approach. The self-paced modules are recorded in high quality, while live cohorts feature weekly interactive schedules, lab assessments, and live QA review blocks.
+                </div>
+            </details>
+        </div>
+    </section>
+
+    <!-- 10. Contact Section -->
+    <section id="contact" class="section-container">
+        <div class="section-header">
+            <span class="pill-badge" style="background-color: var(--accent-light); color: var(--text-secondary);">Get In Touch</span>
+            <h2>Connect with Lead Mentor</h2>
+            <p>Have questions about structural program roadmaps or upcoming live cohorts? Drop a line directly.</p>
+        </div>
+        
+        <div class="contact-grid-card">
+            <div class="contact-info-panel">
+                <div>
+                    <h3 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 0.75rem; color: var(--text-primary);">Contact Information</h3>
+                    <p style="color: var(--text-muted); line-height: 1.6;">Reach out directly for general support, corporate training inquiries, or structural syllabus details.</p>
+                </div>
+                
+                <div class="contact-detail-list">
+                    <div class="contact-detail-item">
+                        <div class="contact-detail-icon"><i class="fa-solid fa-envelope"></i></div>
+                        <div class="contact-detail-text">
+                            <h4>Email Support</h4>
+                            <p>support@codewithpaparao.com</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-detail-item">
+                        <div class="contact-detail-icon"><i class="fa-solid fa-comments"></i></div>
+                        <div class="contact-detail-text">
+                            <h4>Community Server</h4>
+                            <p>Join our Slack/Discord discussion lobbies</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-detail-item">
+                        <div class="contact-detail-icon"><i class="fa-solid fa-location-dot"></i></div>
+                        <div class="contact-detail-text">
+                            <h4>Office HQ</h4>
+                            <p>Hyderabad, Telangana, India</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="font-size: 0.85rem; color: var(--text-muted);">
+                    Typically responds within 24 business hours.
+                </div>
+            </div>
+            
+            <div class="contact-form-panel">
+                <form action="#" method="POST" onsubmit="event.preventDefault(); alert('Thank you for reaching out! We will contact you soon.'); this.reset();">
+                    <div class="form-group">
+                        <label for="contact-name">Full Name</label>
+                        <input type="text" id="contact-name" class="form-control" placeholder="John Doe" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="contact-email">Email Address</label>
+                        <input type="email" id="contact-email" class="form-control" placeholder="john@example.com" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="contact-subject">Subject</label>
+                        <input type="text" id="contact-subject" class="form-control" placeholder="Upcoming DSA cohort questions" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="contact-message">Message Details</label>
+                        <textarea id="contact-message" class="form-control" rows="5" placeholder="Write details of your query..." style="resize: none;" required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="padding: 0.85rem 1.5rem; justify-content: center;">Send Message &rarr;</button>
+                </form>
+            </div>
+        </div>
+    </section>
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="footer-content">
-            <p style="margin: 0;">&copy; 2026 CodeWithPapaRao LLC. All rights reserved.</p>
-            <div class="footer-links">
-                <a href="#">Terms & Conditions</a>
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <h3>CodeWithPapaRao</h3>
+                <p>Democratizing systems-level software development and data structure engineering with high-fidelity modules.</p>
+                <div style="display: flex; gap: 0.75rem;">
+                    <a href="https://linkedin.com" target="_blank" style="color: var(--text-muted);"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="https://github.com" target="_blank" style="color: var(--text-muted);"><i class="fa-brands fa-github"></i></a>
+                    <a href="https://youtube.com" target="_blank" style="color: var(--text-muted);"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-links-col">
+                <h4>Learning Paths</h4>
+                <ul>
+                    <li><a href="/courses/lang/c">C Systems</a></li>
+                    <li><a href="/courses/lang/cpp">C++ Object Oriented</a></li>
+                    <li><a href="/courses/lang/java">Java Core Engine</a></li>
+                    <li><a href="/courses/lang/python">Python & Web Dev</a></li>
+                    <li><a href="/courses/lang/dsa">DSA Masterclass</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-links-col">
+                <h4>Platform</h4>
+                <ul>
+                    <li><a href="/about">About papa Rao</a></li>
+                    <li><a href="{{ url_for('course.list_courses') }}">All Courses</a></li>
+                    <li><a href="/about#contact">Support Office</a></li>
+                    <li><a href="{{ url_for('auth.login') }}">Student Login</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-newsletter">
+                <h4>Weekly Newsletter</h4>
+                <p>Get systems engineering tips, assembly breakdowns, and logic challenges directly in your inbox.</p>
+                <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Subscribed successfully!'); this.reset();">
+                    <input type="email" class="newsletter-input" placeholder="name@email.com" required aria-label="Email Address">
+                    <button type="submit" class="btn btn-primary" style="padding: 0.5rem 1rem;"><i class="fa-solid fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2026 CodeWithPapaRao. All rights reserved.</p>
+            <div class="footer-bottom-links">
                 <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Sitemap</a>
             </div>
         </div>
     </footer>
 
-    <!-- Scripts -->
-    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <!-- Scripts (deferred to not block rendering) -->
+    <script src="{{ url_for('static', filename='js/theme.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+
+    
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>

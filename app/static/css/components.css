@@ -12,14 +12,36 @@
     border-radius: var(--radius-md);
     border: 1px solid transparent;
     cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     gap: 0.5rem;
     text-decoration: none;
     user-select: none;
+    position: relative;
+    overflow: hidden;
 }
 
-.btn:active {
-    transform: scale(0.95);
+/* Glassy shimmer glint effect on hover */
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent
+    );
+    transform: skewX(-25deg);
+    transition: none;
+    pointer-events: none;
+}
+
+.btn:hover::before {
+    left: 150%;
+    transition: left 0.60s ease-in-out;
 }
 
 .btn-primary {
@@ -30,6 +52,13 @@
 .btn-primary:hover {
     background-color: var(--accent-hover);
     color: #ffffff;
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+}
+
+.btn-primary:active {
+    transform: translateY(0) scale(0.97);
+    box-shadow: 0 2px 4px rgba(13, 148, 136, 0.15);
 }
 
 .btn-secondary {
@@ -40,6 +69,12 @@
 
 .btn-secondary:hover {
     background-color: var(--border-color);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.btn-secondary:active {
+    transform: translateY(0) scale(0.97);
 }
 
 .btn-danger {
@@ -48,7 +83,14 @@
 }
 
 .btn-danger:hover {
-    opacity: 0.9;
+    opacity: 1;
+    background-color: #dc2626;
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25);
+}
+
+.btn-danger:active {
+    transform: translateY(0) scale(0.97);
 }
 
 .btn-outline {
@@ -60,6 +102,13 @@
 .btn-outline:hover {
     background-color: var(--bg-secondary);
     color: var(--text-primary);
+    border-color: var(--accent-color);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.btn-outline:active {
+    transform: translateY(0) scale(0.97);
 }
 
 /* Cards */
