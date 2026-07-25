@@ -15,11 +15,11 @@
 
     <!-- Course details panel -->
     <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 3.5rem;">
-        <div style="position: relative; min-height: 240px; background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); display: flex; align-items: center; padding: 2.5rem; margin-top: 0.5rem;">
+        <div class="course-header-card" style="position: relative; min-height: 240px; background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); display: flex; align-items: center; padding: 2.5rem; margin-top: 0.5rem;">
             <!-- Glowing ambient background lights -->
             <div style="position: absolute; top: -50px; right: -50px; width: 250px; height: 250px; background: radial-gradient(circle, rgba(13, 148, 136, 0.12) 0%, transparent 70%); pointer-events: none; z-index: 1;"></div>
             
-            <div style="position: relative; z-index: 2; display: flex; align-items: center; gap: 2rem; width: 100%; flex-wrap: wrap;">
+            <div class="course-header-content" style="position: relative; z-index: 2; display: flex; align-items: center; gap: 2rem; width: 100%; flex-wrap: wrap;">
                 <!-- Glowing Glass logo bubble -->
                 <div style="width: 100px; height: 100px; border-radius: 20px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-md); flex-shrink: 0;">
                     {% if 'python' in course.title|lower %}
