@@ -58,9 +58,9 @@
                         {{ course.description[:140] }}{% if course.description|length > 140 %}...{% endif %}
                     </p>
                     
-                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 1rem; color: var(--text-secondary); font-size: 0.85rem; font-weight: 500; flex-wrap: wrap;">
-                        <div style="display: flex; align-items: center; gap: 6px;">
-                            <i class="fa-solid fa-signal" style="color: var(--text-muted);"></i>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 1rem; flex-wrap: wrap;">
+                        <div style="display: inline-flex; align-items: center; gap: 6px; background-color: var(--bg-tertiary); color: var(--text-secondary); padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; border: 1px solid var(--border-color);">
+                            <i class="fa-solid fa-signal" style="color: var(--accent-color);"></i>
                             <span>
                                 {% if course.difficulty %}
                                     {{ course.difficulty | capitalize }}
@@ -70,14 +70,14 @@
                             </span>
                         </div>
                         
-                        <div style="display: flex; align-items: center; gap: 6px;">
-                            <i class="fa-solid fa-users" style="color: var(--text-muted);"></i>
-                            <span>{{ ((course.title|length * 113) % 4000) + 800 }} students</span>
+                        <div style="display: inline-flex; align-items: center; gap: 6px; background-color: rgba(59, 130, 246, 0.1); color: #2563eb; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; border: 1px solid rgba(59, 130, 246, 0.2);">
+                            <i class="fa-solid fa-users"></i>
+                            <span>{{ ((course.title|length * 113) % 4000) + 800 }}{% if (((course.title|length * 113) % 4000) + 800) >= 1000 %}k{% endif %}</span>
                         </div>
                         
-                        <div style="display: flex; align-items: center; gap: 6px;">
-                            <i class="fa-solid fa-star" style="color: #F59E0B;"></i>
-                            <span>4.{{ ((course.title|length * 3) % 3) + 7 }} ({{ ((course.title|length * 47) % 500) + 100 }})</span>
+                        <div style="display: inline-flex; align-items: center; gap: 6px; background-color: rgba(245, 158, 11, 0.1); color: #d97706; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; border: 1px solid rgba(245, 158, 11, 0.2);">
+                            <i class="fa-solid fa-star"></i>
+                            <span>4.{{ ((course.title|length * 3) % 3) + 7 }}</span>
                         </div>
                     </div>
                     
