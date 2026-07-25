@@ -59,6 +59,28 @@ def create_app(config_name='development'):
             current_profile=current_profile
         )
 
+    @app.template_filter('course_image')
+    def course_image_filter(course, width=600, height=300):
+        if course and getattr(course, 'thumbnail_url', None):
+            return course.thumbnail_url
+        title = getattr(course, 'title', '').lower()
+        if 'python' in title:
+            return f"https://images.unsplash.com/photo-1526379095098-d400fd0bfce8?auto=format&fit=crop&w={width}&h={height}"
+        elif 'c programming' in title or 'c++' in title:
+            return f"https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w={width}&h={height}"
+        elif 'dsa' in title or 'data structure' in title or 'algorithm' in title:
+            return f"https://images.unsplash.com/photo-1504639725590-34d0984388bd?auto=format&fit=crop&w={width}&h={height}"
+        elif 'react' in title:
+            return f"https://images.unsplash.com/photo-1633356122544-f134324a6cee?auto=format&fit=crop&w={width}&h={height}"
+        elif 'java' in title and 'javascript' not in title:
+            return f"https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w={width}&h={height}"
+        elif 'web' in title or 'html' in title:
+            return f"https://images.unsplash.com/photo-1542831371-29b0f74f9713?auto=format&fit=crop&w={width}&h={height}"
+        elif 'sql' in title or 'database' in title:
+            return f"https://images.unsplash.com/photo-1544383835-bda2bc66a55d?auto=format&fit=crop&w={width}&h={height}"
+        else:
+            return f"https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w={width}&h={height}"
+
     # Register blueprints
     from app.controllers.auth_controller import auth_bp
     from app.controllers.dashboard_controller import dashboard_bp
