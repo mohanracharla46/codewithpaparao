@@ -42,6 +42,19 @@
             overflow-x: hidden;
         }
 
+        /* Glowing background design elements in light mode */
+        .hero-section::before {
+            content: "";
+            position: absolute;
+            top: 15%;
+            left: 5%;
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(20, 184, 166, 0.08) 0%, transparent 70%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
         /* Hero Section with Grid Layout & Glow */
         .hero-section {
             position: relative;
@@ -222,32 +235,29 @@
         }
 
         /* Positions & Specific Hover Glows */
-        .badge-dsa { top: -4%; left: 36%; animation-delay: 0s; }
+        .badge-dsa { top: -6%; left: 8%; animation-delay: 0s; }
         .badge-dsa:hover { border-color: #6366f1; box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.35); }
 
-        .badge-c { top: 8%; left: 2%; animation-delay: 0.8s; }
+        .badge-algo { top: -6%; right: 8%; animation-delay: 0.8s; }
+        .badge-algo:hover { border-color: #3b82f6; box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.35); }
+
+        .badge-c { top: 16%; left: -6%; animation-delay: 1.6s; }
         .badge-c:hover { border-color: #00599C; box-shadow: 0 10px 25px -5px rgba(0, 89, 156, 0.35); }
 
-        .badge-python { top: 12%; right: 2%; animation-delay: 1.6s; }
-        .badge-python:hover { border-color: #3776AB; box-shadow: 0 10px 25px -5px rgba(55, 118, 171, 0.35); }
-
-        .badge-cpp { top: 32%; left: -6%; animation-delay: 2.4s; }
+        .badge-cpp { top: 44%; left: -10%; animation-delay: 2.4s; }
         .badge-cpp:hover { border-color: #00599C; box-shadow: 0 10px 25px -5px rgba(0, 89, 156, 0.35); }
 
-        .badge-java { top: 36%; right: -6%; animation-delay: 3.2s; }
-        .badge-java:hover { border-color: #ea2d2e; box-shadow: 0 10px 25px -5px rgba(234, 45, 46, 0.35); }
+        .badge-python { top: 16%; right: -6%; animation-delay: 3.2s; }
+        .badge-python:hover { border-color: #3776AB; box-shadow: 0 10px 25px -5px rgba(55, 118, 171, 0.35); }
 
-        .badge-html { top: 58%; left: -4%; animation-delay: 4s; }
-        .badge-html:hover { border-color: #e34c26; box-shadow: 0 10px 25px -5px rgba(227, 76, 38, 0.35); }
+        .badge-problemsolving { top: 44%; right: -10%; animation-delay: 4.8s; }
+        .badge-problemsolving:hover { border-color: #f59e0b; box-shadow: 0 10px 25px -5px rgba(245, 158, 11, 0.35); }
 
-        .badge-js { top: 60%; right: -4%; animation-delay: 4.8s; }
-        .badge-js:hover { border-color: #f7df1e; box-shadow: 0 10px 25px -5px rgba(247, 223, 30, 0.35); }
+        .badge-compcoding { bottom: 8%; left: -4%; animation-delay: 5.6s; }
+        .badge-compcoding:hover { border-color: #ec4899; box-shadow: 0 10px 25px -5px rgba(236, 72, 153, 0.35); }
 
-        .badge-css { bottom: 12%; left: 6%; animation-delay: 5.6s; }
-        .badge-css:hover { border-color: #264de4; box-shadow: 0 10px 25px -5px rgba(38, 77, 228, 0.35); }
-
-        .badge-sql { bottom: 10%; right: 6%; animation-delay: 6.4s; }
-        .badge-sql:hover { border-color: #0ea5e9; box-shadow: 0 10px 25px -5px rgba(14, 165, 233, 0.35); }
+        .badge-placement { bottom: 8%; right: -4%; animation-delay: 6.4s; }
+        .badge-placement:hover { border-color: #10b981; box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.35); }
 
         @keyframes float {
             0%, 100% { transform: translateY(0); }
@@ -1283,15 +1293,16 @@
     <!-- 1. Hero Section -->
     <header class="hero-section">
         <div class="hero-content">
-            <span class="pill-badge">Next batch starts August 10</span>
-            <h1 class="hero-title">Master In-Demand Tech Skills <br>with <span>Practical Learning.</span></h1>
+            <span class="pill-badge" style="background-color: var(--accent-light); color: var(--accent-color); border-color: rgba(20, 184, 166, 0.3);">🚀 Learn &bull; Practice &bull; Build &bull; Succeed</span>
+            <h1 class="hero-title">Build Your Programming Career with <span>Confidence.</span></h1>
             
-            <p class="hero-desc">
-                Join live and recorded courses, practice with interactive quizzes, access downloadable notes, and earn verified certificates. Learn at your own pace with a modern systems-focused design.
+            <p class="hero-desc" style="font-size: 1.15rem; line-height: 1.7; margin-bottom: 2rem;">
+                Master C, C++, Python, Data Structures & Algorithms through structured learning, real-world coding, and placement-focused training from PapaRao Rapuri.
             </p>
             
-            <div class="hero-cta">
-                <a href="#courses" class="btn btn-hero">Start Learning &rarr;</a>
+            <div class="hero-cta" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <a href="#courses" class="btn btn-hero" style="background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-hover) 100%); color: white !important; border: none; box-shadow: 0 10px 20px -5px rgba(20, 184, 166, 0.4);"><i class="fa-solid fa-compass" style="margin-right: 0.5rem;"></i> Explore Courses</a>
+                <a href="#trainer" class="btn btn-hero btn-outline" style="background: var(--bg-secondary); border: 1px solid var(--border-color); color: var(--text-primary) !important; box-shadow: none; transition: all 0.3s ease;"><i class="fa-solid fa-play" style="margin-right: 0.5rem; font-size: 0.85rem; color: var(--accent-color);"></i> Watch Free Demo</a>
             </div>
         </div>
         
@@ -1301,80 +1312,141 @@
             </div>
             <!-- Floating Badges -->
             <div class="floating-badge badge-dsa">
-                <i class="badge-icon fas fa-code" style="color: #6366f1; min-width: 20px;"></i>
-                <span>DSA</span>
+                <i class="badge-icon fa-solid fa-sitemap" style="color: #6366f1; min-width: 20px;"></i>
+                <span>Data Structures</span>
+            </div>
+            <div class="floating-badge badge-algo">
+                <i class="badge-icon fa-solid fa-terminal" style="color: #3b82f6; min-width: 20px;"></i>
+                <span>Algorithms</span>
             </div>
             <div class="floating-badge badge-c">
                 <i class="badge-icon devicon-c-plain colored" style="min-width: 20px;"></i>
-                <span>C</span>
-            </div>
-            <div class="floating-badge badge-python">
-                <i class="badge-icon devicon-python-plain colored" style="min-width: 20px;"></i>
-                <span>Python</span>
+                <span>C Programming</span>
             </div>
             <div class="floating-badge badge-cpp">
                 <i class="badge-icon devicon-cplusplus-plain colored" style="min-width: 20px;"></i>
                 <span>C++</span>
             </div>
-            <div class="floating-badge badge-java">
-                <i class="badge-icon devicon-java-plain colored" style="min-width: 20px;"></i>
-                <span>Java</span>
+            <div class="floating-badge badge-python">
+                <i class="badge-icon devicon-python-plain colored" style="min-width: 20px;"></i>
+                <span>Python</span>
             </div>
-            <div class="floating-badge badge-html">
-                <i class="badge-icon devicon-html5-plain colored" style="min-width: 20px;"></i>
-                <span>HTML</span>
+            <div class="floating-badge badge-problemsolving">
+                <i class="badge-icon fa-solid fa-puzzle-piece" style="color: #f59e0b; min-width: 20px;"></i>
+                <span>Problem Solving</span>
             </div>
-            <div class="floating-badge badge-js">
-                <i class="badge-icon devicon-javascript-plain colored" style="min-width: 20px;"></i>
-                <span>JS</span>
+            <div class="floating-badge badge-compcoding">
+                <i class="badge-icon fa-solid fa-trophy" style="color: #ec4899; min-width: 20px;"></i>
+                <span>Competitive Coding</span>
             </div>
-            <div class="floating-badge badge-css">
-                <i class="badge-icon devicon-css3-plain colored" style="min-width: 20px;"></i>
-                <span>CSS</span>
-            </div>
-            <div class="floating-badge badge-sql">
-                <i class="badge-icon fas fa-database" style="color: #0ea5e9; min-width: 20px;"></i>
-                <span>SQL</span>
+            <div class="floating-badge badge-placement">
+                <i class="badge-icon fa-solid fa-briefcase" style="color: #10b981; min-width: 20px;"></i>
+                <span>Placement Training</span>
             </div>
         </div>
     </header>
 
+    <!-- 1.5 Trust Section -->
+    <section class="trust-section" style="padding: 3rem 4rem 1rem 4rem; max-width: 1280px; margin: 0 auto; position: relative; z-index: 10;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem;">
+            
+            <!-- Item 1: Students Mentored -->
+            <div class="card stat-card" style="display: flex; align-items: center; gap: 1.25rem; padding: 1.5rem; border-radius: var(--radius-lg); transition: all 0.3s ease;">
+                <div style="font-size: 1.85rem; color: var(--accent-color); background: var(--accent-light); width: 55px; height: 55px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <div>
+                    <h4 style="font-size: 1.5rem; font-weight: 800; margin: 0; color: var(--text-primary);">1000+</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0.15rem 0 0 0; font-weight: 600;">Students Mentored</p>
+                </div>
+            </div>
+
+            <!-- Item 2: Teaching Excellence -->
+            <div class="card stat-card" style="display: flex; align-items: center; gap: 1.25rem; padding: 1.5rem; border-radius: var(--radius-lg); transition: all 0.3s ease;">
+                <div style="font-size: 1.85rem; color: var(--accent-color); background: var(--accent-light); width: 55px; height: 55px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <i class="fa-solid fa-chalkboard-user"></i>
+                </div>
+                <div>
+                    <h4 style="font-size: 1.5rem; font-weight: 800; margin: 0; color: var(--text-primary);">15+ Years</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0.15rem 0 0 0; font-weight: 600;">Teaching Excellence</p>
+                </div>
+            </div>
+
+            <!-- Item 3: Credentials -->
+            <div class="card stat-card" style="display: flex; align-items: center; gap: 1.25rem; padding: 1.5rem; border-radius: var(--radius-lg); transition: all 0.3s ease;">
+                <div style="font-size: 1.85rem; color: var(--accent-color); background: var(--accent-light); width: 55px; height: 55px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <i class="fa-solid fa-award"></i>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 0.35rem; flex-grow: 1;">
+                    <h4 style="font-size: 0.95rem; font-weight: 700; margin: 0; color: var(--text-primary); line-height: 1.2;">Qualified Credentials</h4>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.3rem;">
+                        <span style="font-size: 0.65rem; background: rgba(99, 102, 241, 0.1); color: #6366f1; border: 1px solid rgba(99, 102, 241, 0.2); padding: 0.15rem 0.35rem; border-radius: 4px; font-weight: 700;">GATE ('12, '13)</span>
+                        <span style="font-size: 0.65rem; background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.2); padding: 0.15rem 0.35rem; border-radius: 4px; font-weight: 700;">UGC-NET ('18, '24)</span>
+                        <span style="font-size: 0.65rem; background: rgba(245, 158, 11, 0.15); color: #d97706; border: 1px solid rgba(245, 158, 11, 0.2); padding: 0.15rem 0.35rem; border-radius: 4px; font-weight: 700;">APSET ('17)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 4: HackerRank Certified -->
+            <div class="card stat-card" style="display: flex; align-items: center; gap: 1.25rem; padding: 1.5rem; border-radius: var(--radius-lg); transition: all 0.3s ease;">
+                <div style="font-size: 1.85rem; color: #10b981; background: rgba(16, 185, 129, 0.1); width: 55px; height: 55px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <i class="fa-brands fa-hackerrank"></i>
+                </div>
+                <div>
+                    <h4 style="font-size: 1.35rem; font-weight: 800; margin: 0; color: var(--text-primary);">HackerRank</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0.15rem 0 0 0; font-weight: 600;">Python Certified</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
     <!-- 2. Why Choose Section -->
     <section id="why-choose" class="section-container" style="border-top: 1px solid var(--border-color);">
         <div class="section-header">
-            <span class="pill-badge" style="background-color: var(--accent-light); color: var(--text-secondary);">The Difference</span>
-            <h2>Why Learn with Papa Rao?</h2>
-            <p>We bridge the gap between abstract computer science theory and real-world system architecture principles.</p>
+            <span class="pill-badge" style="background-color: var(--accent-light); color: var(--accent-color); border-color: rgba(20, 184, 166, 0.3);">Why Learn with PapaRao?</span>
+            <h2 style="font-family: var(--font-heading); color: var(--text-primary);">Why Learn with PapaRao?</h2>
+            <div style="max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 0.75rem;">
+                <p style="font-size: 1.15rem; font-weight: 600; color: var(--accent-color); line-height: 1.5; margin: 0 auto;">
+                    Programming isn't about memorizing syntax. It's about learning to think logically and solve problems efficiently.
+                </p>
+                <p style="font-size: 1.02rem; color: var(--text-muted); line-height: 1.6; margin: 0 auto;">
+                    At CodeWithPapaRao, you'll learn through practical examples, visual explanations, coding exercises, and interview-oriented training designed to make you industry-ready.
+                </p>
+            </div>
         </div>
         
         <div class="grid-3">
-            <div class="why-card">
+            <!-- Card 1 -->
+            <div class="why-card" style="transition: all 0.3s ease;">
                 <div class="why-card-content">
-                    <div class="why-icon">
-                        <i class="fa-solid fa-microchip"></i>
+                    <div class="why-icon" style="background: rgba(20, 184, 166, 0.1); color: var(--accent-color); font-size: 1.5rem; width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                        <i class="fa-solid fa-brain"></i>
                     </div>
-                    <h3 class="why-title">Under-the-Hood Concept</h3>
-                    <p class="why-desc">We don't skip the hard parts. Learn how programs allocate memory, compile instructions, manage pointer structures, and run under performance constraints.</p>
+                    <h3 class="why-title" style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem; color: var(--text-primary);">Strong Programming Foundations</h3>
+                    <p class="why-desc" style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">Master C, C++, Python, and Computer Science Fundamentals with step-by-step explanations that build confidence from beginner to advanced levels.</p>
                 </div>
             </div>
             
-            <div class="why-card">
+            <!-- Card 2 -->
+            <div class="why-card" style="transition: all 0.3s ease;">
                 <div class="why-card-content">
-                    <div class="why-icon">
+                    <div class="why-icon" style="background: rgba(20, 184, 166, 0.1); color: var(--accent-color); font-size: 1.5rem; width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
                         <i class="fa-solid fa-laptop-code"></i>
                     </div>
-                    <h3 class="why-title">Hands-on Lab Projects</h3>
-                    <p class="why-desc">Practice what you learn by building real compilers, memory simulators, and backend web databases. Build a solid portfolio that stands out in job applications.</p>
+                    <h3 class="why-title" style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem; color: var(--text-primary);">Hands-on Coding & DSA</h3>
+                    <p class="why-desc" style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">Strengthen your coding skills by solving real interview questions, mastering Data Structures & Algorithms, and building logical thinking through regular practice.</p>
                 </div>
             </div>
             
-            <div class="why-card">
+            <!-- Card 3 -->
+            <div class="why-card" style="transition: all 0.3s ease;">
                 <div class="why-card-content">
-                    <div class="why-icon">
-                        <i class="fa-solid fa-graduation-cap"></i>
+                    <div class="why-icon" style="background: rgba(20, 184, 166, 0.1); color: var(--accent-color); font-size: 1.5rem; width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                        <i class="fa-solid fa-crosshairs"></i>
                     </div>
-                    <h3 class="why-title">Verified Certifications</h3>
-                    <p class="why-desc">Earn shareable, verified course completion certificates once you finish 100% of course lessons, modules, and passing quiz requirements.</p>
+                    <h3 class="why-title" style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem; color: var(--text-primary);">Placement & Career Preparation</h3>
+                    <p class="why-desc" style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">Prepare for placements with coding contests, mock interviews, resume guidance, aptitude support, and interview-focused problem-solving sessions.</p>
                 </div>
             </div>
         </div>
@@ -1390,17 +1462,17 @@
         
         <div class="trainer-card">
             <div class="trainer-image-wrapper">
-                <img src="{{ url_for('static', filename='assets/smiling_developer.png') }}" alt="Trainer Papa Rao" class="trainer-image">
+                <img src="{{ url_for('static', filename='assets/smiling_developer.png') }}" alt="Trainer PapaRao Rapuri" class="trainer-image">
             </div>
             <div>
-                <h3 style="font-size: 1.85rem; margin-bottom: 0.5rem; font-family: var(--font-heading); color: var(--text-primary);">Papa Rao</h3>
-                <p style="color: var(--accent-color); font-weight: 700; font-size: 1rem; margin-bottom: 1.25rem; text-transform: uppercase; letter-spacing: 0.05em;">Founder & Lead Instructor</p>
+                <h3 style="font-size: 1.85rem; margin-bottom: 0.5rem; font-family: var(--font-heading); color: var(--text-primary);">PapaRao Rapuri</h3>
+                <p style="color: var(--accent-color); font-weight: 700; font-size: 1rem; margin-bottom: 1.25rem; text-transform: uppercase; letter-spacing: 0.05em;">Founder & Lead Instructor, Code With PapaRao</p>
                 
                 <p style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.7; margin-bottom: 1rem;">
-                    Hello! I'm a seasoned software architect and technical mentor. Over the last decade, I've had the privilege of building high-performance systems and coaching thousands of young software developers.
+                    Hello! I'm <strong>PapaRao Rapuri</strong>, an educator and programming mentor passionate about helping students build strong problem-solving skills through Programming, Data Structures & Algorithms (DSA), and Computer Science fundamentals.
                 </p>
                 <p style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.7; margin-bottom: 1.5rem;">
-                    I founded <strong>CodeWithPapaRao</strong> to make systems-level thinking and structural programming principles accessible. My goal is to teach you how computer memory and runtime mechanics work so you can solve any engineering challenge.
+                    With <strong>15+ years of teaching and technical training experience</strong>, I have guided thousands of students from beginner to advanced levels. My mission is to simplify complex concepts using real-world examples, visual explanations, and structured learning, enabling every student to solve coding problems with confidence.
                 </p>
                 
                 <div class="trainer-highlights">
@@ -1410,11 +1482,11 @@
                     </div>
                     <div class="trainer-highlight-item">
                         <i class="fa-solid fa-circle-check"></i>
-                        <span>5+ Years of Dedicated Tutoring Experience</span>
+                        <span>15+ Years of Dedicated Tutoring Experience</span>
                     </div>
                     <div class="trainer-highlight-item">
                         <i class="fa-solid fa-circle-check"></i>
-                        <span>Ex-Staff Software Systems Engineer</span>
+                        <span>M.Tech & UGC-NET Qualified Educator</span>
                     </div>
                 </div>
                 
@@ -1910,6 +1982,57 @@
         </div>
     </section>
 
+    <!-- 9.5 Bottom Features Bar -->
+    <section class="features-bar-section" style="padding: 4rem 4rem; max-width: 1280px; margin: 0 auto; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); background: var(--bg-secondary); position: relative; z-index: 10;">
+        <div style="text-align: center; margin-bottom: 3rem;">
+            <span class="pill-badge" style="background-color: var(--accent-light); color: var(--accent-color); border-color: rgba(20, 184, 166, 0.3);">Full Experience</span>
+            <h2 style="font-family: var(--font-heading); font-size: 2.25rem; font-weight: 800; color: var(--text-primary); margin-top: 0.5rem;">What is Included in Every Course</h2>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; justify-content: center;">
+            
+            <div class="card" style="display: flex; align-items: center; gap: 0.75rem; padding: 1.25rem; border-radius: var(--radius-md); transition: transform 0.3s ease;">
+                <i class="fa-solid fa-circle-check" style="color: #10b981; font-size: 1.25rem;"></i>
+                <span style="font-weight: 600; font-size: 0.95rem; color: var(--text-primary);">Live Interactive Classes</span>
+            </div>
+
+            <div class="card" style="display: flex; align-items: center; gap: 0.75rem; padding: 1.25rem; border-radius: var(--radius-md); transition: transform 0.3s ease;">
+                <i class="fa-solid fa-circle-check" style="color: #10b981; font-size: 1.25rem;"></i>
+                <span style="font-weight: 600; font-size: 0.95rem; color: var(--text-primary);">Recorded Courses</span>
+            </div>
+
+            <div class="card" style="display: flex; align-items: center; gap: 0.75rem; padding: 1.25rem; border-radius: var(--radius-md); transition: transform 0.3s ease;">
+                <i class="fa-solid fa-circle-check" style="color: #10b981; font-size: 1.25rem;"></i>
+                <span style="font-weight: 600; font-size: 0.95rem; color: var(--text-primary);">Downloadable Notes</span>
+            </div>
+
+            <div class="card" style="display: flex; align-items: center; gap: 0.75rem; padding: 1.25rem; border-radius: var(--radius-md); transition: transform 0.3s ease;">
+                <i class="fa-solid fa-circle-check" style="color: #10b981; font-size: 1.25rem;"></i>
+                <span style="font-weight: 600; font-size: 0.95rem; color: var(--text-primary);">Coding Assignments</span>
+            </div>
+
+            <div class="card" style="display: flex; align-items: center; gap: 0.75rem; padding: 1.25rem; border-radius: var(--radius-md); transition: transform 0.3s ease;">
+                <i class="fa-solid fa-circle-check" style="color: #10b981; font-size: 1.25rem;"></i>
+                <span style="font-weight: 600; font-size: 0.95rem; color: var(--text-primary);">Weekly Coding Challenges</span>
+            </div>
+
+            <div class="card" style="display: flex; align-items: center; gap: 0.75rem; padding: 1.25rem; border-radius: var(--radius-md); transition: transform 0.3s ease;">
+                <i class="fa-solid fa-circle-check" style="color: #10b981; font-size: 1.25rem;"></i>
+                <span style="font-weight: 600; font-size: 0.95rem; color: var(--text-primary);">Mock Interviews</span>
+            </div>
+
+            <div class="card" style="display: flex; align-items: center; gap: 0.75rem; padding: 1.25rem; border-radius: var(--radius-md); transition: transform 0.3s ease;">
+                <i class="fa-solid fa-circle-check" style="color: #10b981; font-size: 1.25rem;"></i>
+                <span style="font-weight: 600; font-size: 0.95rem; color: var(--text-primary);">Placement Guidance</span>
+            </div>
+
+            <div class="card" style="display: flex; align-items: center; gap: 0.75rem; padding: 1.25rem; border-radius: var(--radius-md); transition: transform 0.3s ease;">
+                <i class="fa-solid fa-circle-check" style="color: #10b981; font-size: 1.25rem;"></i>
+                <span style="font-weight: 600; font-size: 0.95rem; color: var(--text-primary);">Doubt Support</span>
+            </div>
+
+        </div>
+    </section>
+
     <!-- 10. Contact Section -->
     <section id="contact" class="section-container">
         <div class="section-header">
@@ -1989,7 +2112,7 @@
         <div class="footer-grid">
             <div class="footer-brand">
                 <h3>CodeWithPapaRao</h3>
-                <p>Democratizing systems-level software development and data structure engineering with high-fidelity modules.</p>
+                <p style="font-style: italic; font-size: 0.92rem; line-height: 1.5; color: var(--text-muted); margin-bottom: 1.25rem;">"Empowering students to think logically, code confidently, and build successful software engineering careers."</p>
                 <div style="display: flex; gap: 0.75rem;">
                     <a href="https://linkedin.com" target="_blank" style="color: var(--text-muted);"><i class="fa-brands fa-linkedin"></i></a>
                     <a href="https://github.com" target="_blank" style="color: var(--text-muted);"><i class="fa-brands fa-github"></i></a>

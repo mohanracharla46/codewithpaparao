@@ -124,14 +124,14 @@ class LMSTestCase(unittest.TestCase):
         res = self.client.get('/')
         self.assertEqual(res.status_code, 200)
         self.assertIn(b'CodeWithPapaRao', res.data)
-        self.assertIn(b'Master In-Demand', res.data)
+        self.assertIn(b'Build Your Programming Career', res.data)
 
     # Test 8: Public About Me page rendering
     def test_about_page_rendering(self):
         res = self.client.get('/about')
         self.assertEqual(res.status_code, 200)
         self.assertIn(b'Meet your instructor', res.data)
-        self.assertIn(b'Papa Rao', res.data)
+        self.assertIn(b'PapaRao', res.data)
 
     # Test 9: Public Courses Catalog page rendering
     def test_public_courses_catalog_rendering(self):
@@ -299,6 +299,123 @@ class LMSTestCase(unittest.TestCase):
         self.assertEqual(updated_lesson.title, 'Rust Ownership Rules')
         self.assertEqual(updated_lesson.sort_order, 5)
         self.assertEqual(updated_lesson.text_content, 'Updated ownership notes')
+
+    # Test 15: Verify my-courses endpoint access and behavior
+    def test_my_courses_endpoint(self):
+        # 1. Anonymous access redirect
+        res = self.client.get('/courses/my-courses')
+        self.assertEqual(res.status_code, 302)
+        self.assertIn('/auth/login', res.location)
+
+        # 2. Admin access warning and redirect
+        with self.client.session_transaction() as sess:
+            sess['user_id'] = self.admin_profile.id
+            sess['user_role'] = self.admin_profile.role
+        res = self.client.get('/courses/my-courses')
+        self.assertEqual(res.status_code, 302)
+        self.assertIn('/dashboard/', res.location)
+
+        # 3. Student access success (initially empty)
+        with self.client.session_transaction() as sess:
+            sess['user_id'] = self.student_profile.id
+            sess['user_role'] = self.student_profile.role
+            sess['user_name'] = self.student_profile.full_name
+        res = self.client.get('/courses/my-courses')
+        self.assertEqual(res.status_code, 200)
+        self.assertIn(b'My Enrolled Courses', res.data)
+        self.assertIn(b'No active courses found', res.data)
+
+        # 4. Create a course and a batch
+        course = Course(
+            title="Syllabus Test Course 2",
+            description="Detail test 2",
+            difficulty="beginner",
+            is_published=True,
+            created_by=self.admin_profile.id
+        )
+        db.session.add(course)
+        db.session.commit()
+
+        from app.models.models import Batch, BatchApplication, StudentProgress, Module, Lesson
+        from datetime import date
+        batch = Batch(
+            name="Test Batch",
+            course_id=course.id,
+            start_date=date(2026, 8, 10),
+            duration="8 Weeks",
+            mode="Live Classes",
+            status="Open"
+        )
+        db.session.add(batch)
+        db.session.commit()
+
+        # Create applied application (not approved yet)
+        app = BatchApplication(
+            batch_id=batch.id,
+            student_id=self.student_profile.id,
+            status='applied'
+        )
+        db.session.add(app)
+        db.session.commit()
+
+        # Access endpoint, should still be empty (not approved)
+        res = self.client.get('/courses/my-courses')
+        self.assertEqual(res.status_code, 200)
+        self.assertIn(b'No active courses found', res.data)
+
+        # Approve application
+        app.status = 'approved'
+        db.session.commit()
+
+        # Access endpoint, should show the course title
+        res = self.client.get('/courses/my-courses')
+        self.assertEqual(res.status_code, 200)
+        self.assertIn(b"Syllabus Test Course 2", res.data)
+        self.assertNotIn(b'No active courses found', res.data)
+
+        # Delete application and test progress-based enrollment
+        db.session.delete(app)
+        db.session.commit()
+
+        # Access endpoint, should be empty again
+        res = self.client.get('/courses/my-courses')
+        self.assertEqual(res.status_code, 200)
+        self.assertIn(b'No active courses found', res.data)
+
+        # Create a module and lesson
+        mod = Module(course_id=course.id, title="Module 1", sort_order=1)
+        db.session.add(mod)
+        db.session.commit()
+        les = Lesson(module_id=mod.id, title="Ownership Rules", content_type="text", sort_order=1)
+        db.session.add(les)
+        db.session.commit()
+
+        # Add progress record
+        progress = StudentProgress(student_id=self.student_profile.id, lesson_id=les.id)
+        db.session.add(progress)
+        db.session.commit()
+
+        # Access endpoint, should show the course title due to progress
+        res = self.client.get('/courses/my-courses')
+        self.assertEqual(res.status_code, 200)
+        self.assertIn(b"Syllabus Test Course 2", res.data)
+
+    # Test 16: Verify registration defaults to student when role is missing in request data
+    def test_registration_defaults_to_student(self):
+        res = self.client.post('/auth/register', data={
+            'first_name': 'Jane',
+            'last_name': 'Smith',
+            'email': 'janesmith@lms.com',
+            'password': 'password123',
+            'confirm_password': 'password123'
+        })
+        self.assertEqual(res.status_code, 302)
+        
+        profile = Profile.query.filter_by(email='janesmith@lms.com').first()
+        self.assertIsNotNone(profile)
+        self.assertEqual(profile.role, 'student')
+        self.assertEqual(profile.first_name, 'Jane')
+        self.assertEqual(profile.last_name, 'Smith')
 
 if __name__ == '__main__':
     unittest.main()

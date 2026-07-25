@@ -453,3 +453,49 @@ def language_detail(lang_key):
                            data=lang_data, 
                            db_courses=db_courses,
                            course_id=course_id)
+
+@course_bp.route('/my-courses')
+@login_required
+def my_courses():
+    from app.models.models import BatchApplication, Batch
+    user_id = session['user_id']
+    role = session['user_role']
+    
+    if role != 'student':
+        flash('Only students can view their enrolled courses.', 'warning')
+        return redirect(url_for('dashboard.index'))
+        
+    # Find courses via approved batch applications
+    approved_applications = BatchApplication.query.filter_by(student_id=user_id, status='approved').all()
+    enrolled_course_ids = {app.batch.course_id for app in approved_applications if app.batch and app.batch.course_id}
+    
+    # Also find courses where student has made progress
+    progress_records = StudentProgress.query.filter_by(student_id=user_id).all()
+    progress_course_ids = {r.lesson.module.course_id for r in progress_records if r.lesson and r.lesson.module}
+    
+    # Combine the IDs
+    all_course_ids = enrolled_course_ids.union(progress_course_ids)
+    
+    # Query those courses
+    courses = Course.query.filter(Course.id.in_(all_course_ids), Course.deleted_at.is_(None)).all() if all_course_ids else []
+    
+    # Calculate progress percentage per course
+    courses_with_progress = []
+    for course in courses:
+        total_lessons = sum(len(m.lessons) for m in course.modules)
+        if total_lessons > 0:
+            completed_lessons = StudentProgress.query.filter(
+                StudentProgress.student_id == user_id,
+                StudentProgress.lesson_id.in_([l.id for m in course.modules for l in m.lessons])
+            ).count()
+            progress_pct = int((completed_lessons / total_lessons) * 100)
+        else:
+            progress_pct = 0
+            
+        courses_with_progress.append({
+            'course': course,
+            'progress': progress_pct,
+            'total_lessons': total_lessons
+        })
+        
+    return render_template('courses/my_courses.html', courses_with_progress=courses_with_progress)

@@ -49,7 +49,7 @@
 
                     {% if session.get('user_role') == 'student' %}
                         <li class="sidebar-item {% if request.blueprint == 'course' and request.endpoint != 'course.list_courses' %}active{% endif %}">
-                            <a href="{{ url_for('dashboard.index') }}"><i class="fa-solid fa-book" style="min-width: 20px;"></i> My Courses</a>
+                            <a href="{{ url_for('course.my_courses') }}"><i class="fa-solid fa-book" style="min-width: 20px;"></i> My Courses</a>
                         </li>
                         <li class="sidebar-item {% if request.endpoint == 'course.list_courses' %}active{% endif %}">
                             <a href="{{ url_for('course.list_courses') }}"><i class="fa-solid fa-magnifying-glass" style="min-width: 20px;"></i> Explore Catalog</a>

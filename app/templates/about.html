@@ -1,7 +1,7 @@
 {% set hide_sidebar = True %}
 {% extends "base.html" %}
 
-{% block title %}About Me - Papa Rao{% endblock %}
+{% block title %}About Me - PapaRao Rapuri{% endblock %}
 {% block header_title %}About the Instructor{% endblock %}
 
 {% block content %}
@@ -12,19 +12,57 @@
         <!-- Top accent line -->
         <div style="position: absolute; top: 0; left: 0; width: 100%; height: 6px; background: linear-gradient(90deg, var(--accent-color) 0%, #14b8a6 100%);"></div>
         
-        <div>
-            <span class="badge" style="background-color: var(--accent-light); color: var(--accent-color); font-weight: 700; margin-bottom: 1rem;">Meet your instructor</span>
-            <h1 style="font-size: 2.5rem; line-height: 1.15; margin-bottom: 1.25rem;">Democratizing Tech Education with a <span style="color: var(--accent-color);">Practical Approach</span></h1>
-            <p style="color: var(--text-secondary); line-height: 1.7; font-size: 1.05rem; margin-bottom: 1.5rem;">
-                Hello! I'm Papa Rao, a seasoned software engineer and tech educator. Over the last decade, I've had the privilege of building scalable software systems and mentoring hundreds of developers. 
-            </p>
-            <p style="color: var(--text-secondary); line-height: 1.7; font-size: 1.05rem; margin-bottom: 2rem;">
-                I founded <strong>CodeWithPapaRao</strong> to bridge the gap between abstract computer science theory and real-world software engineering practice. Our courses focus on deep, foundational concepts—like pointer layouts, memory management, and system optimization—rather than just syntax rules.
-            </p>
+        <div class="profile-grid" style="display: grid; grid-template-columns: 2fr 1.2fr; gap: 3rem; align-items: start;">
+            <div>
+                <span class="badge" style="background-color: var(--accent-light); color: var(--accent-color); font-weight: 700; margin-bottom: 1rem;">Meet your instructor</span>
+                <h1 style="font-size: 2.5rem; line-height: 1.15; margin-bottom: 1.25rem; font-family: var(--font-heading);">PapaRao Rapuri</h1>
+                <p style="color: var(--accent-color); font-weight: 600; font-size: 1.1rem; margin-top: -0.5rem; margin-bottom: 1.5rem;">Founder & Lead Instructor, Code With PapaRao</p>
+                <div style="color: var(--text-secondary); line-height: 1.7; font-size: 1.05rem; display: flex; flex-direction: column; gap: 1rem;">
+                    <p>
+                        Hello! I'm <strong>PapaRao Rapuri</strong>, an educator and programming mentor passionate about helping students build strong problem-solving skills through Programming, Data Structures & Algorithms (DSA), and Computer Science fundamentals.
+                    </p>
+                    <p>
+                        With <strong>15+ years of teaching and technical training experience</strong>, I have guided thousands of students from beginner to advanced levels. My mission is to simplify complex concepts using real-world examples, visual explanations, and structured learning, enabling every student to solve coding problems with confidence.
+                    </p>
+                    <p>
+                        I founded <strong>Code With PapaRao</strong> to provide high-quality, industry-oriented programming education that bridges the gap between academic learning and technical interviews. My teaching emphasizes algorithmic thinking, problem-solving, time complexity, memory optimization, and writing efficient code.
+                    </p>
+                    <p>
+                        I believe anyone can become a great programmer with the right guidance and consistent practice. Through <strong>Code With PapaRao</strong>, my goal is to make programming simple, practical, and accessible while preparing students for placements, competitive exams, and successful software engineering careers.
+                    </p>
+                </div>
+            </div>
             
-            <div style="border-top: 1px solid var(--border-color); padding-top: 1.25rem; display: flex; flex-direction: column; gap: 0.25rem;">
-                <strong style="font-family: var(--font-heading); font-size: 1.2rem; color: var(--text-primary);">Papa Rao</strong>
-                <span style="color: var(--accent-color); font-weight: 600; font-size: 0.9rem;">Founder & Lead Instructor</span>
+            <div style="background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-sm);">
+                <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1.25rem; color: var(--text-primary); border-bottom: 2px solid var(--accent-color); padding-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fa-solid fa-award" style="color: var(--accent-color);"></i> Qualifications & Achievements
+                </h3>
+                <ul style="list-style: none; padding: 0; margin: 0 0 2rem 0; display: flex; flex-direction: column; gap: 0.75rem;">
+                    <li style="display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.95rem; color: var(--text-secondary);">
+                        <i class="fa-solid fa-circle-check" style="color: var(--success-color); margin-top: 0.25rem; font-size: 0.85rem;"></i>
+                        <span><strong>M.Tech</strong></span>
+                    </li>
+                    <li style="display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.95rem; color: var(--text-secondary);">
+                        <i class="fa-solid fa-circle-check" style="color: var(--success-color); margin-top: 0.25rem; font-size: 0.85rem;"></i>
+                        <span><strong>GATE Qualified</strong> (2012, 2013)</span>
+                    </li>
+                    <li style="display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.95rem; color: var(--text-secondary);">
+                        <i class="fa-solid fa-circle-check" style="color: var(--success-color); margin-top: 0.25rem; font-size: 0.85rem;"></i>
+                        <span><strong>APSET Qualified</strong> (2017)</span>
+                    </li>
+                    <li style="display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.95rem; color: var(--text-secondary);">
+                        <i class="fa-solid fa-circle-check" style="color: var(--success-color); margin-top: 0.25rem; font-size: 0.85rem;"></i>
+                        <span><strong>UGC-NET Qualified</strong> (2018, 2024)</span>
+                    </li>
+                    <li style="display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.95rem; color: var(--text-secondary);">
+                        <i class="fa-solid fa-circle-check" style="color: var(--success-color); margin-top: 0.25rem; font-size: 0.85rem;"></i>
+                        <span><strong>HackerRank Python Certified</strong></span>
+                    </li>
+                </ul>
+                
+                <blockquote style="margin: 0; padding: 1rem; border-left: 4px solid var(--accent-color); background: var(--bg-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; font-style: italic; font-size: 0.9rem; color: var(--text-muted); line-height: 1.5;">
+                    "Empowering students to think logically, code confidently, and build successful technology careers."
+                </blockquote>
             </div>
         </div>
     </div>
@@ -36,7 +74,7 @@
             <div style="color: var(--text-secondary); font-weight: 600; font-size: 0.9rem;">Students Mentored</div>
         </div>
         <div class="card stat-card" style="text-align: center; padding: 2rem; border-radius: var(--radius-lg); transition: transform 0.3s ease; border: 1px solid var(--border-color);">
-            <div style="font-size: 2.25rem; font-weight: 800; color: var(--accent-color); margin-bottom: 0.5rem;">5+</div>
+            <div style="font-size: 2.25rem; font-weight: 800; color: var(--accent-color); margin-bottom: 0.5rem;">15+</div>
             <div style="color: var(--text-secondary); font-weight: 600; font-size: 0.9rem;">Years of Experience</div>
         </div>
         <div class="card stat-card" style="text-align: center; padding: 2rem; border-radius: var(--radius-lg); transition: transform 0.3s ease; border: 1px solid var(--border-color);">

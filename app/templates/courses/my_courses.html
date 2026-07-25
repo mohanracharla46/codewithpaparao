@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% block title %}My Courses{% endblock %}
+{% block header_title %}My Learning Path{% endblock %}
+
+{% block extra_css %}
+<style>
+    .my-courses-header {
+        margin-bottom: 2rem;
+    }
+    
+    .my-courses-header h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        color: var(--text-primary);
+    }
+    
+    .my-courses-header p {
+        color: var(--text-muted);
+        font-size: 1rem;
+    }
+    
+    .courses-grid-custom {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+    }
+    
+    .my-course-card {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        box-shadow: var(--shadow-sm);
+        transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .my-course-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-md);
+        border-color: var(--accent-color);
+    }
+    
+    .my-course-thumb {
+        height: 180px;
+        position: relative;
+        overflow: hidden;
+        border-bottom: 1px solid var(--border-color);
+        background-color: var(--bg-tertiary);
+    }
+    
+    .my-course-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform var(--transition-normal);
+    }
+    
+    .my-course-card:hover .my-course-thumb img {
+        transform: scale(1.05);
+    }
+    
+    .my-course-body {
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        justify-content: space-between;
+    }
+    
+    .progress-bar-container {
+        width: 100%;
+        height: 8px;
+        background: var(--bg-primary);
+        border-radius: 4px;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+        margin-top: 0.5rem;
+    }
+    
+    .progress-bar-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--accent-color) 0%, var(--success-color) 100%);
+        border-radius: 4px;
+        transition: width var(--transition-normal);
+    }
+    
+    @media (max-width: 640px) {
+        .courses-grid-custom {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="my-courses-header">
+    <h1>My Enrolled Courses</h1>
+    <p>Track your learning progress, resume active paths, and build premium skills.</p>
+</div>
+
+{% if courses_with_progress %}
+    <div class="courses-grid-custom">
+        {% for item in courses_with_progress %}
+            <div class="my-course-card">
+                <div class="my-course-thumb">
+                    <img src="{{ item.course|course_image(600, 300) }}" alt="{{ item.course.title }}">
+                </div>
+                <div class="my-course-body">
+                    <div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span class="badge badge-{{ item.course.difficulty }}" style="text-transform: capitalize;">{{ item.course.difficulty }}</span>
+                            <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 500;">{{ item.total_lessons }} Lessons</span>
+                        </div>
+                        
+                        <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text-primary);">{{ item.course.title }}</h3>
+                        
+                        <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.4; margin-bottom: 1.5rem;">
+                            {{ item.course.description[:140] }}{% if item.course.description|length > 140 %}...{% endif %}
+                        </p>
+                    </div>
+                    
+                    <div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.35rem; font-weight: 600;">
+                            <span>Progress</span>
+                            <span>{{ item.progress }}%</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-fill" style="width: {{ item.progress }}%;"></div>
+                        </div>
+                        
+                        <div style="margin-top: 1.5rem; display: flex; justify-content: flex-end;">
+                            <a href="{{ url_for('course.detail', course_id=item.course.id) }}" class="btn {% if item.progress > 0 %}btn-outline{% else %}btn-primary{% endif %}" style="display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.5rem 1.25rem; font-size: 0.85rem; text-decoration: none;">
+                                {% if item.progress > 0 %}
+                                    <span>Continue Learning</span> <i class="fa-solid fa-arrow-right"></i>
+                                {% else %}
+                                    <span>Start Learning</span> <i class="fa-solid fa-play"></i>
+                                {% endif %}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="card" style="text-align: center; padding: 5rem 2rem; border-radius: var(--radius-lg); border: 1px dashed var(--border-color); background: var(--bg-secondary);">
+        <div style="font-size: 3.5rem; color: var(--text-muted); opacity: 0.5; margin-bottom: 1.5rem;">
+            <i class="fa-solid fa-book-open"></i>
+        </div>
+        <h3 style="margin-bottom: 0.5rem; font-weight: 700; color: var(--text-primary);">No active courses found</h3>
+        <p style="color: var(--text-muted); max-width: 480px; margin: 0 auto 2rem; line-height: 1.5;">You aren't enrolled in any cohorts or courses yet. Browse our extensive programming tracks catalog to get started!</p>
+        <a href="{{ url_for('course.list_courses') }}" class="btn btn-primary" style="padding: 0.65rem 1.5rem;">Browse Course Catalog</a>
+    </div>
+{% endif %}
+{% endblock %}
