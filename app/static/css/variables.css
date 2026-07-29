@@ -41,29 +41,31 @@
     --header-bg: rgba(255, 255, 255, 0.85);
 }
 
-[data-theme="dark"] {
-    /* Dark Theme Palette (Premium Dark Teal LMS Theme) */
-    --bg-primary: #041a16;         /* Deepest dark forest teal tint */
-    --bg-secondary: #0b2e27;       /* Card dark teal bg */
-    --bg-tertiary: #134e4a;        /* Hover backgrounds */
+:root[data-theme="dark"] {
+    /* Dark Theme Palette (Modern Premium Slate with Teal Accents) */
+    --bg-primary: #0f172a;         /* Deep slate background */
+    --bg-secondary: #1e293b;       /* Elevated slate card bg */
+    --bg-tertiary: #334155;        /* Hover states and tertiary elements */
     
-    --text-primary: #f0fdfa;       /* Teal-white text */
-    --text-secondary: #99f6e4;     /* Mint text */
-    --text-muted: #5eead4;         /* Glowing borders/muted text */
+    --text-primary: #f8fafc;       /* Crisp white for main text */
+    --text-secondary: #cbd5e1;     /* Soft gray for secondary text */
+    --text-muted: #94a3b8;         /* Muted slate for subtle text */
     
-    --accent-color: #2dd4bf;       /* Bright mint teal */
-    --accent-light: #115e59;       /* Deep teal shadow */
-    --accent-hover: #14b8a6;
+    --accent-color: #14b8a6;       /* Vibrant teal for primary actions */
+    --accent-light: rgba(20, 184, 166, 0.15);  /* Subtle teal background */
+    --accent-hover: #2dd4bf;       /* Brighter teal for hover states */
     
-    --border-color: #134e4a;
+    --border-color: #334155;       /* Subtle border color */
+    
     --success-color: #34d399;
     --warning-color: #fbbf24;
     --danger-color: #f87171;
     
-    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.4);
-    --shadow-md: 0 8px 16px -4px rgba(0, 0, 0, 0.6), 0 2px 4px -2px rgba(0, 0, 0, 0.4);
-    --shadow-lg: 0 16px 24px -6px rgba(0, 0, 0, 0.8), 0 4px 10px -4px rgba(0, 0, 0, 0.6);
-    --header-bg: rgba(11, 46, 39, 0.85);
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.6), 0 4px 6px -2px rgba(0, 0, 0, 0.4);
+    
+    --header-bg: rgba(15, 23, 42, 0.85); /* Translucent slate for sticky header */
 }
 
 /* Global resets & typography */
