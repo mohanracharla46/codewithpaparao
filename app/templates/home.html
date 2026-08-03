@@ -324,138 +324,77 @@
             100% { transform: scale(1.02); }
         }
 
-        .floating-badge {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            color: var(--text-primary);
-            border: 1px solid rgba(255, 255, 255, 0.35);
-            padding: 0.65rem 1.25rem;
-            border-radius: 20px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.65rem;
-            z-index: 3;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        [data-theme="dark"] .floating-badge {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+        /* Technologies Showcase Grid Layout */
+        .tech-stack-showcase {
+            margin-top: 3.5rem;
+            text-align: left;
+            position: relative;
+            z-index: 5;
         }
 
-        .badge-icon {
-            font-size: 1.25rem;
+        .showcase-title {
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 0.75rem;
+            max-width: 580px;
+        }
+
+        .tech-card {
+            background: rgba(255, 255, 255, 0.45);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 0.65rem 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.55rem;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            transition: all var(--transition-fast);
+            box-shadow: 0 2px 4px rgba(13, 148, 136, 0.02);
+        }
+        [data-theme="dark"] .tech-card {
+            background: rgba(30, 41, 59, 0.4);
+            border-color: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .tech-card:hover {
+            transform: translateY(-2px);
+            background: var(--bg-secondary);
+            box-shadow: 0 8px 16px rgba(13, 148, 136, 0.08);
+            border-color: var(--accent-color);
+        }
+
+        .tech-card i {
+            font-size: 1.05rem;
+            width: 20px;
+            text-align: center;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            transition: transform 0.3s ease;
         }
 
-        .floating-badge:hover .badge-icon {
-            transform: scale(1.15) rotate(5deg);
-        }
-
-        /* Custom badge positions, animations, and color glows */
-        .badge-dsa {
-            top: -12%; left: 12%;
-            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.08);
-            animation: float-dsa 6s ease-in-out infinite;
-        }
-        .badge-dsa:hover {
-            border-color: #6366f1;
-            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.35);
-            transform: scale(1.06) translateY(-4px);
-        }
-
-        .badge-algo {
-            top: -12%; right: 12%;
-            box-shadow: 0 8px 30px rgba(59, 130, 246, 0.08);
-            animation: float-algo 6.5s ease-in-out infinite;
-        }
-        .badge-algo:hover {
-            border-color: #3b82f6;
-            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.35);
-            transform: scale(1.06) translateY(-4px);
-        }
-
-        .badge-c {
-            top: 15%; left: -16%;
-            box-shadow: 0 8px 30px rgba(13, 148, 136, 0.08);
-            animation: float-c 5.8s ease-in-out infinite;
-        }
-        .badge-c:hover {
-            border-color: #0d9488;
-            box-shadow: 0 10px 25px rgba(13, 148, 136, 0.35);
-            transform: scale(1.06) translateY(-4px);
-        }
-
-        .badge-cpp {
-            top: 48%; left: -22%;
-            box-shadow: 0 8px 30px rgba(37, 99, 235, 0.08);
-            animation: float-cpp 6.2s ease-in-out infinite;
-        }
-        .badge-cpp:hover {
-            border-color: #2563eb;
-            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.35);
-            transform: scale(1.06) translateY(-4px);
-        }
-
-        .badge-python {
-            top: 15%; right: -16%;
-            box-shadow: 0 8px 30px rgba(234, 179, 8, 0.08);
-            animation: float-python 6.7s ease-in-out infinite;
-        }
-        .badge-python:hover {
-            border-color: #eab308;
-            box-shadow: 0 10px 25px rgba(234, 179, 8, 0.35);
-            transform: scale(1.06) translateY(-4px);
-        }
-
-        .badge-problemsolving {
-            top: 48%; right: -22%;
-            box-shadow: 0 8px 30px rgba(245, 158, 11, 0.08);
-            animation: float-problemsolving 6.4s ease-in-out infinite;
-        }
-        .badge-problemsolving:hover {
-            border-color: #f59e0b;
-            box-shadow: 0 10px 25px rgba(245, 158, 11, 0.35);
-            transform: scale(1.06) translateY(-4px);
-        }
-
-        .badge-compcoding {
-            bottom: -10%; left: 6%;
-            box-shadow: 0 8px 30px rgba(236, 72, 153, 0.08);
-            animation: float-compcoding 6.1s ease-in-out infinite;
-        }
-        .badge-compcoding:hover {
-            border-color: #ec4899;
-            box-shadow: 0 10px 25px rgba(236, 72, 153, 0.35);
-            transform: scale(1.06) translateY(-4px);
-        }
-
-        .badge-placement {
-            bottom: -10%; right: 6%;
-            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.08);
-            animation: float-placement 6.6s ease-in-out infinite;
-        }
-        .badge-placement:hover {
-            border-color: #10b981;
-            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.35);
-            transform: scale(1.06) translateY(-4px);
-        }
-
-        /* Offset Float Keyframes for organic movement */
-        @keyframes float-dsa             { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-8px) rotate(1deg); } }
-        @keyframes float-algo            { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-10px) rotate(-1deg); } }
-        @keyframes float-c               { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-7px) rotate(0.5deg); } }
-        @keyframes float-cpp             { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-9px) rotate(-0.5deg); } }
-        @keyframes float-python          { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-8px) rotate(-1deg); } }
-        @keyframes float-problemsolving  { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-10px) rotate(0.8deg); } }
-        @keyframes float-compcoding      { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-7px) rotate(-0.7deg); } }
-        @keyframes float-placement       { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-9px) rotate(1.2deg); } }
+        .icon-dsa { color: #6366f1; }
+        .icon-algo { color: #3b82f6; }
+        .icon-c { color: #0d9488; }
+        .icon-cpp { color: #2563eb; }
+        .icon-python { color: #eab308; }
+        .icon-problem { color: #f59e0b; }
+        .icon-comp { color: #ec4899; }
+        .icon-placement { color: #10b981; }
 
 
         /* General Section Layout */
@@ -1372,7 +1311,7 @@
             /* --- Hero --- */
             .hero-section {
                 padding: 3rem 1.25rem 2rem;
-                gap: 2rem;
+                gap: 2.5rem;
             }
             .hero-title { font-size: 2.25rem; letter-spacing: -0.03em; }
             .hero-desc { font-size: 1rem; }
@@ -1380,7 +1319,9 @@
             .btn-hero { justify-content: center; font-size: 1rem; }
             .hero-graphics-container { height: 260px; }
             .code-window { width: 310px; font-size: 0.72rem; }
-            .floating-badge { display: none !important; }
+            .tech-stack-showcase { margin-top: 2.5rem; }
+            .tech-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 0.6rem; }
+            .tech-card { padding: 0.5rem 0.6rem; font-size: 0.76rem; }
 
             /* --- Sections --- */
             .section-container { padding: 3.5rem 1.25rem; }
@@ -1501,6 +1442,45 @@
                 <a href="#courses" class="btn btn-hero" style="background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-hover) 100%); color: white !important; border: none; box-shadow: 0 10px 20px -5px rgba(20, 184, 166, 0.4);"><i class="fa-solid fa-compass" style="margin-right: 0.5rem;"></i> Explore Courses</a>
                 <a href="#trainer" class="btn btn-hero btn-outline" style="background: var(--bg-secondary); border: 1px solid var(--border-color); color: var(--text-primary) !important; box-shadow: none; transition: all 0.3s ease;"><i class="fa-solid fa-play" style="margin-right: 0.5rem; font-size: 0.85rem; color: var(--accent-color);"></i> Watch Free Demo</a>
             </div>
+
+            <!-- Core Languages & Skills Showcase Grid -->
+            <div class="tech-stack-showcase">
+                <p class="showcase-title">Core Languages & Skills You Will Master</p>
+                <div class="tech-grid">
+                    <div class="tech-card">
+                        <i class="fa-solid fa-sitemap icon-dsa"></i>
+                        <span>Data Structures</span>
+                    </div>
+                    <div class="tech-card">
+                        <i class="fa-solid fa-terminal icon-algo"></i>
+                        <span>Algorithms</span>
+                    </div>
+                    <div class="tech-card">
+                        <i class="devicon-c-plain colored icon-c"></i>
+                        <span>C Language</span>
+                    </div>
+                    <div class="tech-card">
+                        <i class="devicon-cplusplus-plain colored icon-cpp"></i>
+                        <span>C++</span>
+                    </div>
+                    <div class="tech-card">
+                        <i class="devicon-python-plain colored icon-python"></i>
+                        <span>Python</span>
+                    </div>
+                    <div class="tech-card">
+                        <i class="fa-solid fa-puzzle-piece icon-problem"></i>
+                        <span>Problem Solving</span>
+                    </div>
+                    <div class="tech-card">
+                        <i class="fa-solid fa-trophy icon-comp"></i>
+                        <span>Competitive Coding</span>
+                    </div>
+                    <div class="tech-card">
+                        <i class="fa-solid fa-briefcase icon-placement"></i>
+                        <span>Placement Prep</span>
+                    </div>
+                </div>
+            </div>
         </div>
         
         <div class="hero-graphics-container">
@@ -1516,39 +1496,6 @@
                 <div class="window-body">
                     <pre><code><span class="line line-1"><span class="keyword">def</span> <span class="function">learn_dsa</span>():</span><span class="line line-2">    skills = [<span class="string">"C++"</span>, <span class="string">"Python"</span>, <span class="string">"DSA"</span>]</span><span class="line line-3">    career = <span class="string">"Confidence"</span></span><span class="line line-4">    </span><span class="line line-5">    <span class="keyword">for</span> skill <span class="keyword">in</span> skills:</span><span class="line line-6">        practice(skill)</span><span class="line line-7">        build_projects()</span><span class="line line-8">        </span><span class="line line-9">    <span class="keyword">return</span> succeed(career)<span class="cursor">|</span></span></code></pre>
                 </div>
-            </div>
-            <!-- Floating Badges -->
-            <div class="floating-badge badge-dsa">
-                <i class="badge-icon fa-solid fa-sitemap" style="color: #6366f1; min-width: 20px;"></i>
-                <span>Data Structures</span>
-            </div>
-            <div class="floating-badge badge-algo">
-                <i class="badge-icon fa-solid fa-terminal" style="color: #3b82f6; min-width: 20px;"></i>
-                <span>Algorithms</span>
-            </div>
-            <div class="floating-badge badge-c">
-                <i class="badge-icon devicon-c-plain colored" style="min-width: 20px;"></i>
-                <span>C Programming</span>
-            </div>
-            <div class="floating-badge badge-cpp">
-                <i class="badge-icon devicon-cplusplus-plain colored" style="min-width: 20px;"></i>
-                <span>C++</span>
-            </div>
-            <div class="floating-badge badge-python">
-                <i class="badge-icon devicon-python-plain colored" style="min-width: 20px;"></i>
-                <span>Python</span>
-            </div>
-            <div class="floating-badge badge-problemsolving">
-                <i class="badge-icon fa-solid fa-puzzle-piece" style="color: #f59e0b; min-width: 20px;"></i>
-                <span>Problem Solving</span>
-            </div>
-            <div class="floating-badge badge-compcoding">
-                <i class="badge-icon fa-solid fa-trophy" style="color: #ec4899; min-width: 20px;"></i>
-                <span>Competitive Coding</span>
-            </div>
-            <div class="floating-badge badge-placement">
-                <i class="badge-icon fa-solid fa-briefcase" style="color: #10b981; min-width: 20px;"></i>
-                <span>Placement Training</span>
             </div>
         </div>
     </header>
