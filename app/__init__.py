@@ -96,6 +96,14 @@ def create_app(config_name='development'):
     app.register_blueprint(super_admin_bp, url_prefix='/super-admin')
     app.register_blueprint(student_bp, url_prefix='/student')
     
+    # Cache control for static assets
+    @app.after_request
+    def add_header(response):
+        from flask import request
+        if request.path.startswith('/static/'):
+            response.headers['Cache-Control'] = 'public, max-age=31536000, immutable'
+        return response
+    
     # Render landing home page
     @app.route('/')
     def index():

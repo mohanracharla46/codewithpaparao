@@ -12,6 +12,10 @@
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 
+    <!-- Preload critical hero images for LCP -->
+    <link rel="preload" as="image" href="{{ url_for('static', filename='assets/smiling_developer.webp') }}" type="image/webp" media="(min-width: 769px)" fetchpriority="high">
+    <link rel="preload" as="image" href="{{ url_for('static', filename='assets/smiling_developer_mobile.webp') }}" type="image/webp" media="(max-width: 768px)" fetchpriority="high">
+
     <!-- Google Fonts - async non-blocking load -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700&display=swap" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700&display=swap"></noscript>
@@ -768,7 +772,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{{ url_for("static", filename="assets/coding_hero.png") }}');
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{{ url_for("static", filename="assets/coding_hero.webp") }}');
             background-size: cover;
             background-position: center;
             display: flex;
@@ -1312,7 +1316,11 @@
         
         <div class="hero-graphics-container">
             <div class="developer-wrapper">
-                <img src="{{ url_for('static', filename='assets/smiling_developer.png') }}" alt="smiling developer" class="developer-img">
+                <picture>
+                    <source type="image/webp" media="(max-width: 768px)" srcset="{{ url_for('static', filename='assets/smiling_developer_mobile.webp') }}">
+                    <source type="image/webp" srcset="{{ url_for('static', filename='assets/smiling_developer.webp') }}">
+                    <img src="{{ url_for('static', filename='assets/smiling_developer.png') }}" alt="smiling developer" class="developer-img" fetchpriority="high" width="1024" height="1024" style="aspect-ratio: 1/1;">
+                </picture>
             </div>
             <!-- Floating Badges -->
             <div class="floating-badge badge-dsa">
@@ -1466,7 +1474,10 @@
         
         <div class="trainer-card">
             <div class="trainer-image-wrapper">
-                <img src="{{ url_for('static', filename='assets/paparao.png') }}" alt="Trainer PapaRao Rapuri" class="trainer-image">
+                <picture>
+                    <source type="image/webp" srcset="{{ url_for('static', filename='assets/paparao.webp') }}">
+                    <img src="{{ url_for('static', filename='assets/paparao.png') }}" alt="Trainer PapaRao Rapuri" class="trainer-image" loading="lazy" width="500" height="500" style="aspect-ratio: 1/1;">
+                </picture>
             </div>
             <div>
                 <h3 style="font-size: 1.85rem; margin-bottom: 0.5rem; font-family: var(--font-heading); color: var(--text-primary);">PapaRao Rapuri</h3>

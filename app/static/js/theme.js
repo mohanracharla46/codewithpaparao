@@ -5,7 +5,12 @@ function initTheme() {
     const theme = savedTheme || (prefersDark ? 'dark' : 'light');
     
     document.documentElement.setAttribute('data-theme', theme);
-    updateThemeIcon(theme);
+    
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => updateThemeIcon(theme));
+    } else {
+        updateThemeIcon(theme);
+    }
 }
 
 function toggleTheme() {
