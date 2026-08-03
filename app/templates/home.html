@@ -198,43 +198,91 @@
             z-index: 2;
         }
 
-        .developer-wrapper {
-            width: 340px;
-            height: 400px;
-            overflow: visible;
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 32px;
-            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.15), 
-                        inset 0 1px 2px rgba(255, 255, 255, 0.15);
+        /* Code Editor Window Graphic */
+        .code-window {
+            width: 360px;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.4),
+                        0 0 50px -10px rgba(13, 148, 136, 0.15);
+            overflow: hidden;
+            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+            font-size: 0.82rem;
+            line-height: 1.6;
+            text-align: left;
             position: relative;
             animation: heroFloat 6s ease-in-out infinite;
             z-index: 2;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        [data-theme="dark"] .developer-wrapper {
-            background: rgba(15, 23, 42, 0.45);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5), 
-                        inset 0 1px 1px rgba(255, 255, 255, 0.05);
+        [data-theme="light"] .code-window {
+            background: rgba(30, 41, 59, 0.96);
+            border: 1px solid rgba(255, 255, 255, 0.12);
         }
-
-        .developer-img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            filter: drop-shadow(0 20px 35px rgba(13, 148, 136, 0.25));
-            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.4s ease;
-            animation: characterBob 4s ease-in-out infinite alternate;
+        .code-window:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 35px 70px -10px rgba(0, 0, 0, 0.5),
+                        0 0 60px -5px rgba(13, 148, 136, 0.25);
         }
 
-        .developer-wrapper:hover .developer-img {
-            transform: scale(1.06) translateY(-8px);
-            filter: drop-shadow(0 30px 50px rgba(13, 148, 136, 0.45));
+        .window-header {
+            height: 38px;
+            background: rgba(2, 6, 23, 0.4);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            padding: 0 1rem;
+            gap: 0.4rem;
+            position: relative;
+        }
+
+        .window-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        .dot-red { background: #ef4444; }
+        .dot-yellow { background: #eab308; }
+        .dot-green { background: #22c55e; }
+
+        .window-title {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.72rem;
+            color: #94a3b8;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .window-body {
+            padding: 1.5rem 1.25rem;
+            color: #e2e8f0;
+        }
+
+        .window-body pre {
+            margin: 0;
+            white-space: pre-wrap;
+        }
+
+        /* Syntax Highlighting */
+        .keyword { color: #f43f5e; font-weight: 700; }
+        .function { color: #38bdf8; }
+        .string { color: #10b981; }
+
+        .cursor {
+            color: #14b8a6;
+            font-weight: bold;
+            animation: blink 1.2s step-end infinite;
+        }
+
+        @keyframes blink {
+            from, to { opacity: 1; }
+            50% { opacity: 0; }
         }
 
         @keyframes heroFloat {
@@ -1302,7 +1350,7 @@
             .hero-cta { flex-direction: column; align-items: stretch; gap: 0.75rem; }
             .btn-hero { justify-content: center; font-size: 1rem; }
             .hero-graphics-container { height: 260px; }
-            .developer-wrapper { width: 200px; height: 240px; }
+            .code-window { width: 310px; font-size: 0.72rem; }
             .floating-badge { display: none !important; }
 
             /* --- Sections --- */
@@ -1429,12 +1477,24 @@
         <div class="hero-graphics-container">
             <div class="glow-orb glow-orb-1"></div>
             <div class="glow-orb glow-orb-2"></div>
-            <div class="developer-wrapper">
-                <picture>
-                    <source type="image/webp" media="(max-width: 768px)" srcset="{{ url_for('static', filename='assets/smiling_developer_mobile.webp') }}">
-                    <source type="image/webp" srcset="{{ url_for('static', filename='assets/smiling_developer.webp') }}">
-                    <img src="{{ url_for('static', filename='assets/smiling_developer.png') }}" alt="smiling developer" class="developer-img" fetchpriority="high" width="1024" height="1024" style="aspect-ratio: 1/1;">
-                </picture>
+            <div class="code-window">
+                <div class="window-header">
+                    <span class="window-dot dot-red"></span>
+                    <span class="window-dot dot-yellow"></span>
+                    <span class="window-dot dot-green"></span>
+                    <span class="window-title">main.py</span>
+                </div>
+                <div class="window-body">
+                    <pre><code><span class="keyword">def</span> <span class="function">learn_dsa</span>():
+    skills = [<span class="string">"C++"</span>, <span class="string">"Python"</span>, <span class="string">"DSA"</span>]
+    career = <span class="string">"Confidence"</span>
+    
+    <span class="keyword">for</span> skill <span class="keyword">in</span> skills:
+        practice(skill)
+        build_projects()
+        
+    <span class="keyword">return</span> succeed(career)<span class="cursor">|</span></code></pre>
+                </div>
             </div>
             <!-- Floating Badges -->
             <div class="floating-badge badge-dsa">
